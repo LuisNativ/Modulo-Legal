@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui">
+<h:head>
+<style type="text/css">  
+   .contenedor{
+   	display: flex;
+   	aling-items: center;
+    justify-content: center;
+	background: url(../resources/images/fondoLogin.jpg) no-repeat center top;
+	margin: 0;
+	padding: 0;
+    background-size: cover;
+	height: 100vh;
+  }
+   .contenedorForm{
+    /*margin: auto;*/
+    background-color:rgba(255,255,255,0.3);
+    width: 320px;
+    height: 420px;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    /*padding: 40px 30px;*/
+    border-radius: 10%;
+    /*AHM*/
+	/*display: flex;
+    aling-items: center;
+    justify-content: center;*/
+    padding: 30px;
+  }
+   .contenedorForm .logo{
+	/*border: solid red;*/
+	/*background-color:rgba(255,255,255,0.5);*/
+	background-color:rgba(63,191,191,0.9);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    top: -50px;
+    left: calc(50% - 50px);
+  }
+   .lbl{
+    display: flex;
+    aling-items: center;
+    justify-content: center;
+    /*text-align: center;*/
+	font-size: 28px !important;
+	font-family: NexaLight !important;
+	color: #747373;
+	font-weight: bold !important;
+	/*AHM*/
+	padding-top: 25px;
+	padding-bottom: 10px;
+  }
+  /*
+   .contenedorForm p input{
+   	border: solid red;
+    width: 100%;
+    border: none;
+    outline: none;
+  }*/
+   .companyHeaderGrid.ui-panelgrid>*>tr,
+   .companyHeaderGrid.ui-panelgrid>*>tr>td {
+	border: none;
+	background-color:rgba(255,255,255,0.5);
+   }
+   /*
+   .contenedorForm p input[type="text"]{
+   	border: none;
+   	broder-botton: 1px solid #fff;
+   	background: transparent;
+   	outline: none;
+   	height: 40px;
+   	color: #fff;
+   	font-size: 15px;
+   }
+   */
+   .input-icono {
+	background-image: url(../resources/images/user3.png);
+	background-repeat: no-repeat !important;
+	background-position: 4px center !important;
+	background-size: 20px !important;
+	display: flex !important;
+	align-items: center !important;
+	/*width: 230px;*/
+	width: 100%;
+	height: 25px;
+	padding-left: 28px !important;
+	/*border: 1px solid rgba(9, 113, 163, 1);*/
+	border-radius: 3px !important;
+	border: none !important;
+	/*AHM*/
+	box-shadow: none !important;
+	font-size: 15px !important;
+	font-family: NexaLight !important;
+	font-weight: normal !important;
+   }
+   .input-icono2 {
+	background-image: url(../resources/images/candado3.png);
+	background-repeat: no-repeat !important;
+	background-position: 4px center !important;
+	background-size: 20px !important;
+	display: flex !important;
+	align-items: center !important;
+	/*width: 230px;*/
+	width: 100%;
+	height: 25px;
+	padding-left: 28px !important;
+	/*border: 1px solid rgba(9, 113, 163, 1);*/
+	border-radius: 3px !important;
+	border: none !important;
+	/*AHM*/
+	box-shadow: none !important;
+	font-size: 15px !important;
+	font-family: NexaLight !important;
+	font-weight: normal !important;
+   }
+   .input-icono:focus,
+   .input-icono2:focus,
+   .input-icono:hover,
+   .input-icono2:hover {
+	/*outline: none !important;*/
+	border: 1px solid rgba(9, 113, 163, 1) !important;
+   }
+   .btn{
+	width: 100%;
+	height: 30px;
+	background-image: none !important;
+	border: none !important;
+	outline: none !important;
+	border-radius: 3px !important;
+	background-color:rgba(63,191,191,0.9) !important;
+	/*text-align: center;*/
+	text-decoration: none;
+	cursor: pointer;
+	box-shadow:0px 0px 0px !important;
+	font-size: 15px !important;
+	font-family: NexaLight !important;
+	color: #ffffff !important;
+	font-weight: normal !important;
+   }
+   .btn:hover{
+	background-color:rgba(63,191,191,0.7) !important;
+   }
+   .contenedor0{
+	overflow: hidden;
+   }
+   .contenedor0 div{
+   	padding-bottom: 10px;
+   }
+/* EDICION MENSAJE */
+/*********************************************************/
+div[id="growlForm:growl_container"] > div[class~="g-fatal"] {
+background-color: black !important;
+}
+
+div[id="growlForm:growl_container"] > div[class~="g-error"] {
+background-color: red !important;
+}
+
+div[id="growlForm:growl_container"] > div[class~="g-warn"]{
+background-color: orange !important;
+}
+
+div[id="growlForm:growl_container"] > div[class~="g-info"]{
+background-color: green !important;
+}
+.ui-growl-image-info ~ .ui-growl-message {
+color:#fff;
+}
+.ui-growl-image-error ~ .ui-growl-message {
+color:#fff;
+}
+.ui-growl-image-warn ~ .ui-growl-message {
+color:#fff;
+}
+.ui-growl-image-fatal ~ .ui-growl-message {
+color:#fff;
+}
+.ui-growl-message-warn .ui-growl-item {
+background-color: #a94442;
+}
+.ui-growl-message-success .ui-growl-item {
+background-color: #42A948;
+}
+</style>
+</h:head> 
+<body class="contenedor">
+	<h:outputStylesheet library="css" name="all.min.css" />
+	<h:outputStylesheet library="css" name="style.css" />
+	<h:outputScript library="js" name="view.js" />
+	
+	<!--
+	<h:form>
+		<p:ajaxStatus onstart="mostrarLoader()" onsuccess="ocultarLoader()"></p:ajaxStatus>
+	</h:form>
+	-->
+	
+	<h:form>
+	<div class="contenedorForm">
+		<h:graphicImage class="logo" library="images" name="logo.png" width="100%" height="100%" />
+		<!-- 
+		<p:growl id="growl" showDetail="true" sticky="true"/>  
+		 -->
+		<div>
+			<label class="lbl">Sign In</label>
+		</div>
+		<div>
+			<p:messages id="messages" showDetail="true" closable="true">
+				<!-- <p:autoUpdate/>  -->
+			</p:messages>
+		</div>
+		<div class="contenedor0">
+			<div>
+				<p:inputText type="text" value="#{login.strUsuario}" styleClass="input-icono" placeholder="Username"></p:inputText>
+			</div>
+			<div>
+				<p:password type="text" value="#{login.strContrasena}" styleClass="input-icono2" placeholder="Contraseña"></p:password>
+				<!-- <p:inputText type="text" value="#{login.strContrasena}" styleClass="input-icono2" placeholder="Contraseña"></p:inputText>  -->
+			</div>
+			<div>
+				<p:commandButton value="Login" styleClass="btn" action="#{login.Validar()}" update="messages"/>
+			</div>
+		</div>
+		<div id="progressBarIndeterminate">
+			<p:progressBar style="height:6px" mode="indeterminate"/>
+		</div>
+   	</div>
+    </h:form>
+    <script>
+    window.onload = function() {
+		$('#progressBarIndeterminate').hide();
+	}
+	function mostrarLoader(){
+		$("#progressBarIndeterminate").show();
+	}
+	function ocultarLoader(){
+		$("#progressBarIndeterminate").hide();
+	}
+	</script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</body>
+</html>

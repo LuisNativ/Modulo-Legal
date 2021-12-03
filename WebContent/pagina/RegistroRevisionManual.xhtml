@@ -1,0 +1,379 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  template="/pagina/maestra.xhtml">
+<ui:define name="contenido">
+<h:head>
+</h:head>
+<f:view>
+	<h:form id="form" enctype="multipart/form-data">
+
+	<div class="ui-g ui-fluid">
+	<div class="ui-g-12 ui-md-12 ui-lg-12">
+	<div class="dsPaginaTitulo">
+        <div class="tituloIzquieda">
+            <h4><i class="fa fa-folder-open"></i> M&#243;dulo : Consultas <small> > Solicitud</small></h4>
+        </div>
+    </div>
+    </div>
+    </div>
+    
+    <div class="ui-g ui-fluid ui-g-nopad">
+    <div class="ui-g-12">
+	<p:panel id="pnl1" widgetVar="pnl1" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+        <f:facet name="header" >
+            <i class="fas fa-edit"></i> Datos de la Consulta
+        </f:facet>
+	    <div class="ui-g ui-fluid ui-g-nopad">				
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+			<p:outputLabel value="Prioridad" styleClass="dsLabel1"/>
+			<p:selectOneMenu value="#{mbrevisionmanual.oERevisionSolicitudData.codigoNivel}">
+				<p:ajax event="change" update="@this"/>
+				<f:selectItems value="#{mbrevisionmanual.lstNivel}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+			</p:selectOneMenu>
+			</div>
+			
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+			<p:outputLabel value="Servicio" styleClass="dsLabel1"/>
+			<p:selectOneMenu value="#{mbrevisionmanual.oERevisionSolicitudData.codigoServicio}">
+				<p:ajax event="change" update="@this"/>
+				<f:selectItems value="#{mbrevisionmanual.lstServicioFiltro}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+			</p:selectOneMenu>
+			</div>
+			
+			<div class="ui-g-12 ui-md-6 ui-lg-2">
+				<p:outputLabel value="Fecha Inicio" styleClass="dsLabel1"/>
+				<p:calendar value="#{mbrevisionmanual.oERevisionSolicitudData.fechaInicio}" autocomplete="off" maxdate="#{mbrevisionmanual.oERevisionSolicitudData.fechaFin}" navigator="true" pattern="dd-MM-yyyy"/>
+			</div>
+			
+			<div class="ui-g-12 ui-md-3 ui-lg-2">
+				<p:outputLabel value="Hora Inicio (*)" styleClass="dsLabel1"/>
+				<p:calendar id="horaInicio" value="#{mbrevisionmanual.oERevisionSolicitudData.horaInicio}" autocomplete="off" pattern="HH:mm" timeOnly="true">
+					<p:ajax event="dateSelect" listener="#{mbrevisionmanual.obtenerHoraInicio()}" update="horaFin" />
+				</p:calendar>
+			</div>
+			
+			<div class="ui-g-12 ui-md-3 ui-lg-2">
+				<p:outputLabel value="Hora Fin (*)" styleClass="dsLabel1"/>
+				<p:calendar id="horaFin" value="#{mbrevisionmanual.oERevisionSolicitudData.horaFin}" minHour="#{mbrevisionmanual.horaInicioHH}" minMinute="#{mbrevisionmanual.horaInicioMM}" autocomplete="off" pattern="HH:mm" timeOnly="true"/>
+			</div>
+			
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+				<p:outputLabel value="Área de Consulta" styleClass="dsLabel1"/>
+				<p:selectOneMenu value="#{mbrevisionmanual.oERevisionSolicitudData.codigoAreaEmisor}">
+					<p:ajax event="change" listener="#{mbrevisionmanual.inicializarUsuarioEmisor}" update=":form:txtDescripcionEmisor"/>
+					<f:selectItems value="#{mbrevisionmanual.lstAreaEmisor}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				</p:selectOneMenu>
+			</div>
+
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+				<div class="ui-g-11 ui-md-10 ui-lg-11 ui-g-nopad">
+					<p:outputLabel value="Usuario de Consulta (*)" styleClass="dsLabel1"/>
+					<p:inputText type="text" id="txtDescripcionEmisor" styleClass="dsInput1" value="#{mbrevisionmanual.oERevisionSolicitudData.descripcionEmisor}" disabled="true"></p:inputText>
+				</div>
+				<div class="ui-g-1 ui-md-2 ui-lg-1 ui-g-nopad">
+					<br />
+					<div class="dsCuadrarCentro">
+					<p:commandLink styleClass="dsCmdlink1" onclick="PF('dlgPreload').show()" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbrevisionmanual.buscarUsuarioEmisor()}" update=":frmDlgBuscarUsuarioEmisor"><i class="fas fa-search"></i></p:commandLink>
+					</div>
+				</div>
+			</div>
+			
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+				<p:outputLabel value="Persona Vinculada" styleClass="dsLabel1"/>
+				<p:selectOneMenu value="#{mbrevisionmanual.oERevisionSolicitudData.codigoPersonaRelacion}">
+					<p:ajax event="change" listener="#{mbrevisionmanual.obtenerPersonaRelacion()}" update="pnlgTipoDocumentoPersona, pnlgNumeroDocumentoPersona, pnlgNombrePersona"/>
+					<f:selectItems value="#{mbrevisionmanual.lstTipoPersonaRelacion}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				</p:selectOneMenu>
+			</div>
+			
+			<h:panelGroup id="pnlgTipoDocumentoPersona" layout="block" class="ui-g-12 ui-md-3 ui-lg-3" style="#{mbrevisionmanual.visualizarTipoDocumentoPersona ? 'display:block;' : 'display:none'}">
+				<div class="ui-g-12 ui-g-nopad">
+					<p:outputLabel value="Tipo Documento" styleClass="dsLabel1"/>
+					<p:selectOneMenu value="#{mbrevisionmanual.oERevisionSolicitudData.codigoTipoDocumentoPersona}" disabled="#{mbrevisionmanual.deshabilitarTipoDocumentoPersona}">
+						<p:ajax event="change" listener="#{mbrevisionmanual.obtenerTipoDocumento()}" update="pnlgNumeroDocumentoPersona, pnlgNombrePersona"/>
+						<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+						<f:selectItems value="#{mbrevisionmanual.lstDOI}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+					</p:selectOneMenu>
+				</div>
+			</h:panelGroup>
+			
+			<h:panelGroup id="pnlgNumeroDocumentoPersona" layout="block" class="ui-g-12 ui-md-3 ui-lg-3" style="#{mbrevisionmanual.visualizarNumeroDocumentoPersona ? 'display:block;' : 'display:none'}">		
+				<div class="ui-g-12 ui-g-nopad">
+					<p:outputLabel value="N° Documento" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbrevisionmanual.oERevisionSolicitudData.numeroDocumentoPersona}" disabled="#{mbrevisionmanual.deshabilitarNumeroDocumentoPersona}" autocomplete="off" maxlength="#{mbrevisionmanual.maxLgnNumeroDocumentoPersona}">
+						<p:keyFilter mask="num"></p:keyFilter>
+					</p:inputText>
+				</div>
+			</h:panelGroup>
+			
+			<h:panelGroup id="pnlgNombrePersona" styleClass="ui-g-12 ui-md-6 ui-lg-3" layout="block" style="#{mbrevisionmanual.visualizarNombrePersona ? 'display:block;' : 'display:none'}">
+				<div class="ui-g-11 ui-md-10 ui-lg-11 ui-g-nopad">
+					<p:outputLabel value="Nombre de Persona (*)" styleClass="dsLabel1"/>
+					<p:inputText type="text" id="txtNombrePersona" styleClass="dsInput1" value="#{mbrevisionmanual.oERevisionSolicitudData.nombrePersona}" autocomplete="off" maxlength="50" disabled="#{mbrevisionmanual.deshabilitarNombrePersona}"></p:inputText>
+				</div>
+				<div class="ui-g-1 ui-md-2 ui-lg-1 ui-g-nopad">
+					<br />
+					<div class="dsCuadrarCentro">
+					<p:commandLink styleClass="dsCmdlink1" onclick="PF('dlgPreload').show()" oncomplete="PF('dlgPreload').hide(); PF('dlgBuscarPersona').show()" actionListener="#{mbrevisionmanual.buscarPersona()}" update=":frmDlgBuscarPersona" disabled="#{mbrevisionmanual.deshabilitarBuscarPersona}"><i class="fas fa-search"></i></p:commandLink>
+					</div>
+				</div>
+			</h:panelGroup>
+		</div>
+	</p:panel>
+	</div>
+	
+	<div class="ui-g-12">
+	<p:panel widgetVar="pnl2" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+        <f:facet name="header" >
+            <i class="fas fa-comments"></i> Datos del Mensaje
+        </f:facet>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-md-12 ui-lg-12">
+				<p:outputLabel value="Asunto (*)" styleClass="dsLabel1"/>
+				<p:inputText type="text" styleClass="dsInput1" value="#{mbrevisionmanual.oERevisionSolicitudData.descripcionAsunto}" autocomplete="off" maxlength="250"></p:inputText>
+			</div>
+
+			<div class="ui-g-12 ui-md-12 ui-lg-12">
+				<p:outputLabel value="Mensaje (*)" styleClass="dsLabel1"/>
+				<p:inputTextarea type="text" styleClass="dsInput1" value="#{mbrevisionmanual.oERevisionSolicitudData.descripcionMensaje}" autocomplete="off" maxlength="9999"></p:inputTextarea>
+			</div>
+		</div>
+	</p:panel>
+	</div>
+	</div>
+	
+	<div class="ui-g ui-fluid dsCuadrarCentro">
+		<p:commandButton styleClass="dsBoton1 tamanio1 secundario" value="Volver" icon="fa fa-arrow-left" onclick="PF('dlgSalir').show()" rendered="#{mbrevisionmanual.indicadorSalir eq '1' ? true : false}"></p:commandButton>
+		<p:commandButton styleClass="dsBoton1 tamanio1 principal" value="Evaluado" icon="fa fa-arrow-right" iconPos="right" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbrevisionmanual.obtenerEstado(3)}" update=":frmDlgMensajeValidacion, :frmDlgMensajeOperacion" rendered="#{mbrevisionmanual.oEOpcionLoad.indicadorCerrar eq '1' ? true : false}"></p:commandButton>
+		<p:commandButton styleClass="dsBoton1 tamanio1 principal" value="Observado" icon="fa fa-arrow-right" iconPos="right" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbrevisionmanual.obtenerEstado(2)}" update=":frmDlgMensajeValidacion" rendered="#{mbrevisionmanual.oEOpcionLoad.indicadorReenviar eq '1' ? true : false}"></p:commandButton>
+		<p:commandButton styleClass="dsBoton1 tamanio3 principal" value="Desaprobado" icon="fa fa-arrow-right" iconPos="right" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();"  actionListener="#{mbrevisionmanual.obtenerEstado(4)}" update=":frmDlgMensajeValidacion, :frmDlgDescartar" rendered="#{mbrevisionmanual.oEOpcionLoad.indicadorDescartar eq '1' ? true : false}"></p:commandButton>
+		<p:commandButton styleClass="dsBoton1 tamanio1 principal" value="Guardar" icon="fa fa-save" iconPos="right" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbrevisionmanual.obtenerEstado(6)}" update=":frmDlgMensajeValidacion, :frmDlgMensajeOperacion" rendered="#{mbrevisionmanual.indicadorGuardar eq '1' ? true : false}"></p:commandButton>
+	</div>
+	</h:form>
+
+	<p:dialog widgetVar="dlgBuscarPersona" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">
+	<h:form id="frmDlgBuscarPersona">
+		<div class="dsDlgBuscarPersona dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Buscar"/>
+				</div>
+	 			<div class="dlgDerecha">
+	 				<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgBuscarPersona').hide();"><i class="fas fa-times"></i></p:commandLink>
+	 			</div>		
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-3 ui-lg-3">
+					<p:outputLabel value="Tipo Persona" styleClass="dsLabel1"/>
+					<p:selectOneMenu value="#{mbrevisionmanual.codigoTipoClientePersonaBuscar}">
+						<p:ajax event="change" onstart="PF('blkDlgBuscarPersona').show();" onsuccess="PF('blkDlgBuscarPersona').hide();" listener="#{mbrevisionmanual.buscarPersona()}" update="tblPersona"/>
+		            	<f:selectItem itemLabel="Socio" itemValue="1" />
+		            	<f:selectItem itemLabel="Postulante" itemValue="4" />
+		            	<f:selectItem itemLabel="Tercero" itemValue="3" />
+		            </p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-3 ui-lg-3">
+					<p:outputLabel value="Código" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbrevisionmanual.codigoPersonaBuscar}" autocomplete="off" maxlength="12" onkeypress="if (event.keyCode == 13) { onchange(); return false; }">
+						<p:ajax event="change" onstart="PF('blkDlgBuscarPersona').show();" onsuccess="PF('blkDlgBuscarPersona').hide();" listener="#{mbrevisionmanual.buscarPersona()}" update="tblPersona"/>
+					</p:inputText>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<p:outputLabel value="Nombre" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbrevisionmanual.nombrePersonaBuscar}" autocomplete="off" maxlength="50" onkeypress="if (event.keyCode == 13) { onchange(); return false; }">
+						<p:ajax event="change" onstart="PF('blkDlgBuscarPersona').show();" onsuccess="PF('blkDlgBuscarPersona').hide();" listener="#{mbrevisionmanual.buscarPersona()}" update="tblPersona"/>
+					</p:inputText>
+				</div>
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:dataTable id="tblPersona" value="#{mbrevisionmanual.lstPersona}" var="item" styleClass="dsTabla1" paginator="true" rows="10" paginatorPosition="bottom" selectionMode="single"
+								 selection="#{mbrevisionmanual.oEPersonaSelected}" rowKey="#{item.codigo}" reflow="true">
+						<p:ajax event="rowDblselect" listener="#{mbrevisionmanual.asignarPersona()}" update=":form:txtNombrePersona" oncomplete="PF('dlgBuscarPersona').hide()"/>
+						<p:column headerText="Código" styleClass="dsTextoCentro">
+							<h:outputText value="#{item.codigo}"/>
+						</p:column>
+						<p:column headerText="Nombre">
+							<h:outputText value="#{item.nombre}"/>
+						</p:column>
+					</p:dataTable>
+				</div>
+			</div>
+		</div>
+	</h:form>
+	<p:blockUI block="frmDlgBuscarPersona" widgetVar="blkDlgBuscarPersona"></p:blockUI>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgBuscarUsuarioEmisor" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">
+	<h:form id="frmDlgBuscarUsuarioEmisor">
+		<div class="dsDlgBuscarUsuarioEmisor dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Buscar"/>
+				</div>
+	 			<div class="dlgDerecha">
+	 				<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgBuscarUsuarioEmisor').hide();"><i class="fas fa-times"></i></p:commandLink>
+	 			</div>	
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:outputLabel value="Nombre" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbrevisionmanual.nombreEmisorBuscar}" autocomplete="off" maxlength="50" onkeypress="if (event.keyCode == 13) { onchange(); return false; }">
+						<p:ajax event="change" onstart="PF('blkDlgBuscarUsuarioEmisor').show();" onsuccess="PF('blkDlgBuscarUsuarioEmisor').hide();" listener="#{mbrevisionmanual.filtrarUsuarioEmisor()}" update="tblUsuarioEmisor"/>
+					</p:inputText>
+				</div>
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:dataTable id="tblUsuarioEmisor" value="#{mbrevisionmanual.lstUsuarioEmisorFiltro}" var="item" styleClass="dsTabla1" paginator="true" rows="10" paginatorPosition="bottom" selectionMode="single"
+								 selection="#{mbrevisionmanual.oEEmisorSelected}" rowKey="#{item.codigo2}" reflow="false">
+						<p:ajax event="rowDblselect" listener="#{mbrevisionmanual.asignarUsuarioEmisor()}" update=":form:txtDescripcionEmisor" oncomplete="PF('dlgBuscarUsuarioEmisor').hide()"/>
+						<p:column headerText="Código" styleClass="dsTextoCentro" visible="false">
+							<h:outputText value="#{item.codigo2}"/>
+						</p:column>
+						<p:column headerText="Nombre" styleClass="dsTextoCentro" visible="true">
+							<h:outputText value="#{item.descripcion}"/>
+						</p:column>
+					</p:dataTable>
+				</div>
+			</div>
+		</div>
+	</h:form>
+	<p:blockUI block="frmDlgBuscarUsuarioEmisor" widgetVar="blkDlgBuscarUsuarioEmisor"></p:blockUI>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgEnviarDigitalizacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgEnviarDigitalizacion">
+		<div class="dsDlgEnviarDigitalizacion dsDialogo4">
+	 		<div class="cabecera">
+	 			<div class="dlgIzquierda">
+	 				<p:outputLabel styleClass="dsLabel2" value="Enviar Digitalización"/>
+	 			</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="mensaje">
+					<p:outputLabel value="¿Deseas enviar a Digitalización?" styleClass="dsLabel3"/>
+				</div>
+				<div class="ui-g-12 ui-md-12 ui-lg-12">					
+					<p:selectOneMenu value="#{mbrevisionmanual.indicadorDigitalizacion}">
+						<p:ajax event="change" listener="#{mbrevisionmanual.obtenerDigitalizacion()}" update="frmDlgEnviarDigitalizacion"/>
+		            	<f:selectItem itemLabel="No" itemValue="0" />
+		            	<f:selectItem itemLabel="Si" itemValue="1" />
+		            </p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:outputLabel for="txtMensajeDigitalizacion" value="Descripción" styleClass="dsLabel1" rendered="#{mbrevisionmanual.visualizarDescripcionMensajeDigitalizacion}"/>
+					<p:inputTextarea type="text" id="txtMensajeDigitalizacion" styleClass="dsInput1" value="#{mbrevisionmanual.oERevisionSolicitudData.descripcionMensajeDigitalizacion}" autocomplete="off" maxlength="500" counter="display" counterTemplate="{0} Caracteres Restantes." required="true" rendered="#{mbrevisionmanual.visualizarDescripcionMensajeDigitalizacion}"></p:inputTextarea>
+					<p:outputLabel id="display" styleClass="dsLabel1"/>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgEnviarDigitalizacion').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgPreload').show();" oncomplete="validarDlg(xhr, status, args, 'dlgEnviarDigitalizacion'); PF('dlgPreload').hide();" action="#{mbrevisionmanual.guardar()}" update=":frmDlgEnviarDigitalizacion, :frmDlgMensajeOperacion"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgDescartar" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgDescartar">
+		<div class="dsDlgDescartar dsDialogo4">
+	 		<div class="cabecera">
+	 			<div class="dlgIzquierda">
+	 				<p:outputLabel styleClass="dsLabel2" value="Desaprobar Solicitud"/>
+	 			</div>
+	 			<div class="dlgDerecha">
+	 				<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgDescartar').hide();"><i class="fas fa-times"></i></p:commandLink>
+	 			</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:outputLabel value="Motivo" styleClass="dsLabel1"/>
+					<p:selectOneMenu value="#{mbrevisionmanual.oERevisionSolicitudData.codigoMotivo}">
+						<p:ajax event="change" listener="#{mbrevisionmanual.obtenerMotivo()}" update="frmDlgDescartar"/>
+						<f:selectItems value="#{mbrevisionmanual.lstMotivo}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:outputLabel for="txtDescripcionMotivo" value="Descripción" styleClass="dsLabel1" rendered="#{mbrevisionmanual.visualizarDescripcionMotivo}"/>
+					<p:inputText type="text" id="txtDescripcionMotivo" styleClass="dsInput1" value="#{mbrevisionmanual.oERevisionSolicitudData.descripcionAdicionalMotivo}" autocomplete="off" maxlength="30" required="true" rendered="#{mbrevisionmanual.visualizarDescripcionMotivo}"></p:inputText>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgDescartar').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgPreload').show();" oncomplete="validarDlg(xhr, status, args, 'dlgDescartar'); PF('dlgPreload').hide();" action="#{mbrevisionmanual.guardar()}" update=":frmDlgDescartar, :frmDlgMensajeOperacion"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgSalir" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgSalir">
+		<div class="dsDlgSalir dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Salir"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="¿Estas seguro que deseas salir?" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgSalir').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgSalir').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbrevisionmanual.salir()}"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgMensajeValidacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgMensajeValidacion">
+		<div class="dsDlgMensajeValidacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Validación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mbrevisionmanual.mensajeValidacion}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" onclick="PF('dlgMensajeValidacion').hide();"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgMensajeOperacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgMensajeOperacion">
+		<div class="dsDlgMensajeOperacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Operación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mbrevisionmanual.oEMensaje.descMensaje}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@this" onclick="PF('dlgMensajeOperacion').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbrevisionmanual.salir()}"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+</f:view>
+</ui:define>
+</ui:composition>

@@ -1,0 +1,1070 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  template="/pagina/maestra.xhtml">
+<ui:define name="contenido">
+<h:head>
+</h:head>
+<f:view>
+	<h:form id="form" enctype="multipart/form-data">
+	
+	<div class="ui-g ui-fluid">
+		<div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad">
+	        <div class="dsCuadrarCentroInicio tituloIzquieda">
+				<h4><i class="fa fa-folder-open"></i> M&#243;dulo : Garantías <small> > Trámite de Garantias</small></h4>
+	        </div>
+	    </div>
+	    
+	    <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad dsCuadrarCentroFin">
+	    
+		<p:commandButton styleClass="dsBoton1 tamanio1 secundario" value="Volver" icon="fa fa-arrow-left" onclick="PF('dlgSalir').show();" rendered="true"></p:commandButton>
+		<p:commandButton styleClass="dsBoton1 tamanio3 secundario" value="Mantenimiento" icon="fa fa-arrow-right" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperaciontramitegarantia.redireccionarMantenimientoGarantia()}" ></p:commandButton>
+		<p:commandButton id="btnEnviar" styleClass="dsBoton1 tamanio4 principal" 
+		value="Grabar" process="@form"
+		icon="fa fa-arrow-right"  iconPos="right" 
+		action="#{mbregistrooperaciontramitegarantia.guardar()}"
+		onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+		update=":frmDlgMensajeOperacion">
+		</p:commandButton>
+	    </div>
+    </div>
+    <p:tabView id="tabView1" dynamic="true" widgetVar="tabs1" activeIndex="0">
+     <p:tab id="tab1-1" title="Trámite">
+        <div class="ui-g ui-fluid ui-g-nopad">
+        	<!--Cabecera Trámite Garantía-->
+	    	<div class="ui-g-12">
+		      <p:panel styleClass="dsPanel2" widgetVar="pnl1" toggleable="false" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px" >
+		       <f:facet name="header" >
+		            <i class="fas fa-comments"></i> Datos Generales de Garantía
+		        </f:facet>
+			        <div class="ui-g ui-fluid ui-g-nopad">
+			           <div class="ui-g-12 ui-md-3 ui-lg-3">
+							<p:outputLabel value="Nro de Garantía" styleClass="dsLabel1"/>
+							<p:inputText type="text" styleClass="dsInput1 dsTextoCentro" value="#{mbregistrooperaciontramitegarantia.oEGarantiaData.codigoGarantia}" disabled="true"></p:inputText>
+					   </div>
+					    <div class="ui-g-12 ui-md-6 ui-lg-6">	 
+							<p:outputLabel value="Socio" styleClass="dsLabel1"/>
+							<p:inputText  id="idDescripcionSocio" type="text" styleClass="dsInput1 dsTextoCentro" value="#{mbregistrooperaciontramitegarantia.oEGarantiaData.codigoCliente} #{mbregistrooperaciontramitegarantia.oEGarantiaData.nombreCorto}" disabled="true"></p:inputText>
+					   </div>
+					    <div class="ui-g-12 ui-md-3 ui-lg-3">
+							<p:outputLabel value="Tipo de Garantía" styleClass="dsLabel1"/>
+							<p:inputText type="text" styleClass="dsInput1 dsTextoCentro" value="#{mbregistrooperaciontramitegarantia.oEGarantiaData.descripcionTipoGarantia}" disabled="true"></p:inputText>
+					   </div>			 		
+		           </div>
+		      </p:panel>
+		    </div>
+		    <!--Panel Tramite de Garantía-->
+			<div class="ui-g-6">
+				 <p:panel styleClass="dsPanel2" widgetVar="pnl2" toggleable="false" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px" >
+			       <f:facet name="header" >
+			            <i class="fas fa-comments"></i> Trámite Garantía
+			        </f:facet>		        
+				        <div class="ui-g ui-fluid ui-g-nopad">
+				           <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Fecha Ini. Trámite" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.fechaIngreso}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>
+						   	<div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="F. Elaboración Contrato" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.fechaElaboracionContrato}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						    </div>
+						     <div class="ui-g-12 ui-md-6 ui-lg-6">
+								<p:outputLabel value="Eval. Doc." styleClass="dsLabel1"/>
+								<p:selectOneMenu  value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.evaluacionDocumento}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}">
+									<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstValorSiNo}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>					
+							    </p:selectOneMenu>
+						   	</div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="F. Firma Contrato" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.fechaFirmaContrato}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						    </div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="F. Ingreso Notaria" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.fechaIngresoNotaria}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						    </div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Hoja de Ingreso" styleClass="dsLabel1"/>
+								<p:inputNumber  styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.numeroHojaIngresoLegal}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" thousandSeparator="" minValue="0" maxValue="999999999"></p:inputNumber>
+						    </div>
+						    <div class="ui-g-12 ui-md-12 ui-lg-12">
+				           	   <p:outputLabel value="Responsable" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.usuarioElaboracionContrato}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" maxlength="10"></p:inputText>
+						    </div>
+						    <div class="ui-g-12 ui-md-12 ui-lg-12">
+								<div class="ui-g-11 ui-md-10 ui-lg-11 ui-g-nopad">		
+										<p:outputLabel value="Notario" styleClass="dsLabel1"/>
+										<p:inputText type="text" id="idDescripcionNotario" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.descripcionNotario}" disabled="true" autocomplete="off"></p:inputText>
+								</div>
+								<div class="ui-g-1 ui-md-2 ui-lg-1 ui-g-nopad">
+									<br />
+									<div class="dsCuadrarCentro">
+									     <p:commandLink styleClass="dsCmdlink1" onclick="PF('dlgPreload').show()" 
+												oncomplete="PF('dlgPreload').hide();"  actionListener="#{mbregistrooperaciontramitegarantia.buscarNotario()}" immediate="true"
+												update=":frmDlgBuscarNotario,:frmDlgBuscarNotario:tblNotario"><i class="fas fa-search"></i></p:commandLink>
+								    </div>
+								</div>
+						    </div>
+						    
+						    <div class="ui-g-12 ui-md-6 ui-lg-6" style="#{mbregistrooperaciontramitegarantia.indicadorLegalFirma ? 'display:block;' : 'display:none;'}">
+				           	   <p:outputLabel value="F. Legalización Firma" styleClass="dsLabel1" />
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.fechaLegalizacionFirma}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						    </div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Kardex:" styleClass="dsLabel1"/>
+								<p:inputNumber type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.numeroKardex}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" thousandSeparator="" minValue="0" maxValue="999999"></p:inputNumber>
+						    </div>		 		
+			           </div>          
+			      </p:panel>
+			</div>
+			<!--Panel Estado Registro / Hipoteca-->
+			<div class="ui-g-6">
+				 <p:panel styleClass="dsPanel2" widgetVar="pnl2" toggleable="false" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+			       <f:facet name="header" >
+			            <i class="fas fa-comments"></i> #{mbregistrooperaciontramitegarantia.deshabilitarHipoteca ? 'Estado Registro' : 'Hipoteca'}
+			        </f:facet>		        
+				        <div class="ui-g ui-fluid ui-g-nopad">
+				           <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Fecha Ing. Registro" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.fechaIngresoRegistro}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>
+						   <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Vigencia de Asiento" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.fechaVigenciaAsiento}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>
+						    <div class="ui-g-12 ui-md-12 ui-lg-12">
+				           	   <p:outputLabel value="Observacion Nro. 1" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.observacion1}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" maxlength="78"></p:inputText>
+						   </div>
+						    <div class="ui-g-12 ui-md-12 ui-lg-12">
+				           	   <p:outputLabel value="Observacion Nro. 2" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.observacion2}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" maxlength="78"></p:inputText>
+						   </div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Fecha Observación" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.fechaObservacion}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>
+						   <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Fecha de Tacha" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.fechaTacha}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>			  
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Fecha Inscripción" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.fechaInscripcion}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>
+						   <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Partida Electrónica" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.fichaInscripcion}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" maxlength="10"></p:inputText>
+						   </div>
+						   <div class="ui-g-12 ui-md-3 ui-lg-3">
+				           	   <p:outputLabel value="Tomo Diario" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.tomoInscripcion}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" maxlength="6"></p:inputText>
+						   </div>
+						   <div class="ui-g-12 ui-md-5 ui-lg-5">
+				           	   <p:outputLabel value="Título" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.tituloA}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" maxlength="20"></p:inputText>
+						   </div>
+						   <div class="ui-g-12 ui-md-4 ui-lg-4">
+				           	   <p:outputLabel value="Asiento" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.ciudadInscripcion}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" maxlength="30"></p:inputText>
+						   </div>	  	 		  	 		
+			           </div>          
+			      </p:panel>
+			</div>
+			<!--Panel Bloqueo Req. de Garantía-->
+			<div class="ui-g-12" style="#{mbregistrooperaciontramitegarantia.indicadorPnlBloqueoReq ? 'display:block;' : 'display:none;'}">
+				 <p:panel styleClass="dsPanel2" widgetVar="pnl2" toggleable="false" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px" rendered="#{mbregistrooperaciontramitegarantia.indicadorPnlBloqueoReq}">
+			       <f:facet name="header" >
+			            <i class="fas fa-comments"></i> Bloqueo Registral
+			        </f:facet>		        
+				        <div class="ui-g ui-fluid ui-g-nopad">
+				        	<div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad">
+				        		<div class="ui-g-4">
+					           	   <p:outputLabel value="Fecha Ing. Registro" styleClass="dsLabel1"/>
+									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.fechaIngresoRegistroB}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   		</div>
+							   <div class="ui-g-4">
+					           	   <p:outputLabel value="Vigencia de Asiento" styleClass="dsLabel1"/>
+									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.fechaVigenciaAsientoB}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+							   </div>
+							    <div class="ui-g-4">
+					           	   <p:outputLabel value="Fecha Observación" styleClass="dsLabel1"/>
+									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.fechaObservacionB}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+							   </div>
+				        	</div>
+				        	<div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad">
+				        		<div class="ui-g-6">
+					           	   <p:outputLabel value="Fecha de Tacha" styleClass="dsLabel1"/>
+									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.fechaTachaB}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   		</div>			  
+							    <div class="ui-g-6">
+					           	   <p:outputLabel value="Fecha Inscripción" styleClass="dsLabel1"/>
+									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.fechaInscripcionB}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+							   </div>
+				        	</div>
+						   <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Observacion Nro. 1" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.descripcionObservacionBloqueo1}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" maxlength="78"></p:inputText>
+						   </div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Observacion Nro. 2" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.descripcionObservacionBloqueo2}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" maxlength="78"></p:inputText>
+						   </div>
+						   
+						   <div class="ui-g-12 ui-md-4 ui-lg-3">
+				           	   <p:outputLabel value="Partida Electrónica" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.fichaInscripcionB}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" maxlength="10"></p:inputText>
+						   </div>
+						   <div class="ui-g-12 ui-md-4 ui-lg-3">
+				           	   <p:outputLabel value="Tomo Diario" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.tomoInscripcionB}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" maxlength="6"></p:inputText>
+						   </div>
+						   <div class="ui-g-12 ui-md-4 ui-lg-3">
+				           	   <p:outputLabel value="Título" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.tituloB}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" maxlength="20"></p:inputText>
+						   </div>
+						   <div class="ui-g-12 ui-md-4 ui-lg-3">
+				           	   <p:outputLabel value="Asiento" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteData.ciudadInscripcionB}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampo}" autocomplete="off" maxlength="30"></p:inputText>
+						   </div>	  	 		
+			           </div>          
+			      </p:panel>
+			</div>	
+        </div>
+		
+     </p:tab>
+      <p:tab id="tab1-2" title="Asientos">
+        <div class="ui-g ui-fluid ui-g-nopad">
+        	<!--Panel Asiento Tramite Garantia-->
+			<div class="ui-g-12">
+				<p:panel styleClass="dsPanel2" id="panelModifHipoteca" widgetVar="pnl13" toggleable="false" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+			        <f:facet name="header" >
+			            <i class="fa fa-table"></i> Modificación de Garantía 
+			             <p:commandButton id="btnGenerarAsiento" styleClass="dsBoton1 tamanio3 principal" 
+						    value="Nuevo Asiento" 
+							icon="fa fa-file-text"  iconPos="right" 
+							action="#{mbregistrooperaciontramitegarantia.generarNuevoAsientoTramite()}"
+							onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+							update=":form:tabView1:panelModifHipoteca,:form:tabView1:panelTramiteAsiento,:form:tabView1:panelBloqueoAsiento,:form:tabView1:panelHipotecaAsiento">
+						  </p:commandButton>
+						  <p:commandButton id="GuardarAsiento" styleClass="dsBoton1 tamanio3 green" 
+						    rendered="#{mbregistrooperaciontramitegarantia.indicadorBotonGrabarAsiento}"
+						    value="Grabar Asiento" 
+							icon="fa fa-file-text"  iconPos="right" 
+							action="#{mbregistrooperaciontramitegarantia.guardarAsientoTramite()}"
+							onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+							update=":form:tabView1:panelModifHipoteca,:form:tabView1:panelTramiteAsiento,:form:tabView1:panelBloqueoAsiento,:form:tabView1:panelHipotecaAsiento">
+						  </p:commandButton>
+						  	 <p:commandButton id="btnCancelar" styleClass="dsBoton1 tamanio3 alert" 
+						  	 rendered="#{mbregistrooperaciontramitegarantia.indicadorBotonCancelar}"
+						    value="Cancelar" 
+							icon="fa fa-arrow-right"  iconPos="right" 
+							action="#{mbregistrooperaciontramitegarantia.cancelarProcesoAsiento()}"
+							onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+							update=":form:tabView1:panelModifHipoteca,:form:tabView1:panelTramiteAsiento,:form:tabView1:panelBloqueoAsiento,:form:tabView1:panelHipotecaAsiento">
+						    </p:commandButton>
+						 
+			        </f:facet>
+					<p:dataTable value="#{mbregistrooperaciontramitegarantia.lstAsientoTramiteGarantia}" var="item" styleClass="dsTabla1" paginator="true" rows="3" paginatorPosition="bottom"
+								 rowKey="#{item.nroAsiento}" reflow="false">
+						<p:column headerText="N° Asiento" styleClass="dsTextoCentro">
+							<h:outputText value="Modificación #{item.nroAsiento}"/>
+						</p:column>
+						<p:column headerText="Responsable" styleClass="dsTextoCentro">
+							<h:outputText value="#{item.usuarioElaboracionContrato}"/>
+						</p:column>
+						<p:column headerText="Fecha Trámite" styleClass="dsTextoCentro" >
+							<h:outputText value="#{item.fechaIngreso}"/>
+						</p:column>
+						<p:column headerText="Notario" styleClass="dsTextoCentro" >
+							<h:outputText value="#{item.descripcionNotario}"/>
+						</p:column>
+						<p:column headerText="" style="width: 40px">
+							<p:commandButton styleClass="dsBoton5 green" icon="fa fa-search" title="Consultar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperaciontramitegarantia.visualizarGarantiaAsientoTramite(item)}"  update=":form:tabView1:panelModifHipoteca,:form:tabView1:panelTramiteAsiento,:form:tabView1:panelBloqueoAsiento,:form:tabView1:panelHipotecaAsiento">
+				     		</p:commandButton>
+	     				</p:column>
+					</p:dataTable>
+				</p:panel>
+			</div>
+        	
+		    <!--Panel Tramite de Garantía-->
+			<div class="ui-g-6">
+				 <p:panel styleClass="dsPanel2" id="panelTramiteAsiento" widgetVar="pnl10" toggleable="#{mbregistrooperaciontramitegarantia.tooglePanel}" toggleSpeed="500" closeSpeed="500" collapsed="#{mbregistrooperaciontramitegarantia.colapsarPanel}" style="margin-bottom:20px" >
+			       <f:facet name="header" >
+			            <i class="fas fa-comments"></i> Trámite Garantía
+			        </f:facet>		        
+				        <div class="ui-g ui-fluid ui-g-nopad">
+				           <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Fecha Ini. Trámite" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaIngreso}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>
+						   <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="F. Elaboración Contrato" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaElaboracionContrato}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>
+						   <div class="ui-g-12 ui-md-6 ui-lg-6">
+								<p:outputLabel value="Eval. Doc." styleClass="dsLabel1"/>
+								<p:selectOneMenu  value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.evaluacionDocumento}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}">
+									<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstValorSiNo}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>					
+							    </p:selectOneMenu>
+						   	</div>
+						   
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="F. Firma Contrato" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaFirmaContrato}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						    </div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="F. Ingreso Notaria" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaIngresoNotaria}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						    </div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Hoja de Ingreso" styleClass="dsLabel1"/>
+								<p:inputNumber  styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.numeroHojaIngresoLegal}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" thousandSeparator="" minValue="0" maxValue="999999999"></p:inputNumber>
+						    </div>
+						    <div class="ui-g-12 ui-md-12 ui-lg-12">
+				           	   <p:outputLabel value="Responsable" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.usuarioElaboracionContrato}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" maxlength="10"></p:inputText>
+						    </div>
+						    <div class="ui-g-12 ui-md-12 ui-lg-12">
+								<div class="ui-g-11 ui-md-10 ui-lg-11 ui-g-nopad">		
+										<p:outputLabel value="Notario" styleClass="dsLabel1"/>
+										<p:inputText type="text" id="idDescripcionNotarioA" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.descripcionNotario}" disabled="true" autocomplete="off"></p:inputText>
+								</div>
+								<div class="ui-g-1 ui-md-2 ui-lg-1 ui-g-nopad">
+									<br />
+									<div class="dsCuadrarCentro">
+									     <p:commandLink styleClass="dsCmdlink1" onclick="PF('dlgPreload').show()" 
+												oncomplete="PF('dlgPreload').hide();"  actionListener="#{mbregistrooperaciontramitegarantia.buscarNotarioAsiento()}" immediate="true"
+												update=":frmDlgBuscarNotario"><i class="fas fa-search"></i></p:commandLink>
+								    </div>
+								</div>
+						    </div>
+						    
+						    <div class="ui-g-12 ui-md-6 ui-lg-6" style="#{mbregistrooperaciontramitegarantia.indicadorLegalFirma ? 'display:block;' : 'display:none;'}">
+				           	   <p:outputLabel value="F. Legalización Firma" styleClass="dsLabel1" />
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaLegalizacionFirma}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						    </div>
+						     <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Kardex:" styleClass="dsLabel1"/>
+								<p:inputNumber type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.numeroKardex}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" thousandSeparator="" minValue="0" maxValue="999999"></p:inputNumber>
+						    </div>		 		
+			           </div>          
+			      </p:panel>
+			</div>
+			<!--Panel Estado Registro / Hipoteca-->
+			<div class="ui-g-6">
+				 <p:panel styleClass="dsPanel2" id="panelHipotecaAsiento" widgetVar="pnl11" toggleable="#{mbregistrooperaciontramitegarantia.tooglePanel}" toggleSpeed="500" closeSpeed="500" collapsed="#{mbregistrooperaciontramitegarantia.colapsarPanel}" style="margin-bottom:20px">
+			       <f:facet name="header" >
+			            <i class="fas fa-comments"></i> #{mbregistrooperaciontramitegarantia.deshabilitarHipoteca ? 'Estado Registro' : 'Hipoteca'}
+			        </f:facet>		        
+				        <div class="ui-g ui-fluid ui-g-nopad">
+				           <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Fecha Ing. Registro" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaIngresoRegistro}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>
+						   <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Vigencia de Asiento" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaVigenciaAsiento}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>
+						    <div class="ui-g-12 ui-md-12 ui-lg-12">
+				           	   <p:outputLabel value="Observacion Nro. 1" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.observacion1}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" maxlength="78"></p:inputText>
+						   </div>
+						    <div class="ui-g-12 ui-md-12 ui-lg-12">
+				           	   <p:outputLabel value="Observacion Nro. 2" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.observacion2}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" maxlength="78"></p:inputText>
+						   </div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Fecha Observación" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaObservacion}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>
+						   <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Fecha de Tacha" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaTacha}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>			  
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="F. Inscripción" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaInscripcion}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>
+						   <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Ficha Inscripcion/ Partida Registral " styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fichaInscripcion}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" maxlength="10"></p:inputText>
+						   </div>
+						   <div class="ui-g-12 ui-md-3 ui-lg-3">
+				           	   <p:outputLabel value="Tomo Inscripcion" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.tomoInscripcion}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" maxlength="6"></p:inputText>
+						   </div>
+						   <div class="ui-g-12 ui-md-5 ui-lg-5">
+				           	   <p:outputLabel value="Título" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.tituloA}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" maxlength="20"></p:inputText>
+						   </div>
+						   <div class="ui-g-12 ui-md-4 ui-lg-4">
+				           	   <p:outputLabel value="Asiento" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.ciudadInscripcion}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" maxlength="30"></p:inputText>
+						   </div>	  	 		  	 		
+			           </div>          
+			      </p:panel>
+			</div>
+			<!--Panel Bloqueo Req. de Garantía-->
+			<div class="ui-g-12" style="#{mbregistrooperaciontramitegarantia.indicadorPnlBloqueoReq ? 'display:block;' : 'display:none;'}">
+				 <p:panel styleClass="dsPanel2" id="panelBloqueoAsiento" widgetVar="pnl12" toggleable="#{mbregistrooperaciontramitegarantia.tooglePanel}" toggleSpeed="500" closeSpeed="500" collapsed="#{mbregistrooperaciontramitegarantia.colapsarPanel}" style="margin-bottom:20px" rendered="#{mbregistrooperaciontramitegarantia.indicadorPnlBloqueoReq}">
+			       <f:facet name="header" >
+			            <i class="fas fa-comments"></i> Bloqueo Registral
+			        </f:facet>		        
+				        <div class="ui-g ui-fluid ui-g-nopad">
+				        	<div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad">
+				        		<div class="ui-g-4">
+					           	   <p:outputLabel value="Fecha Ing. Registro" styleClass="dsLabel1"/>
+									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaIngresoRegistroB}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+							   </div>
+							   <div class="ui-g-4">
+					           	   <p:outputLabel value="Vigencia de Asiento" styleClass="dsLabel1"/>
+									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaVigenciaAsientoB}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+							   </div>
+							   <div class="ui-g-4">
+					           	   <p:outputLabel value="Fecha Observación" styleClass="dsLabel1"/>
+									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaObservacionB}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+							   </div>
+				        	</div>
+				        	<div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad">
+				        		<div class="ui-g-6">
+					           	    <p:outputLabel value="Fecha de Tacha" styleClass="dsLabel1"/>
+									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaTachaB}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+							    </div>			  
+							    <div class="ui-g-6">
+					           	   <p:outputLabel value="F. Inscripción" styleClass="dsLabel1"/>
+									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaInscripcionB}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+							   </div>
+				        	</div>
+				         
+						   <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Observacion Nro. 1" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.descripcionObservacionBloqueo1}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" maxlength="78"></p:inputText>
+						   </div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Observacion Nro. 2" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.descripcionObservacionBloqueo2}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" maxlength="78"></p:inputText>
+						   </div>
+						    
+						
+						   <div class="ui-g-12 ui-md-3 ui-lg-3">
+				           	   <p:outputLabel value="Ficha Inscripcion / Partida Registral" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fichaInscripcionB}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" maxlength="10"></p:inputText>
+						   </div>
+						   <div class="ui-g-12 ui-md-3 ui-lg-3">
+				           	   <p:outputLabel value="Tomo Inscripcion" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.tomoInscripcionB}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" maxlength="6"></p:inputText>
+						   </div>
+						   <div class="ui-g-12 ui-md-3 ui-lg-3">
+				           	   <p:outputLabel value="Título" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.tituloB}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" maxlength="20"></p:inputText>
+						   </div>
+						   <div class="ui-g-12 ui-md-3 ui-lg-3">
+				           	   <p:outputLabel value="Asiento" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.ciudadInscripcionB}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" maxlength="30"></p:inputText>
+						   </div>	  	 		
+			           </div>          
+			      </p:panel>
+			</div>	
+        </div>
+		
+     </p:tab>
+     <p:tab id="tab1-3" title="Histórico">
+        <div class="ui-g ui-fluid ui-g-nopad">
+        	<!--Panel Historico Tramite Garantia-->
+			<div class="ui-g-12">
+				<p:panel styleClass="dsPanel2" widgetVar="pnl4" toggleable="true" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+			        <f:facet name="header" >
+			            <i class="fa fa-table"></i> Histórico Trámite Garantía
+			        </f:facet>
+					<p:dataTable value="#{mbregistrooperaciontramitegarantia.lstHistoricoTramiteGarantia}" var="item" styleClass="dsTabla1" paginator="true" rows="3" paginatorPosition="bottom"
+								 rowKey="#{item.secuenciaHistorica}" reflow="false">
+						<p:column headerText="N°" styleClass="dsTextoCentro">
+							<h:outputText value="#{item.secuenciaHistorica}"/>
+						</p:column>
+						<p:column headerText="Usuario" styleClass="dsTextoCentro" >
+							<h:outputText value="#{item.usuarioRegistro.nombreUsuarioSIAF}"/>
+						</p:column>
+						<p:column headerText="Fecha Modificación" styleClass="dsTextoCentro" >
+							<h:outputText value="#{item.fechaRegistro}"/>
+						</p:column>
+						<p:column headerText="Hora Modificación" styleClass="dsTextoCentro" >
+							<h:outputText value="#{item.horaRegistro}"/>
+						</p:column>
+						<p:column headerText="" style="width: 40px">
+							<p:commandButton styleClass="dsBoton5 green" icon="fa fa-search" title="Consultar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperaciontramitegarantia.visualizarGarantiaTramiteHistorico(item)}"  update="form:tabView1:frmPnlTramiteGarantia, form:tabView1:frmPnlEstadoRegistro,form:tabView1:frmPnlBloqueoRegistral">
+				     		</p:commandButton>
+	     				</p:column>
+					</p:dataTable>
+				</p:panel>
+			</div>
+			<!--Panel Tramite de Garantía Historico-->
+			<div class="ui-g-6">
+				 <p:panel styleClass="dsPanel2" widgetVar="pnl2" toggleable="false" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px" >
+			       <f:facet name="header" >
+			            <i class="fas fa-comments"></i> Trámite Garantía
+			        </f:facet>		
+			          <h:form id="frmPnlTramiteGarantia">   
+				        <div class="ui-g ui-fluid ui-g-nopad">
+				           <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Fecha Ini. Trámite" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaIngreso}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>
+						   	<div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="F. Elaboración Contrato" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaElaboracionContrato}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						    </div>
+						   <div class="ui-g-12 ui-md-6 ui-lg-6">
+								<p:outputLabel value="Eval. Doc." styleClass="dsLabel1"/>
+								<p:selectOneMenu  value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.evaluacionDocumento}" disabled="true">
+									<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstValorSiNo}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>					
+							    </p:selectOneMenu>
+						   	</div>
+						   
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="F. Firma Contrato" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaFirmaContrato}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						    </div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="F. Ingreso Notaria" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaIngresoNotaria}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						    </div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Hoja de Ingreso" styleClass="dsLabel1"/>
+								<p:inputNumber  styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.numeroHojaIngresoLegal}" disabled="true" autocomplete="off" thousandSeparator="" minValue="0" maxValue="999999999"></p:inputNumber>
+						    </div>
+						    <div class="ui-g-12 ui-md-12 ui-lg-12">
+				           	   <p:outputLabel value="Responsable" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.usuarioElaboracionContrato}" disabled="true" autocomplete="off" maxlength="10"></p:inputText>
+						    </div>
+						    <div class="ui-g-12 ui-md-12 ui-lg-12">	
+								<p:outputLabel value="Notario" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.descripcionNotario}" disabled="true" autocomplete="off"></p:inputText>
+					
+						    </div>			
+						    <div class="ui-g-12 ui-md-6 ui-lg-6" style="#{mbregistrooperaciontramitegarantia.indicadorLegalFirma ? 'display:block;' : 'display:none;'}">
+				           	   <p:outputLabel value="F. Legalización Firma" styleClass="dsLabel1" />
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaLegalizacionFirma}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						    </div>
+						     <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Kardex:" styleClass="dsLabel1"/>
+								<p:inputNumber type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.numeroKardex}" disabled="true" autocomplete="off" thousandSeparator="" minValue="0" maxValue="999999"></p:inputNumber>
+						    </div>		 		
+			           </div>      
+			           </h:form>    
+			      </p:panel>
+			</div>
+			<!--Panel Estado Registro / Hipoteca Historico-->
+			<div class="ui-g-6">
+				 <p:panel styleClass="dsPanel2" widgetVar="pnl2" toggleable="false" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+			       <f:facet name="header" >
+			            <i class="fas fa-comments"></i> #{mbregistrooperaciontramitegarantia.deshabilitarHipoteca ? 'Estado Registro' : 'Hipoteca'}
+			        </f:facet>	
+			        <h:form id="frmPnlEstadoRegistro">  	        
+				        <div class="ui-g ui-fluid ui-g-nopad">
+				           <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Fecha Ing. Registro" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaIngresoRegistro}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>
+						   <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Vigencia de Asiento" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaVigenciaAsiento}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>
+						    <div class="ui-g-12 ui-md-12 ui-lg-12">
+				           	   <p:outputLabel value="Observacion Nro. 1" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarObservacion1 ? 'dsLabel6': 'dsLabel1'}"/>
+								<p:inputText type="text" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarObservacion2 ? 'dsInput2': 'dsInput1'}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.observacion1}" disabled="true" autocomplete="off" maxlength="78"></p:inputText>
+						   </div>
+						    <div class="ui-g-12 ui-md-12 ui-lg-12">
+				           	   <p:outputLabel value="Observacion Nro. 2" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarObservacion2 ? 'dsLabel6': 'dsLabel1'}"/>
+								<p:inputText type="text" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarObservacion2 ? 'dsInput2': 'dsInput1'}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.observacion2}" disabled="true" autocomplete="off" maxlength="78"></p:inputText>
+						   </div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Fecha Observación" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaObservacion}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>
+						   <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Fecha de Tacha" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaTacha}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>			  
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="F. Inscripción" styleClass="dsLabel1"/>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaInscripcion}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   </div>
+						   <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Partida Electrónica" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fichaInscripcion}" disabled="true" autocomplete="off" maxlength="10"></p:inputText>
+						   </div>
+						   <div class="ui-g-12 ui-md-3 ui-lg-3">
+				           	   <p:outputLabel value="Tomo Diario" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.tomoInscripcion}" disabled="true" autocomplete="off" maxlength="6"></p:inputText>
+						   </div>
+						     <div class="ui-g-12 ui-md-5 ui-lg-5">
+				           	   <p:outputLabel value="Título" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.tituloA}" disabled="true" autocomplete="off" maxlength="20"></p:inputText>
+						   </div>
+						   <div class="ui-g-12 ui-md-4 ui-lg-4">
+				           	   <p:outputLabel value="Asiento" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.ciudadInscripcion}" disabled="true" autocomplete="off" maxlength="30"></p:inputText>
+						   </div>	  	 		  	 		
+			           </div>   
+			           </h:form>       
+			      </p:panel>
+			</div>
+			<!--Panel Bloqueo Req. de Garantía Historico-->
+			<div class="ui-g-12" style="#{mbregistrooperaciontramitegarantia.indicadorPnlBloqueoReq ? 'display:block;' : 'display:none;'}">
+				 <p:panel styleClass="dsPanel2" widgetVar="pnl2" toggleable="false" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px" rendered="#{mbregistrooperaciontramitegarantia.indicadorPnlBloqueoReq}">
+			       <f:facet name="header" >
+			            <i class="fas fa-comments"></i> Bloqueo Registral
+			        </f:facet>	
+			        <h:form id="frmPnlBloqueoRegistral">  	        
+				        <div class="ui-g ui-fluid ui-g-nopad">
+				        	<div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad">
+				        		<div class="ui-g-4">
+					           	   <p:outputLabel value="Fecha Ing. Registro" styleClass="dsLabel1"/>
+									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaIngresoRegistroB}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   		</div>
+							   <div class="ui-g-4">
+					           	   <p:outputLabel value="Vigencia de Asiento" styleClass="dsLabel1"/>
+									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaVigenciaAsientoB}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+							   </div>
+							    <div class="ui-g-4">
+					           	   <p:outputLabel value="Fecha Observación" styleClass="dsLabel1"/>
+								   <p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaObservacionB}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+							   </div>
+				        	</div>
+				        	<div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad">
+				        		<div class="ui-g-6">
+					           	   <p:outputLabel value="Fecha de Tacha" styleClass="dsLabel1"/>
+									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaTachaB}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+						   		</div>			  
+							    <div class="ui-g-6">
+					           	   <p:outputLabel value="Fecha Inscripción" styleClass="dsLabel1"/>
+								   <p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaInscripcionB}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+							   </div>
+				        	</div>
+						   <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Observacion Nro. 1" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.descripcionObservacionBloqueo1}" disabled="true" autocomplete="off" maxlength="78"></p:inputText>
+						   </div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-6">
+				           	   <p:outputLabel value="Observacion Nro. 2" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.descripcionObservacionBloqueo2}" disabled="true" autocomplete="off" maxlength="78"></p:inputText>
+						   </div>		  
+						   <div class="ui-g-12 ui-md-4 ui-lg-3">
+				           	   <p:outputLabel value="Partida Electrónica" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fichaInscripcionB}" disabled="true" autocomplete="off" maxlength="10"></p:inputText>
+						   </div>
+						   <div class="ui-g-12 ui-md-4 ui-lg-3">
+				           	   <p:outputLabel value="Tomo Diario" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.tomoInscripcionB}" disabled="true" autocomplete="off" maxlength="6"></p:inputText>
+						   </div>
+						    <div class="ui-g-12 ui-md-4 ui-lg-3">
+				           	   <p:outputLabel value="Título" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.tituloB}" disabled="true" autocomplete="off" maxlength="20"></p:inputText>
+						   </div>
+						   <div class="ui-g-12 ui-md-4 ui-lg-3">
+				           	   <p:outputLabel value="Asiento" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.ciudadInscripcionB}" disabled="true" autocomplete="off" maxlength="30"></p:inputText>
+						   </div>	  	 		
+			           </div>    
+			           </h:form>      
+			      </p:panel>
+			</div>	
+        </div>	
+     </p:tab>
+    
+    </p:tabView>
+	  	
+	</h:form>	
+
+
+	<p:dialog widgetVar="dlgSalir" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgSalir">
+		<div class="dsDlgSalir dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Salir"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="¿Estas seguro que deseas salir?" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgSalir').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgSalir').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperaciontramitegarantia.salir()}"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+
+	<p:dialog widgetVar="dlgBuscarNotario" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true"> 
+	<h:form id="frmDlgBuscarNotario">
+		<div class="dsDlgBuscarSocio dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Buscar Notario"/>
+					<p:commandLink styleClass="dsCmdlink4" title="Nuevo Notario" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperaciontramitegarantia.nuevoNotario}" update=":frmDlgMantenimientoNotario">
+						<i class="fas fa-user-plus"></i>
+					</p:commandLink>
+				</div>
+	 			<div class="dlgDerecha">
+	 				<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgBuscarNotario').hide();" >
+	 				<i class="fas fa-times"></i>
+	 			</p:commandLink>
+	 			</div>	
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<div class="ui-g-12 ui-md-6 ui-lg-4 ui-xl-4">
+						<p:outputLabel value="Tipo de Búsqueda" styleClass="dsLabel1"/>				
+					    <p:selectOneMenu value="#{mbregistrooperaciontramitegarantia.codigoBuscar}" >
+			            	<f:selectItem itemLabel="[Seleccione]" itemValue="0" />
+			            	<f:selectItem itemLabel="Código Socio" itemValue="1" />
+			            	<f:selectItem itemLabel="Nombre Socio" itemValue="2" />
+			            	<f:selectItem itemLabel="Número de Documento" itemValue="3" />
+		                </p:selectOneMenu>	
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-4 ui-xl-4"> 
+						<p:outputLabel value="Descripción" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.descripcionBuscar}" autocomplete="off" maxlength="50">
+						</p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-4">
+						<p:commandButton styleClass="dsBoton1 tamanio1 principal" value="Buscar" onclick="PF('blkDlgBuscarNotario').show();" 
+						oncomplete="PF('blkDlgBuscarNotario').hide();" action="#{mbregistrooperaciontramitegarantia.buscarSocio()}" 
+						update=":frmDlgBuscarNotario:tblNotario"></p:commandButton>
+					</div>
+				</div>
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:dataTable id="tblNotario" value="#{mbregistrooperaciontramitegarantia.lstNotario}" var="item" styleClass="dsTabla1" paginator="true" rows="3" paginatorPosition="bottom" selectionMode="single"
+						selection="#{mbregistrooperaciontramitegarantia.oETerceroSelected}"  rowKey="#{item.codigoCliente}" reflow="false" >
+						<p:ajax event="rowDblselect" listener="#{mbregistrooperaciontramitegarantia.asignarPersona()}" update="form:tabView1:idDescripcionNotario,form:tabView1:idDescripcionNotarioA" oncomplete="PF('dlgBuscarNotario').hide()"/> 
+						<p:column headerText="Código" styleClass="dsTextoCentro" visible="true" width="80px;">
+							<h:outputText value="#{item.codigoCliente}"/> 
+						</p:column>
+						<p:column headerText="Nombre" styleClass="dsTextoCentro" visible="true">
+						    <div class="dsTextoCorto">
+							   <h:outputText value="#{item.nombreLargo}"/> 
+						    </div>
+						</p:column>
+						<p:column headerText="Documento" styleClass="dsTextoCentro" visible="true">
+							   <h:outputText value="#{item.documento}"/>
+						</p:column>	
+						<p:column headerText="" style="width: 80px">
+							<p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Editar Notario" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperaciontramitegarantia.modificarNotario(item)}" update=":frmDlgMantenimientoNotario">
+								
+							</p:commandButton>
+				     	</p:column>	 			
+					</p:dataTable>
+				</div>
+			</div>
+		</div>
+	</h:form>
+	<p:blockUI block="frmDlgBuscarNotario" widgetVar="blkDlgBuscarNotario"></p:blockUI>
+	</p:dialog>
+
+	<p:dialog widgetVar="dlgMantenimientoNotario" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">
+	<h:form id="frmDlgMantenimientoNotario">
+		<div class="dsDlgMantenimientoNotario dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mantenimiento Notaría"/>
+				</div>
+	 			<div class="dlgDerecha">
+	 				<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgMantenimientoNotario').hide();"><i class="fas fa-times"></i></p:commandLink>
+	 			</div>	
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="ui-g ui-fluid contenido">
+				<h:panelGroup layout="block">
+					<div class="ui-g ui-fluid ui-g-nopad">
+						<div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+							<div class="ui-g-4">
+								<p:outputLabel  value="Código" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oETerceroData.codigoCliente}" autocomplete="off" disabled="true"></p:inputText>
+					   		</div>
+					   		<div class="ui-g-4">
+								<p:outputLabel  value="Tipo Doc." styleClass="dsLabel1"/>
+								<p:selectOneMenu value="#{mbregistrooperaciontramitegarantia.oETerceroData.codigoTipoDocumento}" >
+									<p:ajax event="change" listener="#{mbregistrooperaciontramitegarantia.validarDocumentoIdentidad()}" update="frmDlgMantenimientoNotario" />
+									<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstTipoDocumento}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+				            	</p:selectOneMenu>
+							</div>	
+							<div class="ui-g-4">
+								<p:outputLabel  value="Documento:" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oETerceroData.documento}" autocomplete="off" maxlength="11"></p:inputText>
+					   		</div>
+						</div>
+						<div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad"  style="#{mbregistrooperaciontramitegarantia.visualizarDatosPN ? 'display: block;' : 'display:none;'}">
+							<div class="ui-g-4">
+								<p:outputLabel  value="Ape. Paterno" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oETerceroData.apellidoPaterno}" autocomplete="off" maxlength="40"></p:inputText>
+					   		</div>
+					   		<div class="ui-g-4">
+								<p:outputLabel  value="Ape. Materno" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oETerceroData.apellidoMaterno}" autocomplete="off" maxlength="40"></p:inputText>
+					   		</div>
+					   		<div class="ui-g-4">
+								<p:outputLabel  value="Nombres" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oETerceroData. nombres}" autocomplete="off" maxlength="60"></p:inputText>
+					   		</div>
+						</div>
+
+						<div class="ui-g-12 ui-md-12 ui-lg-12 " style="#{mbregistrooperaciontramitegarantia.visualizarDatosPJ ? 'display: block;' : 'display:none;'}"> 	
+							<p:outputLabel  value="Nombres y Apellidos" styleClass="dsLabel1"/>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oETerceroData.nombreSuperLargo}" autocomplete="off" maxlength="140"></p:inputText>											
+					    </div>
+					    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+							<div class="ui-g-6">
+								<p:outputLabel  value="Dirección" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oETerceroData.direccion}" autocomplete="off" maxlength="50"></p:inputText>
+					   		</div>
+					   		<div class="ui-g-3">
+								<p:outputLabel  value="RUC" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oETerceroData.ruc}" autocomplete="off" maxlength="11"></p:inputText>
+					   		</div>
+					   		<div class="ui-g-3">
+								<p:outputLabel  value="Zona" styleClass="dsLabel1"/>
+								<p:selectOneMenu value="#{mbregistrooperaciontramitegarantia.oETerceroData.codigoZonaGeografica}">
+									<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstZonaGeografica}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					            </p:selectOneMenu>
+							</div>	
+					    </div>
+					   <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+							<div class="ui-g-4">
+								<p:outputLabel for="idDepartamento" value="Departamento" styleClass="dsLabel1"/>
+								<p:selectOneMenu id="idDepartamento" value="#{mbregistrooperaciontramitegarantia.codigoDepartamentoGarantia}">
+									<p:ajax event="change" listener="#{mbregistrooperaciontramitegarantia.obtenerDepartamentoGarantia()}" update="frmDlgMantenimientoNotario:cbProvincia" />
+									<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstDepartamentoGarantia}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					            </p:selectOneMenu>
+					            
+							</div>				
+							<div class="ui-g-4">
+								<p:outputLabel for="cbProvincia" value="Provincia" styleClass="dsLabel1"/>
+								<p:selectOneMenu id="cbProvincia" value="#{mbregistrooperaciontramitegarantia.codigoProvinciaGarantia}" >
+									<p:ajax event="change" listener="#{mbregistrooperaciontramitegarantia.obtenerProvinciaGarantia()}" update="frmDlgMantenimientoNotario:cbDistrito" />
+									<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstProvinciaGarantia}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					            </p:selectOneMenu>
+					            
+							</div>					
+							<div class="ui-g-4">
+								<p:outputLabel for="cbDistrito" value="Distrito" styleClass="dsLabel1"/>
+								<p:selectOneMenu id="cbDistrito" value="#{mbregistrooperaciontramitegarantia.codigoDistritoGarantia}">
+									<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstDistritoGarantia}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					            </p:selectOneMenu>
+							</div>	
+						
+					    </div>
+					    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+							<div class="ui-g-4">
+								<p:outputLabel  value="Teléfono" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oETerceroData.telefono1}" autocomplete="off" maxlength="12"></p:inputText>
+					   		</div>
+					   		<div class="ui-g-4">
+								<p:outputLabel  value="Anexo" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oETerceroData.anexo}" autocomplete="off" maxlength="4"></p:inputText>
+					   		</div>
+					   		<div class="ui-g-4">
+								<p:outputLabel  value="Fax" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oETerceroData.fax}" autocomplete="off" maxlength="12"></p:inputText>
+					   		</div>
+					   		
+							
+						</div>
+						<div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+							<div class="ui-g-8">	
+								<p:outputLabel  value="Dirección Postal" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oETerceroData.direccionPostal}" autocomplete="off" maxlength="50"></p:inputText>											
+					   		</div>
+					   		<div class="ui-g-4">
+								<p:outputLabel  value="Zona Postal" styleClass="dsLabel1"/>
+								<p:selectOneMenu value="#{mbregistrooperaciontramitegarantia.oETerceroData.codigoZonaGeograficaPostal}">
+									<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstZonaGeografica}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					            </p:selectOneMenu>
+							</div>	
+						</div>
+					
+					    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+							<div class="ui-g-4">
+								<p:outputLabel for="idDepartamentoPostal" value="Departamento P." styleClass="dsLabel1"/>
+								<p:selectOneMenu id="idDepartamentoPostal" value="#{mbregistrooperaciontramitegarantia.codigoDepartamentoGarantiaPostal}">
+									<p:ajax event="change" listener="#{mbregistrooperaciontramitegarantia.obtenerDepartamentoGarantiaPostal()}" update="frmDlgMantenimientoNotario:cbProvinciaPostal" />
+									<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstDepartamentoGarantiaPostal}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					            </p:selectOneMenu>
+					            
+							</div>				
+							<div class="ui-g-4">
+								<p:outputLabel for="cbProvinciaPostal" value="Provincia P." styleClass="dsLabel1"/>
+								<p:selectOneMenu id="cbProvinciaPostal" value="#{mbregistrooperaciontramitegarantia.codigoProvinciaGarantiaPostal}" >
+									<p:ajax event="change" listener="#{mbregistrooperaciontramitegarantia.obtenerProvinciaGarantiaPostal()}" update="frmDlgMantenimientoNotario:cbDistritoPostal" />
+									<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstProvinciaGarantiaPostal}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					            </p:selectOneMenu>
+					            
+							</div>					
+							<div class="ui-g-4">
+								<p:outputLabel for="cbDistritoPostal" value="Distrito P." styleClass="dsLabel1"/>
+								<p:selectOneMenu id="cbDistritoPostal" value="#{mbregistrooperaciontramitegarantia.codigoDistritoGarantiaPostal}">
+									<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstDistritoGarantiaPostal}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					            </p:selectOneMenu>
+							</div>		
+						
+					    </div>
+					    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+							<div class="ui-g-6">	
+								<p:outputLabel  value="Correo Electrónico 1" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oETerceroData.email1}" autocomplete="off" maxlength="40"></p:inputText>											
+					   		</div>
+					   		<div class="ui-g-6">	
+								<p:outputLabel  value="Correo Electrónico 2" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oETerceroData.email2}" autocomplete="off" maxlength="40"></p:inputText>											
+					   		</div>
+						</div>
+						
+					    
+					   
+					    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+					    	<div class="ui-g-3">
+								<p:outputLabel  value="Proveedor" styleClass="dsLabel1"/>
+								<p:selectOneMenu value="#{mbregistrooperaciontramitegarantia.oETerceroData.tipoProveedor}">
+									<f:selectItem itemLabel="-Seleccione-" itemValue="-1" />
+									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstProveedor}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					            </p:selectOneMenu>
+							</div>	
+							<div class="ui-g-3">
+								<p:outputLabel  value="Aceptante" styleClass="dsLabel1"/>
+								<p:selectOneMenu value="#{mbregistrooperaciontramitegarantia.oETerceroData.tipoAceptante}">
+									<f:selectItem itemLabel="-Seleccione-" itemValue="-1" />
+									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstAceptante}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					            </p:selectOneMenu>
+							</div>	
+							<div class="ui-g-3">
+								<p:outputLabel  value="Comunidad" styleClass="dsLabel1"/>
+								<p:selectOneMenu value="#{mbregistrooperaciontramitegarantia.oETerceroData.codigoComunidad}">
+									<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstComunidad}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+					            </p:selectOneMenu>
+							</div>	
+							<div class="ui-g-3">
+								<p:outputLabel  value="Banca" styleClass="dsLabel1"/>
+								<p:selectOneMenu value="#{mbregistrooperaciontramitegarantia.oETerceroData.codigoBanca}">
+									<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstBancaUnidad}" var="lst" itemLabel="#{lst.nombreCorto}" itemValue="#{lst.codigo}"/>
+					            </p:selectOneMenu>
+							</div>	
+							
+								
+					    </div>
+
+ 						<div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+							<div class="ui-g-4">
+								<p:outputLabel  value="Clase Persona" styleClass="dsLabel1"/>
+								<p:selectOneMenu value="#{mbregistrooperaciontramitegarantia.oETerceroData.codigoTipoPersona}">
+								<p:ajax event="change" listener="#{mbregistrooperaciontramitegarantia.validarClasePersona()}" update="frmDlgMantenimientoNotario:pnlPersonaNatural" />
+									<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstClasePersona}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+					            </p:selectOneMenu>
+							</div>	
+							<h:panelGroup id="pnlPersonaNatural"  layout="block" style="#{mbregistrooperaciontramitegarantia.visualizarDatosPersonaNatural ? 'display:block;' : 'display:none'}">
+								 <div class="ui-g-8 ui-md-8 ui-lg-8 ui-g-nopad">
+								 	<div class="ui-g-6">
+										<p:outputLabel  value="Estado Civ." styleClass="dsLabel1"/>
+										<p:selectOneMenu value="#{mbregistrooperaciontramitegarantia.oETerceroData.codigoEstadoCivil}">
+											<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+											<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstEstadoCivil}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+							            </p:selectOneMenu>
+									</div>	
+									<div class="ui-g-6">
+										<p:outputLabel  value="Sexo" styleClass="dsLabel1"/>
+										<p:selectOneMenu value="#{mbregistrooperaciontramitegarantia.oETerceroData.codigoSexo}">
+											<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+											<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstSexo}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+							            </p:selectOneMenu>
+									</div>	
+								 </div>				
+							</h:panelGroup>
+							
+								
+					    </div>
+
+		           </div>
+						
+				</h:panelGroup>
+
+
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgMantenimientoNotario').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 tamanio4 principal" value="Grabar" onclick="PF('dlgPreload').hide();"
+				oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperaciontramitegarantia.grabarNotario()}">
+				</p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	<p:blockUI block="frmDlgMantenimientoNotario" widgetVar="blkDlgMantenimientoNotario"></p:blockUI>
+	</p:dialog>
+
+
+    <p:dialog widgetVar="dlgMensajeOperacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgMensajeOperacion">
+		<div class="dsDlgMensajeOperacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Operación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mbregistrooperaciontramitegarantia.oEMensaje.descMensaje}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@this" onclick="PF('dlgMensajeOperacion').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperaciontramitegarantia.salir()}"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+
+
+	<p:dialog widgetVar="dlgMensajeOperacionAjax" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgMensajeOperacionAjax">
+		<div class="dsDlgMensajeOperacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Operación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mbregistrooperaciontramitegarantia.oEMensaje.descMensaje}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@this" onclick="PF('dlgMensajeOperacionAjax').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperaciontramitegarantia.actualizar()}" update=":frmDlgBuscarNotario:tblNotario"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+
+</f:view>
+</ui:define>
+</ui:composition>

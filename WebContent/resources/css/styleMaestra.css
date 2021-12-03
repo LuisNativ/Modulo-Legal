@@ -1,0 +1,407 @@
+/**********************************************************************************************/
+/* Plantilla */
+/**********************************************************************************************/
+.header1 {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 5px;
+}
+
+.header2 {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	padding: 5px;
+}
+
+.header1 .iconoBienvenida {
+	color: #5f666c !important;
+	font-size: 13px !important;
+	padding-right: 5px;
+}
+
+.header1 .mensajeBienvenida {
+	display: flex;
+	flex-direction: column;
+	/*justify-content: center !important;*/
+}
+
+.header1 .mensajeBienvenida .texto1.ui-outputlabel {
+	color: #5f666c !important;
+	font-size: 12px !important;
+	font-family: latoregular !important;
+	font-weight: lighter !important;
+}
+
+.subheaderSide .texto1.ui-outputlabel {
+	color: #ffffff !important;
+	font-size: 12px !important;
+	font-family: latoregular !important;
+	font-weight: lighter !important;
+	text-shadow: none !important;
+}
+
+.footer .texto1 {
+	color: #5f666c !important;
+	font-size: 12px !important;
+	font-family: latoregular !important;
+	font-weight: lighter !important;
+	text-shadow: none !important;
+}
+
+.dsLogo {
+	width: 150px !important;
+	height: 40px !important;
+}
+/**********************************************************************************************/
+/* Dashboard grid CSS */
+/**********************************************************************************************/
+.grid-container {
+	display: grid;
+	grid-template-columns: 220px 1fr;
+	grid-template-rows: 95px 20px 1fr 50px;
+	grid-template-areas: "headerSide header" 
+						 "subheaderSide subheader"
+						 "sidenav main" "footer footer";
+	height: 100vh;
+	margin: 0px;
+}
+
+.headerSide {
+	grid-area: headerSide;
+	background-color: #ffffff;
+	display: flex;
+	align-items: center !important;
+	justify-content: center !important;
+}
+
+.header {
+	grid-area: header;
+	background-color: #ffffff;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	/*padding: 0 16px;*/
+}
+
+.subheaderSide {
+	grid-area: subheaderSide;
+	background-color: #045B33;
+	display: flex;
+	align-items: center !important;
+	justify-content: center !important;
+}
+
+.subheader {
+	grid-area: subheader;
+	background-color: #42c4dd;
+}
+
+.sidenav {
+	grid-area: sidenav;
+	background-color: #EDEEDF;
+	border-radius: none !important;
+	border: none !important;
+	outline: none !important;
+	box-shadow: none !important;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+
+	/*
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 220px;
+	position: fixed;
+	overflow-y: auto;
+	z-index: 2;
+	transform: translateX(-245px);
+	transition: left 0.3s;
+	*/
+}
+
+.main {
+	grid-area: main;
+	background-color: #fafbfd;
+	padding: 7px 15px 7px 15px;
+}
+
+.footer {
+	grid-area: footer;
+	background-color: #fafbfd;
+	display: flex;
+	flex-direction: column;
+	align-items: center !important;
+	justify-content: center !important;
+	/*padding: 0 16px;*/
+}
+
+@media ( min-width : 280px) and (max-width: 764px) {
+	.grid-container {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-areas: 'header' 'subheader' 'main' 'footer';
+		height: 100vh;
+	}
+	.sidenav {
+		display: none;
+	}
+	.headerSide {
+		display: none;
+	}
+	.subheaderSide {
+		display: none;
+	}
+}
+
+/*
+div: ui-panelmenu ui-widget mypanel
+	div: ui-panelmenu-panel iconoMenu
+		h3: ui-widget ui-panelmenu-header ui-state-default ui-state-active ui-corner-top
+			span: ui-icon ui-icon-triangle-1-s
+		div: ui-panelmenu-content ui-widget-content ui-helper-hidden
+			ul: ui-menu-list ui-helper-reset
+				li: ui-menuitem ui-widget ui-corner-all
+					a: ui-menuitem-link ui-corner-all iconoItem
+						span: ui-menuitem-text
+				li: ui-menuitem ui-widget ui-corner-all
+					a: ui-menuitem-link ui-corner-all iconoItem
+						span: ui-menuitem-text
+*/
+/* Menu */
+.dsPanelMenu1.ui-panelmenu, .dsPanelMenu1.ui-panelmenu .ui-panelmenu-panel{
+	/*background-color: #2d353c !important;
+	background: #2d353c !important;*/
+	background-color: #EDEEDF !important;
+	background: #EDEEDF !important;
+}
+
+.dsPanelMenu1.ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-header.ui-state-default{
+	/*background-color: #2d353c !important;
+	background: #2d353c !important;*/
+	background-color: #EDEEDF !important;
+	background: #EDEEDF !important;
+	border: none !important;
+	border-radius: 0px !important;
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+.dsPanelMenu1.ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-header.ui-state-default>a{
+	/*color: #a8acb1 !important;*/
+	color: rgba(0, 0, 0, .87) !important;
+	font-size: 12px !important;
+	font-family: latoregular !important;
+	font-weight: lighter !important;
+	text-shadow: none !important;
+	padding-left: 10px !important;
+}
+
+/* Seleccionar Menu*/
+.dsPanelMenu1.ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-header.ui-state-default.ui-state-active{
+	/*background-color: #1a95d5 !important;*/
+	/*background: #1a95d5 !important;*/
+	background-color: #e4e4e4 !important;
+	background: #e4e4e4 !important;
+}
+
+.dsPanelMenu1.ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-header.ui-state-default.ui-state-active>a{
+	/*color: #ffffff !important;*/
+}
+
+/* Hover Menu*/
+/*
+.dsPanelMenu1.ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-header.ui-state-default.ui-state-hover{
+	background-color: #5f666c !important;
+	background: #5f666c !important;
+	visibility: visible\9 !important;
+    opacity: 0.99 !important;
+    transition: background-color 0.3s;
+	
+}
+*/
+
+/* Menu Item*/
+.dsPanelMenu1.ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-content,
+.dsPanelMenu1.ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-content .ui-menu-list{
+	/*background-color: #1a2229 !important;
+	background: #1a2229 !important;*/
+	background-color: #EDEEDF !important;
+	background: #EDEEDF !important;
+	border: none !important;
+	border-radius: 0px !important;
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+/*
+.dsPanelMenu1.ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-content .ui-menu-list .ui-menuitem{
+}
+*/
+.dsPanelMenu1.ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-content .ui-menu-list .ui-menuitem .ui-menuitem-link{
+	/*border: none !important;*/
+	border-top: none !important;
+	border-right: none !important;
+	border-bottom: none !important;
+	border-left: 2px solid transparent !important;
+	border-radius: 0px !important;
+	outline: none !important;
+	box-shadow: none !important;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 30px !important;
+}
+
+.dsPanelMenu1.ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-content .ui-menu-list .ui-menuitem .ui-menuitem-link .ui-menuitem-text{
+	/*color: #a8acb1 !important;*/
+	color: rgba(0, 0, 0, .87) !important;
+	font-size: 12px !important;
+	font-family: latoregular !important;
+	font-weight: lighter !important;
+	text-shadow: none !important;
+	/*padding-left: 20px;*/
+}
+
+/*Hover Item*/
+.dsPanelMenu1.ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-content .ui-menu-list .ui-menuitem .ui-menuitem-link.ui-state-hover{
+	/*background: transparent !important;*/
+	background-color: rgba(255,255,255, .47) !important;
+	background: rgba(255,255,255, .47) !important;
+    -webkit-transition: background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	/*background: #5f666c !important;
+	visibility: visible\9 !important;
+	opacity: 0.99 !important;
+	transition: background-color 0.3s;
+	    
+	-webkit-transition-property: none;
+	-moz-transition-property: none;
+	-o-transition-property: none;
+	transition-property: none;*/
+}
+
+/*Seleccion Item*/
+.dsPanelMenu1.ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-content .ui-menu-list .ui-menuitem .ui-menuitem-link.dsItemSelecion{
+	/*border-left: 2px solid #42c4dd !important;*/
+	border-left: 2px solid #1a95d5 !important;
+	/*padding-left: 8px !important;*/
+}
+
+.dsPanelMenu1.ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-content .ui-menu-list .ui-menuitem .ui-menuitem-link.dsItemSelecion .ui-menuitem-text{
+	/*color: #42c4dd !important;*/
+	color: #1a95d5 !important;
+}
+
+/*Iconos Menu y MeniItem*/
+.dsPanelMenu1.ui-panelmenu .iconoMenu0.ui-panelmenu-panel .ui-panelmenu-header .ui-icon.ui-icon-triangle-1-e{
+	background-image: url(/AbacoInLegal/javax.faces.resource/images/angulolight5-abajo.png.xhtml);
+	background-position: 4px center !important;
+	background-size: 10px !important;
+	margin-left: 185px !important;
+}
+
+.dsPanelMenu1.ui-panelmenu .iconoMenu0.ui-panelmenu-panel .ui-panelmenu-header .ui-icon.ui-icon-triangle-1-s{
+	background-image: url(/AbacoInLegal/javax.faces.resource/images/angulolight5-derecha.png.xhtml);
+	background-position: 4px center !important;
+	background-size: 10px !important;
+	margin-left: 185px !important;
+}
+
+.dsPanelMenu1.ui-panelmenu .iconoMenu1.ui-panelmenu-panel .ui-panelmenu-header>a::before{
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+	content: "\f0e0";
+	margin-right: 8px !important;
+}
+
+.dsPanelMenu1.ui-panelmenu .iconoMenu2.ui-panelmenu-panel .ui-panelmenu-header>a::before{
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+	content: "\f013";
+	margin-right: 8px !important;
+}
+
+.dsPanelMenu1.ui-panelmenu .iconoMenu3.ui-panelmenu-panel .ui-panelmenu-header>a::before{
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+	content: "\f1fe";
+	margin-right: 8px !important;
+}
+
+.dsPanelMenu1.ui-panelmenu .iconoMenu4.ui-panelmenu-panel .ui-panelmenu-header>a::before{
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+	content: "\f07b";
+	margin-right: 8px !important;
+}
+
+.iconoItem1.ui-menuitem-link>span::before {
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+	/*content: "\f02e";*/
+	content: "\f22d";
+	margin-right: 8px !important;
+}
+
+
+/*Contenedor Menu*/
+.sidenav0 {
+	position: relative !important;
+	float: left !important;
+	overflow: hidden !important;
+}
+
+.contenedor-menu {
+	/*
+		display: inline-block !important;
+	    position: relative !important;
+	    float: left !important;
+	    height: 100% !important;
+	    width: calc(100% + 20px) !important;
+	    overflow-y: auto !important;
+	    */
+	/*AHM*/
+	/*
+		margin:0 !important;
+		padding: 0 !important;
+		*/
+	
+}
+
+/* ANGELO */
+.sidenav0:hover>.nano-pane, .nano-pane.active, .nano-pane.flashed {
+	visibility: visible\9;
+	opacity: 0.99;
+}
+
+.sidenav0>.nano-pane {
+	background: transparent;
+	position: absolute;
+	width: 10px;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	visibility: hidden\9;
+	opacity: .01;
+	-webkit-transition: .2s;
+	-moz-transition: .2s;
+	-o-transition: .2s;
+	transition: .2s;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.sidenav0>.nano-pane>.nano-slider {
+	background: rgba(255, 255, 255, 0.1);
+	height: 750px; 
+	transform: translate(0px, 6px);
+	position: relative;
+	margin: 0 1px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+}

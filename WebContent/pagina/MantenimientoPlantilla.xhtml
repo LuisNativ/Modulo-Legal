@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  template="/pagina/maestra.xhtml">
+<ui:define name="contenido">
+<h:head>
+<style>
+</style>
+</h:head>
+<f:view>
+	<h:form id="form" enctype="multipart/form-data">
+	
+	<div class="ui-g ui-fluid">
+        <div class="dsCuadrarCentroInicio tituloIzquieda">
+            <h4><i class="fa fa-folder-open"></i> M&#243;dulo : Configuración <small> > Mantenimiento Control de Versiones Documento</small></h4>
+        </div>
+        
+		<p:commandLink styleClass="dsCmdlink3" icon="fa fa-file-text" title="Agregar Documento" process="@form" action="#{mbmantenimientoplantilla.agregarDocumento()}" update=":frmDlgAgregarDocumentoControlVersion">
+			<h:graphicImage value="/resources/images/nuevo-doc.png" styleClass="pic" />
+		</p:commandLink>
+    </div>
+	
+	<p:panel widgetVar="pnl1" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+        <f:facet name="header" >
+            <i class="fa fa-table"></i> Lista de Documentos
+        </f:facet>
+		<p:dataTable id="tblDocumento" value="#{mbmantenimientoplantilla.lstDocumentoControlVersion}" var="item" styleClass="dsTabla3" paginator="true" rows="15" paginatorPosition="bottom"
+					 rowKey="#{item.codigoDocumento}" reflow="true" tableStyle="table-layout:auto">
+			<p:column headerText="Codigo" styleClass="dsTextoCentro">
+				<h:outputText value="#{item.codigoDocumento}"/>
+			</p:column>	 
+			<p:column headerText="Nombre" styleClass="dsTextoCentro">
+				<h:outputText value="#{item.nombreDocumento}"/>
+			</p:column>
+			<p:column headerText="" styleClass="dsTextoCentro">
+	     	</p:column>
+		</p:dataTable>
+	</p:panel>
+	
+	<p:remoteCommand name="listarDocumentoCargaMultiple" process="@this" action="#{mbmantenimientoplantilla.listarDocumentoCargaMultiple()}" update=":frmDlgAgregarDocumentoControlVersion:txtNombreDocumento"/>
+	</h:form>
+	
+	<p:dialog widgetVar="dlgAgregarDocumentoControlVersion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgAgregarDocumentoControlVersion">
+		<div class="dsDlgAgregarDocumentoControlVersion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Agregar Documento"/>
+				</div>
+	 			<div class="dlgDerecha">
+	 				<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgAgregarDocumentoControlVersion').hide();"><i class="fas fa-times"></i></p:commandLink>
+	 			</div>
+			</div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:outputLabel value="Tipo Evaluación" styleClass="dsLabel1"/>
+					<p:selectOneMenu value="#{mbmantenimientoplantilla.oEDocumentoControlVersionData.codigoTipoEvaluacion}">
+						<f:selectItems value="#{mbmantenimientoplantilla.lstTipoEvaluacion}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<div class="ui-g-9 ui-g-nopad">
+						<p:outputLabel value="Documento" styleClass="dsLabel1"/>
+						<p:inputText id="txtNombreDocumento" type="text" styleClass="dsInput1" value="#{mbmantenimientoplantilla.oEDocumentoControlVersionData.nombreDocumento}" disabled="true"></p:inputText>
+					</div>
+					<div class="ui-g-3 ui-g-nopad">
+					<p:fileUpload
+						value="#{mbmantenimientoplantilla.files}"
+						style="font-size:11px;"
+						styleClass="dsFileupload2"
+			       		sizeLimit="15728640"
+			       		allowTypes="/(\.|\/)(doc|docx)$/"
+						accept=".doc, .docx"
+						fileUploadListener="#{mbmantenimientoplantilla.agregarDocumentoCarga}"
+						mode="advanced"
+			       		auto="true" 
+			       		multiple="false"
+			       		dragDropSupport="true"
+			       		label="Adjuntar"
+			       		uploadLabel="Cargar"
+			       		cancelLabel="Cancelar"
+			       		invalidFileMessage="Tipo de archivo incorrecto, archivos permitidos jpg, png, jpeg"
+			       		invalidSizeMessage="Tamaño del archivo excede el límite de 15Mbs"
+			       		update="txtNombreDocumento"
+			       		oncomplete="invocaListarDocumentoCargaMultiple()"
+			       		previewWidth= "20">
+			       	</p:fileUpload>
+			       	</div>
+		       	</div>
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:outputLabel value="Observación" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbmantenimientoplantilla.oEDocumentoControlVersionData.observacionDocumento}"></p:inputText>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgAgregarDocumentoControlVersion').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Agregar" process="@form" onclick="PF('dlgAgregarDocumentoControlVersion').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbmantenimientoplantilla.guardarDocumento()}" update=":form:tblDocumento, :frmDlgMensajeOperacion"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgMensajeOperacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgMensajeOperacion">
+ 		<div class="dsDlgMensajeOperacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Operación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mbmantenimientoplantilla.oEMensaje.descMensaje}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" onclick="PF('dlgMensajeOperacion').hide();"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+</f:view>
+</ui:define>
+</ui:composition>

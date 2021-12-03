@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+<title><h:outputText value="Intranet Abaco"/></title>
+<style>
+*{
+	margin: 0px;
+}
+/**********************************************************************************************/
+/* Plantilla */
+/**********************************************************************************************/
+.main .texto1{
+	color: rgba(0,0,0,.87)!important;
+	
+	font-size: 13px !important;
+	font-family: latoregular !important;
+	font-weight: lighter !important;
+	text-shadow: none !important;
+}
+.footer .texto1{
+	color: #5f666c !important;
+	
+	font-size: 12px !important;
+	font-family: latoregular !important;
+	font-weight: lighter !important;
+	text-shadow: none !important;
+}
+.dsLogo{
+	width: 150px !important;
+	height: 40px !important;
+}
+/**********************************************************************************************/
+/* Dashboard grid CSS */
+/**********************************************************************************************/
+.grid-containerexp {
+	display: grid;
+	grid-template-columns: 220px 1fr;
+	grid-template-rows: 95px 20px 1fr 50px;
+	grid-template-areas:
+		"headerSide headerSide"
+		"subheader subheader"
+		"main main"
+		"footer footer";
+	height: 100vh;
+	margin: 0px;
+}
+.headerSide {
+	grid-area: headerSide;
+	background-color: #ffffff;
+ 
+	display: flex;
+	align-items: center !important;
+	justify-content: center !important;
+}
+.header {
+	grid-area: header;
+	background-color: #ffffff;
+	
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	/*padding: 0 16px;*/
+}
+.subheaderSide {
+	grid-area: subheaderSide;
+	background-color: #045B33;
+	 
+	display: flex;
+	align-items: center !important;
+	justify-content: center !important;
+}
+.subheader {
+	grid-area: subheader;
+	background-color: #63c9f1;
+}
+.main {
+	grid-area: main;
+	background-color: #fafbfd;
+	padding: 7px 15px 7px 15px;
+	
+	display: flex;
+	justify-content: center !important;
+}
+.footer {
+	grid-area: footer;
+	background-color: #fafbfd;
+	  
+	display: flex;
+	flex-direction: column;
+	align-items: center !important;
+	justify-content: center !important;
+}
+
+</style>
+<script>
+function cerrarVentana(){
+		window.close();
+}
+</script>
+</h:head>
+<f:view>
+	<f:metadata>
+	        <f:event type="preRenderView" listener="#{cerrarsession.cierraSesion()}"/>
+	</f:metadata>
+	<h:outputStylesheet library="css" name="all.min.css" />
+	<h:outputStylesheet library="css" name="style.css" />
+	<h:outputScript library="js" name="view.js" />
+	
+	<div class="grid-containerexp">		
+		<div class="header"></div>
+		
+		<div class="headerSide">
+			<h:graphicImage class="dsLogo" library="images" name="logonuevo2.png" width="100%" height="100%"/>
+		</div>
+	  
+		<div class="subheader"></div>
+	  
+		<div class="main">
+			<h:form id="frmExpired">
+			<div class="texto1">Su sesión ha finalizado.
+				<h:commandLink id="close" value="Salir" action="#{cerrarsession.salir()}"/>
+			</div>
+			</h:form>
+		</div>
+	  
+		<div class="footer">
+			<div class="texto1">® Cooperativa ABACO 2014. Todos los derechos reservados</div>
+			<div class="texto1">Av. Andrés Reyes 420,3er. Piso, San Isidro - Lima 27 PERU</div>
+			<div class="texto1">Tel.(511)611-1600 Fax (511) 611-1679</div>
+		</div>
+	</div>
+</f:view>
+</html>

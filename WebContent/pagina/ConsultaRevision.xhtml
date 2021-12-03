@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  template="/pagina/maestra.xhtml">
+<ui:define name="contenido">
+<h:head>
+</h:head>
+<f:view>
+	<h:form id="form" enctype="multipart/form-data">
+
+	<div class="ui-g ui-fluid">
+	<div class="ui-g-12 ui-md-12 ui-lg-12">
+	<div class="dsPaginaTitulo">
+        <div class="tituloIzquieda">
+            <h4><i class="fa fa-folder-open"></i> M&#243;dulo : Consultas <small> > Solicitud</small></h4>
+        </div>
+    </div>
+    </div>
+    </div>
+	
+	<div class="ui-g ui-fluid">
+	<div class="ui-g-12">
+	<p:panel id="pnl1" widgetVar="pnl1" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+        <f:facet name="header" >
+            <i class="fas fa-edit"></i> Datos de la Consulta
+        </f:facet>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-md-12 ui-lg-12">
+				<p:outputLabel value="Asunto" styleClass="dsLabel1"/>
+				<p:inputText type="text" styleClass="dsInput1" value="#{mbconsultarevision.oERevisionSolicitudLoad.descripcionAsunto}" disabled="#{mbconsultarevision.deshabilitar}"></p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+				<p:outputLabel value="Codigo de Solicitud" styleClass="dsLabel1"/>
+				<p:inputText type="text" styleClass="dsInput1" value="#{mbconsultarevision.oERevisionSolicitudLoad.codigoSolicitud}" disabled="#{mbconsultarevision.deshabilitar}"></p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+				<p:outputLabel value="Prioridad" styleClass="dsLabel1"/>
+				<p:selectOneMenu value="#{mbconsultarevision.oERevisionSolicitudLoad.codigoNivel}" disabled="#{mbconsultarevision.deshabilitar}">
+					<f:selectItems value="#{mbconsultarevision.lstNivel}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+				<p:outputLabel value="Estado" styleClass="dsLabel1"/>
+				<p:inputText type="text" styleClass="dsInput1" value="#{mbconsultarevision.oERevisionSolicitudLoad.descripcionEstado}" disabled="#{mbconsultarevision.deshabilitar}"></p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+				<p:outputLabel value="Tipo de Envío" styleClass="dsLabel1"/>
+	            <p:selectOneMenu value="#{mbconsultarevision.oERevisionSolicitudLoad.codigoTipoEnvio}" disabled="#{mbconsultarevision.deshabilitar}">
+	            	<f:selectItems value="#{mbconsultarevision.lstEnvio}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+				<p:outputLabel value="Destino" styleClass="dsLabel1"/>
+				<p:inputText type="text" styleClass="dsInput1" value="#{mbconsultarevision.oERevisionSolicitudLoad.descripcionReceptor}" disabled="#{mbconsultarevision.deshabilitar}"></p:inputText>
+			</div>	
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+				<p:outputLabel value="Persona Vinculada" styleClass="dsLabel1"/>
+				<p:selectOneMenu value="#{mbconsultarevision.oERevisionSolicitudLoad.codigoPersonaRelacion}" disabled="#{mbconsultarevision.deshabilitar}">
+					<f:selectItems value="#{mbconsultarevision.lstTipoPersonaRelacion}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				</p:selectOneMenu>
+			</div>
+			<h:panelGroup styleClass="ui-g-12 ui-md-6 ui-lg-3" layout="block" rendered="#{mbconsultarevision.visualizarNombrePersona}">
+				<p:outputLabel value="Nombre de Persona" styleClass="dsLabel1"/>
+				<p:inputText type="text" styleClass="dsInput1" value="#{mbconsultarevision.oERevisionSolicitudLoad.nombrePersona}" disabled="true"></p:inputText>
+			</h:panelGroup>
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+				<p:outputLabel value="Servicio" styleClass="dsLabel1"/>
+				<p:selectOneMenu value="#{mbconsultarevision.oERevisionSolicitudLoad.codigoServicio}" disabled="#{mbconsultarevision.deshabilitar}">
+					<f:selectItems value="#{mbconsultarevision.lstServicio}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+				<p:outputLabel value="Fecha Inicio" styleClass="dsLabel1"/>
+				<p:calendar value="#{mbconsultarevision.oERevisionSolicitudLoad.fechaInicio}" pattern="dd-MM-yyyy" disabled="#{mbconsultarevision.deshabilitar}"/>
+			</div>
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+				<p:outputLabel value="Fecha Fin" styleClass="dsLabel1"/>
+				<p:calendar value="#{mbconsultarevision.oERevisionSolicitudLoad.fechaFin}" pattern="dd-MM-yyyy" disabled="#{mbconsultarevision.deshabilitar}"/>
+			</div>
+		</div>
+	</p:panel>
+	</div>
+	
+	<div class="ui-g-12 ui-md-12 ui-lg-6">
+	<p:panel widgetVar="pnl2" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+        <f:facet name="header" >
+            <i class="fa fa-table"></i> Lista de Revisiones
+        </f:facet>
+		<p:dataTable id="tblRevisionMensaje" value="#{mbconsultarevision.lstRevisionMensaje}" var="item" styleClass="dsTabla1" paginator="true" rows="5" paginatorPosition="bottom" selectionMode="single"
+					 selection="#{mbconsultarevision.oERevisionMensajeSelected}" rowKey="#{item.codigoMensaje}" reflow="true">
+			<p:ajax event="rowSelect" listener="#{mbconsultarevision.filtrarDocumento()}" update=":form:tblRevisionDocumento"/>
+			<p:column headerText="N° Revisión" styleClass="dsTextoCentro">
+				<h:outputText value="#{item.codigoRevision}"/>
+			</p:column>
+			<p:column headerText="Descripción">
+				<h:outputText value="#{item.abreviacionMensaje}"/>
+			</p:column>
+			<p:column headerText="N° Documentos" styleClass="dsTextoCentro">
+				<h:outputText value="#{item.numeroDocumento}"/>
+			</p:column>
+			<p:column headerText="Usuario de Registro" styleClass="dsTextoCentro" >
+				<h:outputText value="#{item.descripcionUsuarioEnvio}"/>
+			</p:column>
+			<p:column headerText="Fecha Registro" styleClass="dsTextoCentro" >
+				<h:outputText value="#{item.fechaEnvio}"/>
+			</p:column>
+			<p:column headerText="Hora Registro" styleClass="dsTextoCentro" >
+				<h:outputText value="#{item.horaEnvio}"/>
+			</p:column>
+			<p:column headerText="" styleClass="dsTextoCentro">
+				<p:commandButton styleClass="dsBoton2" icon="fa fa-envelope" title="Ver" action="#{mbconsultarevision.visualizarMensaje(item.descripcionMensaje)}" update=":frmDlgDetalleMensaje">
+	     		</p:commandButton>
+	     	</p:column>
+		</p:dataTable>
+	</p:panel>
+	</div>
+	
+	<div class="ui-g-12 ui-md-12 ui-lg-6">
+	<p:panel widgetVar="pnl3" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+        <f:facet name="header" >
+            <i class="fa fa-table"></i> Lista de Documentos
+        </f:facet>
+		<p:dataTable id="tblRevisionDocumento" value="#{mbconsultarevision.lstRevisionDocumentoFiltro}" var="item" styleClass="dsTabla1" paginator="true" rows="5" paginatorPosition="bottom"
+					 rowKey="#{item.codigoDocumento}" reflow="true">
+			<p:column headerText="Nombre" styleClass="dsTextoCentro">
+				<h:outputText value="#{item.nombreDocumento}"/>
+			</p:column>
+			<p:column headerText="" styleClass="dsTextoCentro">
+				<p:commandButton styleClass="dsBoton2" icon="fa fa-download" title="Descargar" actionListener="#{mbconsultarevision.descargarDocumento(item)}" ajax="false" >
+      				<p:fileDownload value="#{mbconsultarevision.fileDownload}"/>
+      			</p:commandButton>
+			</p:column>
+		</p:dataTable>
+	</p:panel>
+	</div>
+	
+	<div class="ui-g-12 ui-md-12 ui-lg-6">
+	<p:panel widgetVar="pnl4" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+        <f:facet name="header" >
+            <i class="fa fa-table"></i> Lista de Tiempos
+        </f:facet>
+		<p:dataTable id="tblTiempo" value="#{mbconsultarevision.lstTiempo}" var="item" styleClass="dsTabla1" paginator="true" rows="10" paginatorPosition="bottom"
+					 rowKey="#{item.descripcionArea}" reflow="false">
+	        <p:column style="width:16px">
+	            <p:rowToggler />
+	        </p:column>
+			<p:column headerText="">
+				<h:outputText value="#{item.descripcionArea}"/>
+			</p:column>
+			<p:column headerText="Tiempo Efectivo" styleClass="dsTextoCentro">
+				<h:outputText value="#{item.tiempoTranscurridoActivoTotal}"/>
+			</p:column>
+			<p:column headerText="Tiempo General" styleClass="dsTextoCentro">
+				<h:outputText value="#{item.tiempoTranscurridoEnvioTotal}"/>
+			</p:column>
+			<p:rowExpansion>
+				<p:dataTable id="tblTiempoDetalle" value="#{item.lstRevisionSesion}" var="item2" styleClass="dsTabla4"
+							 rowKey="#{item2.descripcionUsuarioOrigen}" reflow="false">
+					<p:column style="width:16px">
+					</p:column>
+					<p:column styleClass="dsTextoCentro">
+						<h:outputText value="#{item2.descripcionUsuarioOrigen}"/>
+					</p:column>
+					<p:column styleClass="dsTextoCentro">
+					    <h:outputText value="#{item2.tiempoTranscurrido}"/>
+					</p:column>
+					<p:column styleClass="dsTextoCentro">
+					</p:column>
+				</p:dataTable>
+			</p:rowExpansion>
+		</p:dataTable>
+	</p:panel>
+	</div>
+	
+	<div class="ui-g-12">
+	<div class="ui-g ui-fluid dsCuadrarCentro">
+		<p:commandButton styleClass="dsBoton1 tamanio1 secundario" value="Volver" icon="fa fa-arrow-left" process="@form" onclick="PF('dlgPreload').show()" oncomplete="PF('dlgPreload').hide();" action="#{mbconsultarevision.salir()}"></p:commandButton>
+	</div>
+	</div>
+	</div>
+	</h:form>
+
+	<p:dialog widgetVar="dlgDetalleMensaje" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">
+	<h:form id="frmDlgDetalleMensaje">
+		<div class="dsDlgDetalleMensaje dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgDetalleMensaje').hide();"><i class="fas fa-arrow-left"></i></p:commandLink>
+					<p:outputLabel styleClass="dsLabel2" value="Detalle"/>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="dsScrollVertical1">
+					<p:inputTextarea type="text" styleClass="dsInput1 dsModelo3" value="#{mbconsultarevision.descripcionMensajeSeleccion}" disabled="true"></p:inputTextarea>
+				</div>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+</f:view>
+</ui:define>
+</ui:composition>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#pagina#sesion_expirada.xhtml"
+  PATH="/pagina/sesion_expirada.xhtml" SHAPE="32,2433,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pagina#sesion_expirada.xhtml:0" NAME="item"
+   PATH="/pagina/sesion_expirada.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="volverInicio::#pagina#login.xhtml"
+    NAME="output" PATH="/pagina/login.xhtml"
+    TARGET="rules:#pagina#login.xhtml" TITLE="volverInicio" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pagina#login.xhtml"
+  PATH="/pagina/login.xhtml" SHAPE="240,2785,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pagina#login.xhtml:0" NAME="item"
+   PATH="/pagina/login.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success::#pagina#fondo.xhtml" NAME="output"
+    PATH="/pagina/fondo.xhtml" TARGET="rules:#pagina#fondo.xhtml"
+    TITLE="success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pagina#fondo.xhtml"
+  PATH="/pagina/fondo.xhtml" SHAPE="544,3153,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:*" PATH="*" SHAPE="288,177,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:*:0" NAME="item" PATH="*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="cierraSesion::#pagina#sesion_expirada.xhtml"
+    NAME="output" PATH="/pagina/sesion_expirada.xhtml"
+    TARGET="rules:#pagina#sesion_expirada.xhtml" TITLE="cierraSesion" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+</PROCESS>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+<navigation-rule>
+	<from-view-id>*</from-view-id>
+	<navigation-case>
+		<from-outcome>cierraSesion</from-outcome>
+		<to-view-id>/pagina/sesion_expirada.xhtml</to-view-id>
+	</navigation-case>
+</navigation-rule>
+ 
+<navigation-rule>
+	<from-view-id>/pagina/sesion_expirada.xhtml</from-view-id>
+	<navigation-case>
+		<from-outcome>volverInicio</from-outcome>
+		<to-view-id>/pagina/login.xhtml</to-view-id>
+	</navigation-case>
+</navigation-rule>
+ 
+<navigation-rule>
+	<from-view-id>/pagina/login.xhtml</from-view-id>
+	<navigation-case>
+		<from-outcome>success</from-outcome>
+		<to-view-id>/pagina/fondo.xhtml</to-view-id>
+	</navigation-case>
+</navigation-rule>
+
+<application>
+	<locale-config>
+		<default-locale>en</default-locale>
+		<supported-locale>en</supported-locale>
+		<supported-locale>en_US</supported-locale>
+	</locale-config>
+	 
+	<resource-bundle>
+		<base-name>com.abaco.presentacion.properties.label</base-name>
+		<var>text</var>
+	</resource-bundle>
+</application>
+ 
+ <!--
+ <lifecycle>
+  <phase-listener>com.abaco.general.MultiPageMessagesSupport</phase-listener>
+ </lifecycle>
+ -->
+</faces-config>

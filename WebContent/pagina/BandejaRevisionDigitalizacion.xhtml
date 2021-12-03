@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  template="/pagina/maestra.xhtml">
+<ui:define name="contenido">
+<h:head>
+<style>
+</style>
+</h:head> 
+<f:view>
+	<h:form id="form">
+	<p:growl id="growl" autoUpdate="true" showDetail="true" sticky="false" />
+	
+	<div class="ui-g ui-fluid">
+	<div class="ui-g-12 ui-md-12 ui-lg-12">
+	<div class="dsPaginaTitulo">
+        <div class="tituloIzquieda">
+            <h4><i class="fa fa-folder-open"></i> M&#243;dulo : Mi Bandeja <small> > Consultas</small></h4>
+        </div>
+    </div>
+    </div>
+    </div>
+    
+	<p:panel widgetVar="pnl1" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+        <f:facet name="header" >
+            <i class="fa fa-table"></i> Lista de Consultas
+        </f:facet>
+		<p:dataTable id="tblRevision" value="#{mbbandejarevisiondigitalizacion.lstRevisionSolicitud}" var="item" styleClass="dsTabla3" paginator="true" rows="12" paginatorPosition="bottom"
+					 rowKey="#{item.codigoSolicitud}" reflow="true" tableStyle="table-layout:auto">
+			<p:column headerText="N°" styleClass="dsTextoCentro">
+				<h:outputText value="#{item.codigoSolicitud}"/>
+			</p:column>
+			<p:column headerText="Prioridad" styleClass="dsTextoCentro" priority="6">
+				<h:outputText value="#{item.descripcionNivel}"/>
+			</p:column>
+			<p:column headerText="Tipo Envío" styleClass="dsTextoCentro" priority="6">
+				<h:outputText value="#{item.descripcionTipoEnvio}"/>
+			</p:column>
+			<p:column headerText="Estado" styleClass="dsTextoCentro">
+				<h:outputText value="#{item.descripcionEstado}"
+				styleClass="#{item.codigoEstado eq 1 ? 'dsText2 purple'
+							:item.codigoEstado eq '2' ? 'dsText2 yellow'
+							:item.codigoEstado eq '3' ? 'dsText2 lightblue'
+							:item.codigoEstado eq '4' ? 'dsText2 brown'
+							:item.codigoEstado eq '5' ? 'dsText2 blue'
+							:item.codigoEstado eq '6' ? 'dsText2 green'
+							:item.codigoEstado eq '7' ? 'dsText2 red'
+							:item.codigoEstado eq '8' ? 'dsText2 pink'
+							:item.codigoEstado eq '9' ? 'dsText2 red'
+							:null}"/>
+				<h:outputText value="Nuevo"
+				styleClass="#{item.numeroRevision eq '0' and item.numeroMensaje eq '1' and item.codigoEstado eq '2' ? 'dsText1' : null}"
+				rendered="#{item.numeroRevision eq '0' and item.numeroMensaje eq '1' and item.codigoEstado eq '2' ? true : false}"/>
+			</p:column>
+			<p:column headerText="Asunto" styleClass="dsTextoCentro">
+				<h:outputText value="#{item.abreviacionAsunto}"/>
+			</p:column>
+			<p:column headerText="N° Revisiones" styleClass="dsTextoCentro" priority="6">
+				<h:outputText value="#{item.numeroRevision}"/>
+			</p:column>
+			<p:column headerText="Fecha Inicio" styleClass="dsTextoCentro" priority="6">
+				<h:outputText value="#{item.fechaInicio}"/>
+			</p:column>
+			<p:column headerText="Tiempo Transcurrido" priority="6">
+				<p:commandLink styleClass="#{item.diaTranscurrido eq '0' ? 'dsCmdlink8 color1'
+											:item.diaTranscurrido eq '1' ? 'dsCmdlink8 color1'
+											:item.diaTranscurrido eq '2' ? 'dsCmdlink8 color2'
+											:item.diaTranscurrido ge '3' ? 'dsCmdlink8 color3'
+											:null}">
+					<i class="far fa-clock"></i>
+				</p:commandLink>
+				<h:outputText value="#{item.tiempoTranscurrido}"/>
+			</p:column>
+			<p:column headerText="Área Emisor" styleClass="dsTextoCentro" priority="6">
+				<h:outputText value="#{item.descripcionAreaEmisor}"/>
+			</p:column>
+			<p:column headerText="Emisor" styleClass="dsTextoCentro" priority="6">
+				<h:outputText value="#{item.descripcionAbreviacionEmisor}"/>
+			</p:column>
+			<!--
+			<p:column headerText="Usuario Sesión" styleClass="dsTextoCentro">
+				<h:outputText value="#{item.descripcionUsuarioSesion}"/>
+			</p:column>
+			-->
+			<p:column headerText="" styleClass="dsTextoCentro">
+				<p:commandButton styleClass="dsBoton2" icon="fa fa-pencil" title="Revisar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbbandejarevisiondigitalizacion.modificar(item)}" update=":frmDlgMensajeOperacion"></p:commandButton>
+	     	</p:column>
+		</p:dataTable>
+	</p:panel>
+	
+	<p:remoteCommand name="listarSolicitud" immediate="true" process="@form" action="#{mbbandejarevisiondigitalizacion.listarSolicitud()}" update=":form:tblRevision"/>
+	<p:remoteCommand name="verificarSolicitudSesion" immediate="true" process="@this" action="#{mbbandejarevisiondigitalizacion.verificarSolicitudSesion()}"/>
+	</h:form>
+	
+	<p:dialog widgetVar="dlgDetalleSolicitud" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgDetalleSolicitud">
+		<div class="dsDlgDetalleSolicitud dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Detalle"/>
+				</div>
+	 			<div class="dlgDerecha">
+	 				<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgDetalleSolicitud').hide();"><i class="fas fa-times"></i></p:commandLink>
+	 			</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-3 ui-md-3 ui-lg-3">
+					<p:outputLabel value="Usuario Sesión:" styleClass="dsLabel1 titulo"/>
+				</div>
+				<div class="ui-g-9 ui-md-9 ui-lg-9">
+					<p:outputLabel value="#{mbbandejarevisiondigitalizacion.oERevisionSolicitudData.descripcionUsuarioSesion}" styleClass="dsLabel1"/>
+				</div>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgMensajeValidacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgMensajeValidacion">
+		<div class="dsDlgMensajeValidacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Validación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mbbandejarevisiondigitalizacion.mensajeValidacion}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" onclick="PF('dlgMensajeValidacion').hide();"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgMensajeOperacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgMensajeOperacion">
+ 		<div class="dsDlgMensajeOperacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Operación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mbbandejarevisiondigitalizacion.oEMensaje.descMensaje}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" onclick="PF('dlgMensajeOperacion').hide();"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+    <script type="text/javascript">
+		window.setInterval(invocaListarSolicitud, 120000);
+		window.setInterval(invocaVerificarSolicitudSesion, 60000);
+	</script>
+</f:view>
+</ui:define>
+</ui:composition>

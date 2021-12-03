@@ -1,0 +1,1960 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  template="/pagina/maestra.xhtml">
+<ui:define name="contenido">
+<h:head>
+</h:head>
+<f:view>
+	<h:form id="form" enctype="multipart/form-data">
+	
+	<div class="ui-g ui-fluid">
+		<div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad">
+	        <div class="dsCuadrarCentroInicio tituloIzquieda">
+				<h4><i class="fa fa-folder-open"></i> M&#243;dulo : Operaciones <small> > Informe Legal por Cliente</small></h4>
+	        </div>
+	    </div>
+	    
+		<div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad dsCuadrarCentroFin">
+			<p:commandButton styleClass="dsBoton1 tamanio1 secundario" value="Volver" icon="fa fa-arrow-left" onclick="PF('dlgSalir').show();" 
+			rendered="#{mbregistrooperacioncliente.visualizarBtnSalir eq '1' ? true : false}"/>
+			
+			<p:commandButton styleClass="dsBoton1 tamanio1 principal" value="Grabar" onclick="PF('dlgPreload').show();"
+			oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacioncliente.guardar()}"
+			update=":frmDlgMensajeValidacion, :frmDlgMensajeOperacion" rendered="#{mbregistrooperacioncliente.visualizarBtnGrabar}"/>
+		</div>
+    </div>
+    
+ 	<p:tabView id="tabView1" dynamic="true" widgetVar="tabs1" activeIndex="0">
+    <p:tab id="tab1-1" title="Cliente">
+    
+    <div class="ui-g ui-fluid ui-g-nopad">
+    
+    <div class="ui-g-6" style="#{mbregistrooperacioncliente.visualizarPnlContratante ? 'display:block;' : 'display:none'}">
+		<p:panel styleClass="dsPanel2" widgetVar="pnl10" toggleable="true" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+        <f:facet name="header" >
+            <i class="fas fa-comments"></i> Datos del Cliente
+        </f:facet>
+		<div class="ui-g ui-fluid ui-g-nopad">
+			<div class="ui-g-12 ui-md-12 ui-lg-6">
+				<p:outputLabel for="idNombre" value="Nombres" styleClass="dsLabel1"/>
+				<p:inputText type="text" id="idNombre" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.nombreLargo}" disabled="true"></p:inputText>
+			</div>
+			
+			<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
+			<div class="ui-g-6">
+				<p:outputLabel value="Tipo Doc." styleClass="dsLabel1"/>
+				<p:selectOneMenu value="#{mbregistrooperacioncliente.oEOperacionClienteData.codigoTipoDocumento}" required="true" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}">
+					<p:ajax event="change" update="@this"/>
+					<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+					<f:selectItems value="#{mbregistrooperacioncliente.lstDOI}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+				</p:selectOneMenu>
+			</div>
+				<div class="ui-g-6">
+					<p:outputLabel value="N° Doc." styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.numeroDocumento}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"></p:inputText>
+				</div>
+			</div>
+			
+			<!--
+			<div class="ui-g-4">
+				<p:outputLabel value="RUC" styleClass="dsLabel1"/>
+				<p:inputText type="text" styleClass="dsInput1"></p:inputText>
+			</div>
+			-->
+			
+			<div class="ui-g-12 ui-md-12 ui-lg-6">
+				<p:outputLabel value="Domicilio Real" styleClass="dsLabel1"/>
+				<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.direccionReal}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"></p:inputText>
+			</div>
+			
+			<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
+			<div class="ui-g-4">
+				<p:outputLabel value="Departamento" styleClass="dsLabel1"/>
+				<p:selectOneMenu value="#{mbregistrooperacioncliente.codigoDepartamentoReal}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}">
+					<p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerDepartamentoReal()}" update="cbProvinciaRealContratante"/>
+					<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+					<f:selectItems value="#{mbregistrooperacioncliente.lstDepartamentoReal}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+	            </p:selectOneMenu>
+			</div>
+			<div class="ui-g-4">
+				<p:outputLabel value="Provincia" styleClass="dsLabel1"/>
+				<p:selectOneMenu id="cbProvinciaRealContratante" value="#{mbregistrooperacioncliente.codigoProvinciaReal}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}">
+					<p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerProvinciaReal()}" update="cbDistritoRealContratante"/>
+					<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+					<f:selectItems value="#{mbregistrooperacioncliente.lstProvinciaReal}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+	            </p:selectOneMenu>
+			</div>
+			<div class="ui-g-4">
+				<p:outputLabel value="Distrito" styleClass="dsLabel1"/>
+				<p:selectOneMenu id="cbDistritoRealContratante" value="#{mbregistrooperacioncliente.codigoDistritoReal}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}">
+					<p:ajax event="change" update="@this"/>
+					<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+					<f:selectItems value="#{mbregistrooperacioncliente.lstDistritoReal}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+	            </p:selectOneMenu>
+			</div>
+			</div>
+	
+			<div class="ui-g-12 ui-md-12 ui-lg-6">
+				<p:outputLabel value="Domicilio Contractual" styleClass="dsLabel1"/>
+				<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.direccionContractual}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"></p:inputText>
+			</div>
+			
+			<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
+			<div class="ui-g-4">
+				<p:outputLabel value="Departamento" styleClass="dsLabel1"/>
+				<p:selectOneMenu value="#{mbregistrooperacioncliente.codigoDepartamentoContractual}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}">
+					<p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerDepartamentoContractual()}" update="cbProvinciaContractualContratante"/>
+					<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+					<f:selectItems value="#{mbregistrooperacioncliente.lstDepartamentoContractual}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+	            </p:selectOneMenu>
+			</div>
+			<div class="ui-g-4">
+				<p:outputLabel value="Provincia" styleClass="dsLabel1"/>
+				<p:selectOneMenu id="cbProvinciaContractualContratante" value="#{mbregistrooperacioncliente.codigoProvinciaContractual}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}">
+					<p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerProvinciaContractual()}" update="cbDistritoContractualContratante"/>
+					<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+					<f:selectItems value="#{mbregistrooperacioncliente.lstProvinciaContractual}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+	            </p:selectOneMenu>
+			</div>
+			<div class="ui-g-4">
+				<p:outputLabel value="Distrito" styleClass="dsLabel1"/>
+				<p:selectOneMenu id="cbDistritoContractualContratante" value="#{mbregistrooperacioncliente.codigoDistritoContractual}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}">
+					<p:ajax event="change" update="@this"/>
+					<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+					<f:selectItems value="#{mbregistrooperacioncliente.lstDistritoContractual}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+	            </p:selectOneMenu>
+			</div>
+			</div>
+			
+			<div class="ui-g-12 ui-md-6 ui-lg-6" style="#{mbregistrooperacioncliente.visualizarFrmContratantePN ? 'display:block;' : 'display:none'}">
+				<p:outputLabel value="Estado Civil" styleClass="dsLabel1"/>
+				<p:selectOneMenu value="#{mbregistrooperacioncliente.oEInformeLegalAdicionalData.codigoEstadoCivil}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}" rendered="#{mbregistrooperacioncliente.visualizarFrmContratantePN}">
+					<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+					<f:selectItems value="#{mbregistrooperacioncliente.lstEstadoCivil}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+				</p:selectOneMenu>
+				<h:message styleClass="dsMessage1"/>
+			</div>
+
+			<div style="#{mbregistrooperacioncliente.visualizarFrmContratantePN ? 'display:block;' : 'display:none'}">
+				<div class="ui-g-12">
+					<p:outputLabel value="Datos del Conyugue" styleClass="dsLabel5"/>
+				</div>
+				<div class="ui-g-12 ui-md-12 ui-lg-6">
+					<p:outputLabel value="Apellidos y Nombres Conyugue" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.nombreLargoConyuge}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"></p:inputText>
+				</div>
+				<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
+				<div class="ui-g-6">
+					<p:outputLabel value="Tipo Documento" styleClass="dsLabel1"/>
+					<p:selectOneMenu value="#{mbregistrooperacioncliente.oEOperacionClienteData.codigoTipoDocumentoConyugue}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}">
+						<p:ajax event="change" update="@this"/>
+						<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+						<f:selectItems value="#{mbregistrooperacioncliente.lstDOI}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-6">
+					<p:outputLabel value="N° Documento" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.documentoConyugue}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"></p:inputText>
+				</div>
+				</div>
+			</div>
+			
+			<div style="#{mbregistrooperacioncliente.visualizarFrmContratantePJ ? 'display:block;' : 'display:none'}">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<p:outputLabel value="Tipo Persona Juridica" styleClass="dsLabel1"/>
+					<p:selectOneMenu value="#{mbregistrooperacioncliente.oEOperacionClienteData.codigoTipoPersonaJuridica}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}">
+						<p:ajax event="change" update="@this"/>
+						<f:selectItems value="#{mbregistrooperacioncliente.lstTipoPersonaJuridica}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<p:outputLabel value="Facultad a Operar" styleClass="dsLabel1"/>
+					<p:selectOneMenu value="#{mbregistrooperacioncliente.oEOperacionClienteData.codigoFacultadOperar}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}">
+						<p:ajax event="change" update="@this"/>
+						<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+						<f:selectItems value="#{mbregistrooperacioncliente.lstFacultadOperar}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					</p:selectOneMenu>
+					<!--
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.codigoFacultadOperar}" autocomplete="off"></p:inputText>
+					-->
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<p:outputLabel value="Capital Social R.P" styleClass="dsLabel1"/>
+					<p:inputNumber type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.montoCapitalSocialRegistroPublicos}" autocomplete="off" decimalSeparator="," thousandSeparator="." disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"></p:inputNumber>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<p:outputLabel value="Capital Social Actual" styleClass="dsLabel1"/>
+					<p:inputNumber type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.montoCapitalSocialActual}" autocomplete="off" decimalSeparator="," thousandSeparator="." disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"></p:inputNumber>
+				</div>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<p:outputLabel value="Partida" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEInformeLegalAdicionalData.numeroPartida}" maxlength="100" autocomplete="off" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"></p:inputText>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<p:outputLabel value="Tipo Duración Partida" styleClass="dsLabel1"/>
+					<p:selectOneMenu value="#{mbregistrooperacioncliente.oEInformeLegalAdicionalData.codigoTipoDuracionPartida}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}">
+						<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+						<f:selectItems value="#{mbregistrooperacioncliente.lstTipoDuracionPartida}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-12 ui-lg-6">
+					<p:outputLabel value="Descripción Registro" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEInformeLegalAdicionalData.registroPartida}" maxlength="60" autocomplete="off" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"></p:inputText>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<p:outputLabel value="Constitución" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEInformeLegalAdicionalData.descripcionConstitucion}" maxlength="10" autocomplete="off" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"></p:inputText>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<p:outputLabel value="Fecha Constitución" styleClass="dsLabel1"/>
+					<p:calendar value="#{mbregistrooperacioncliente.oEInformeLegalAdicionalData.fechaConstitucion}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"></p:calendar>
+				</div>
+				
+				<div class="ui-g-12 ui-md-12 ui-lg-6">
+					<div class="ui-g-11 ui-md-10 ui-lg-11 ui-g-nopad">		
+							<p:outputLabel value="Notario" styleClass="dsLabel1"/>
+							<p:inputText type="text" id="idDescripcionNotario" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEInformeLegalAdicionalData.descripcionNotario}" maxlength="40" disabled="true" autocomplete="off"></p:inputText>
+					</div>
+					<div class="ui-g-1 ui-md-2 ui-lg-1 ui-g-nopad">
+						<br />
+						<div class="dsCuadrarCentro">
+						     <p:commandLink styleClass="dsCmdlink1" onclick="PF('dlgPreload').show()" 
+									oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacioncliente.buscarNotario()}" immediate="true"
+									update=":frmDlgBuscarNotario"><i class="fas fa-search"></i></p:commandLink>
+					    </div>
+					</div>
+			    </div>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<p:outputLabel value="Suscripción y Pago" styleClass="dsLabel1"/>
+					<div class="ui-g-12 ui-g-nopad">
+					<div class="ui-g-4 ui-g-nopad">
+					<p:inputNumber styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.numeroSuscripcionPago}" symbol="%" symbolPosition="s" emptyValue="always" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"/>
+					</div>
+					<div class="ui-g-8 ui-g-nopad">
+					<p:selectOneMenu value="#{mbregistrooperacioncliente.oEOperacionClienteData.codigoTipoSuscripcionPago}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}">
+						<p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerTipoSuscripcionPago()}" update="pnlgFrmSuscripcion, pnlgDescripcionAporte, txtNumeroSuscripcion, tblSuscripcion"/>
+						<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+						<f:selectItems value="#{mbregistrooperacioncliente.lstSuscripcionPago}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+					</p:selectOneMenu>
+					</div>
+					</div>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<p:outputLabel value="Nro.Accionistas" styleClass="dsLabel1"/>
+					<p:inputText type="text" id="txtNumeroSuscripcion" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.numeroAcciones}" disabled="true" autocomplete="off"></p:inputText>
+				</div>
+				
+				<h:panelGroup id="pnlgFrmSuscripcion" layout="block" style="#{mbregistrooperacioncliente.visualizarFrmSuscripcion ? 'display:block;' : 'display:none'}">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<p:outputLabel value="Nro.Acciones" styleClass="dsLabel1"/>
+					<p:inputNumber type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEInformeLegalAdicionalData.numeroAcciones}" autocomplete="off" 
+					decimalPlaces="0" decimalSeparator="." thousandSeparator="," maxValue="999999999" onkeypress="if (event.keyCode == 13) { onchange(); return false; }" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}">
+						<p:ajax event="change" listener="#{mbregistrooperacioncliente.limpiarNumeroSuscripcion()}"  update="tblSuscripcion"/>
+					</p:inputNumber>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<p:outputLabel value="Tipo" styleClass="dsLabel1"/>
+					<p:selectOneMenu value="#{mbregistrooperacioncliente.oEInformeLegalAdicionalData.codigoTipoValorSuscripcion}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}">
+						<p:ajax event="change" listener="#{mbregistrooperacioncliente.limpiarNumeroSuscripcion()}"  update="tblSuscripcion"/>
+						<f:selectItem itemLabel="Porcentaje" itemValue="1" />
+						<f:selectItem itemLabel="Número" itemValue="2" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<p:outputLabel value="Valor Nominal" styleClass="dsLabel1"/>
+					<p:inputNumber type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEInformeLegalAdicionalData.montoValorNominal}" autocomplete="off" decimalSeparator="," thousandSeparator="." disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"></p:inputNumber>
+				</div>
+				<div class="ui-g-12">
+				<p:dataTable id="tblSuscripcion" value="#{mbregistrooperacioncliente.lstSuscripcion}" var="item" styleClass="dsTabla1" paginator="true" rows="99" paginatorPosition="bottom"
+				 	rowKey="#{item.codigoOrden}" reflow="false">
+		            <f:facet name="header">
+		                <div class="dsCuadrarCentroEspacioentre">
+		                    <span></span>
+				        	<p:commandLink styleClass="dsCmdlink2" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperacioncliente.agregarSuscripcion()}" update=":frmDlgSuscripcion" rendered="#{mbregistrooperacioncliente.visualizarBtnAgregarSuscripcion}">
+				        		<i class="fas fa-plus"></i>
+				        	</p:commandLink>
+		                </div>
+		            </f:facet>
+					<p:column headerText="Nº" style="width: 50px">
+						<h:outputText value="#{item.codigoOrden}"/>
+					</p:column>
+					<p:column headerText="Número" style="width: 90px">
+						<h:outputText value="#{item.numeroSuscripcion}"/>
+					</p:column>
+					<p:column headerText="Nombre">
+						<div class="dsTextoCorto">
+							<h:outputText value="#{item.nombreLargo}"/>
+						</div>
+					</p:column>
+					<p:column headerText="" style="width: 50px">
+						<p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Editar" 
+						onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+						action="#{mbregistrooperacioncliente.modificarSuscripcion(item)}" 
+						update=":frmDlgSuscripcion"
+						rendered="#{mbregistrooperacioncliente.visualizarBtnModificarSuscripcion}"></p:commandButton>
+				     		
+			     		<p:commandButton styleClass="dsBoton5 red" icon="fa fa-trash" title="Eliminar" 
+			     		onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+			     		action="#{mbregistrooperacioncliente.eliminarSuscripcion(item)}" 
+			     		update=":form:tabView1:tblSuscripcion, :form:tabView1:txtNumeroSuscripcion"
+			     		rendered="#{mbregistrooperacioncliente.visualizarBtnEliminarSuscripcion}"></p:commandButton>
+			     	</p:column>
+				</p:dataTable>
+				</div>
+				</h:panelGroup>
+				
+				<h:panelGroup id="pnlgDescripcionAporte" layout="block" style="#{mbregistrooperacioncliente.visualizarDescripcionAporte ? 'display:block;' : 'display:none'}">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<p:outputLabel value="Aporte" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEInformeLegalAdicionalData.descripcionAporte}" autocomplete="off" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"></p:inputText>
+				</div>
+				</h:panelGroup>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<div class="ui-g-12">
+				<p:outputLabel value="Const.Social / Aum.Capital / Modif.Est.Soc / Directorio / Gte" styleClass="dsLabel1"/>
+				<p:inputTextarea type="text" id="idObservacionConstanciaSocial" onkeyup="limitaCaracter(60, 5, 'form:tabView1:idObservacionConstanciaSocial');" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.observacionConstanciaSocial}" autocomplete="off" maxlength="308" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"></p:inputTextarea>
+			</div>
+			<div class="ui-g-6 dsReducirEspacio">
+			<div class="dsCuadrarHorizontal dsAlinearCentro">
+				<p:outputLabel value="¿La empresa puede avalar a un tercero?" styleClass="dsLabel1"/>
+		        <p:selectOneRadio value="#{mbregistrooperacioncliente.oEOperacionClienteData.indicadorAvalarTercero}" unselectable="true" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}">
+		            <p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerIndicadorAval()}" update="form:tabView1:pnlgFirmaAval, form:tabView1:pnlgObservacionAval"/>
+		            <f:selectItem itemLabel="No" itemValue="N"/>
+		            <f:selectItem itemLabel="Si" itemValue="S"/>
+		        </p:selectOneRadio>
+        	</div>
+        	</div>
+        	<h:panelGroup id="pnlgFirmaAval" class="ui-g-6 dsReducirEspacio" layout="block" style="#{mbregistrooperacioncliente.visualizarObservacionAval ? 'display:block;' : 'display:none'}">
+				<div class="dsCuadrarHorizontal dsAlinearCentro">
+					<p:outputLabel value="¿Quienes Firman?" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.descripcionAvalarTercero}" autocomplete="off" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"></p:inputText>
+				</div>
+			</h:panelGroup>
+        	<h:panelGroup id="pnlgObservacionAval" class="ui-g-12" layout="block" style="#{mbregistrooperacioncliente.visualizarObservacionAval ? 'display:block;' : 'display:none'}">
+				<div class="ui-g-12 ui-g-nopad">
+					<p:outputLabel value="Observaciónes" styleClass="dsLabel1"/>
+					<p:inputTextarea type="text" id="idObservacionAvalTercero" onkeyup="limitaCaracter(50, 3, 'form:tabView1:idObservacionAvalTercero');" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.observacionAvalarTercero}" autocomplete="off" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"></p:inputTextarea>
+				</div>
+			</h:panelGroup>
+			
+			<div class="ui-g-12 dsReducirEspacio">
+			<div class="dsCuadrarHorizontal dsAlinearCentro">
+				<p:outputLabel value="¿La empresa puede Gravar bien mueble o inmueble?" styleClass="dsLabel1"/>
+		        <p:selectOneRadio value="#{mbregistrooperacioncliente.oEOperacionClienteData.indicadorGrabarBien}" unselectable="true" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}">
+		            <p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerIndicadorGrabarBien()}" update="form:tabView1:pnlgObservacionGrabarBien"/>
+		            <f:selectItem itemLabel="No" itemValue="N"/>
+		            <f:selectItem itemLabel="Si" itemValue="S"/>
+		        </p:selectOneRadio>
+        	</div>
+        	</div>
+        	<h:panelGroup id="pnlgObservacionGrabarBien" class="ui-g-12" layout="block" style="#{mbregistrooperacioncliente.visualizarObservacionGrabarBien ? 'display:block;' : 'display:none'}">
+				<div class="ui-g-12 ui-g-nopad">
+					<p:outputLabel value="Observaciónes" styleClass="dsLabel1"/>
+					<p:inputTextarea type="text" id="idObservacionGrabarBien" onkeyup="limitaCaracter(50, 3, 'form:tabView1:idObservacionGrabarBien');" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.observacionGrabarBien}" autocomplete="off" disabled="#{mbregistrooperacioncliente.deshabilitarFrmContratante}"></p:inputTextarea>
+				</div>
+			</h:panelGroup>
+		</div>
+		</div>
+		</p:panel>
+	</div>
+	
+	<div class="ui-g-6">
+    	<p:panel styleClass="dsPanel2" widgetVar="pnl3" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+        <f:facet name="header" >
+            <i class="fas fa-comments"></i> Informe Legal
+        </f:facet>
+		
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-3">
+				<p:outputLabel value="Usu.Evaluación" styleClass="dsLabel1"/>
+				<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.usuarioUltimaRevision}" disabled="true"></p:inputText>
+			</div>
+			<div class="ui-g-3">
+				<p:outputLabel value="Fec.Recibido" styleClass="dsLabel1"/>
+				<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.fechaUltimaRevision}" disabled="true"></p:inputText>
+			</div>
+			<div class="ui-g-3">
+				<p:outputLabel value="Hor.Recibido" styleClass="dsLabel1"/>
+				<p:calendar value="#{mbregistrooperacioncliente.oEOperacionClienteData.horaUltimaRevision}" disabled="true" autocomplete="off" pattern="HH:mm:ss" timeOnly="true"/>
+			</div>
+			<div class="ui-g-3">
+				<p:outputLabel value="Estado" styleClass="dsLabel1"/>
+				<p:selectOneMenu value="#{mbregistrooperacioncliente.oEOperacionClienteData.codigoEstadoSolicitud}" disabled="#{mbregistrooperacioncliente.deshabilitarEstado}">
+					<p:ajax event="change" update="@this"/>
+					<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+					<f:selectItems value="#{mbregistrooperacioncliente.lstEstado}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				</p:selectOneMenu>
+	        </div>
+			<div class="ui-g-12 ui-md-12 ui-lg-12">
+				<p:outputLabel value="Observaciónes de Legal" styleClass="dsLabel1"/>
+				<p:inputTextarea type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.observacionLegal}" disabled="#{mbregistrooperacioncliente.deshabilitarObservacionLegal}" autocomplete="off" maxlength="250" ></p:inputTextarea>
+			</div>
+			<div class="ui-g-12 ui-md-12 ui-lg-12">
+				<p:outputLabel value="Observaciónes de Negocios" styleClass="dsLabel1"/>
+				<p:inputTextarea type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEOperacionClienteData.observacionNegocio}" disabled="#{mbregistrooperacioncliente.deshabilitarObservacionNegocio}" autocomplete="off" maxlength="250" ></p:inputTextarea>
+			</div>
+			<div class="ui-g-12 ui-md-12 ui-lg-12" style="#{mbregistrooperacioncliente.visualizarBtnAdjuntar ? 'display:block;' : 'display:none'}">
+				<p:outputLabel value="Adjuntar documentos" styleClass="dsLabel1"/>
+		       	<!-- Agregar Documento Carga Simple con descripcion -->
+				<p:fileUpload
+					value="#{mbregistrooperacioncliente.files}"
+					style="font-size:11px;"
+		       		sizeLimit="15728640"
+		       		allowTypes="/(\.|\/)(jpe?g|png|pdf|doc|docx|xls|xlsx)$/"
+					accept=".jpg, .jpeg, .png, .pdf, .doc, .docx, .xls, .xlsx"
+					fileUploadListener="#{mbregistrooperacioncliente.agregarDocumentoCarga}"
+					mode="advanced"
+		       		auto="true" 
+		       		multiple="false"
+		       		dragDropSupport="true"
+		       		label="Adjuntar"
+		       		uploadLabel="Cargar"
+		       		cancelLabel="Cancelar"
+		       		invalidFileMessage="Tipo de archivo incorrecto, archivos permitidos jpg, png, jpeg"
+		       		invalidSizeMessage="Tamaño del archivo excede el límite de 15Mbs"
+		       		oncomplete="PF('dlgDescripcionDocumentoCarga').show();"
+		       		update="frmDlgDescripcionDocumentoCarga:txtDescripcionDocumentoCarga"
+		       		previewWidth= "20">
+		       	</p:fileUpload>
+				<p:dataTable id="tblDocumentoCarga" value="#{mbregistrooperacioncliente.lstDocumentoCarga}" var="item" styleClass="dsTabla2"
+							 rowKey="#{item.data}" reflow="true" emptyMessage="">
+					<p:column headerText="" styleClass="dsTextoCentro">
+						<div class="contenedorFila">
+						<div>
+						<h:outputText value="#{item.nombre}"/>
+						</div>
+						<div>
+						<h:outputText value="#{item.descripcionSize}"/>
+						</div>
+						<div>
+						<p:commandButton styleClass="dsBoton3" icon="fa fa-remove" process="@this" action="#{mbregistrooperacioncliente.eliminarDocumentoCarga(item)}" update="tblDocumentoCarga">
+		      			</p:commandButton>
+		      			</div>
+		      			</div>
+					</p:column>
+				</p:dataTable>
+			</div>
+		</div>
+		</p:panel>
+    </div>
+
+	<div class="ui-g-6 ui-g-nopad">
+	<div class="ui-g-12" style="#{mbregistrooperacioncliente.visualizarPnlRepresentanteLegal ? 'display:block;' : 'display:none'}">
+	<p:panel styleClass="dsPanel2" id="pnl66" widgetVar="pnl66" toggleable="true" collapsed="#{mbregistrooperacioncliente.minimizarPnlRepresentanteLegal}" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+        <f:facet name="header" >
+            <i class="fa fa-table"></i> Lista de Representante Legal
+        </f:facet>
+				<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-g-nopad">
+				<p:dataTable id="tblRL1" value="#{mbregistrooperacioncliente.lstRL1}" var="item" styleClass="dsTabla1" paginator="true" rows="5" paginatorPosition="bottom"
+				 	rowKey="#{item.codigoOrden}" reflow="false">
+		            <f:facet name="header">
+		                <div class="dsCuadrarCentroEspacioentre">
+		                    <span></span>
+				        	<p:commandLink styleClass="dsCmdlink2" onclick="PF('dlgAgregarTipoRepresentanteLegal').show();" actionListener="#{mbregistrooperacioncliente.obtenerIndicadorTablaRepresentanteLegal(1)}" update=":frmDlgAgregarTipoRepresentanteLegal" rendered="#{mbregistrooperacioncliente.visualizarBtnAgregarRepresentanteLegal}">
+				        		<i class="fas fa-plus"></i>
+				        	</p:commandLink>
+		                </div>
+		            </f:facet>
+					<p:column headerText="N° Documento" style="width: 90px">
+						<h:outputText value="#{item.documento}"/>
+					</p:column>
+					<p:column headerText="Nombre">
+						<div class="dsTextoCorto">
+							<h:outputText value="#{item.nombreLargo}"/>
+						</div>
+					</p:column>
+					<p:column headerText="Firma" styleClass="dsTextoCentro" style="width: 30px">
+						<h:outputText value="#{item.descripcionIndicadorFirma}"/>
+					</p:column>
+					<p:column headerText="" style="width: 90px">
+						<p:commandButton styleClass="dsBoton5 green" icon="fa fa-search" title="Ver" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" process="@this" 
+						action="#{mbregistrooperacioncliente.modificarRepresentanteLegal(item)}" update=":frmDlgRepresentanteLegal, :frmDlgRepresentanteLegal:tabView2" 
+						rendered="#{mbregistrooperacioncliente.visualizarBtnVisualizarRepresentanteLegal}"></p:commandButton>
+						<p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Editar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" process="@this" 
+						action="#{mbregistrooperacioncliente.modificarRepresentanteLegal(item)}" update=":frmDlgRepresentanteLegal, :frmDlgRepresentanteLegal:tabView2" 
+						rendered="#{mbregistrooperacioncliente.visualizarBtnModificarRepresentanteLegal}"></p:commandButton>
+			     		<p:commandButton styleClass="dsBoton5 green" icon="fa fa-gavel" title="Poderes" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" process="@this" 
+			     		action="#{mbregistrooperacioncliente.visualizarFacultadPoder(item)}" update=":frmDlgRepresentanteLegalFacultadPoder"></p:commandButton>
+			     		<p:commandButton styleClass="dsBoton5 green" icon="fa fa-group" title="Buscar Representante" 
+			     		onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" process="@this"
+			     		action="#{mbregistrooperacioncliente.buscarRepresentanteLegalFiltro(item, 2)}"
+			     		update=":form:tabView1:pnl66" rendered="#{mbregistrooperacioncliente.visualizarBtnBuscarRepresentanteLegal(item)}">
+			     		</p:commandButton>
+			     		<p:commandButton styleClass="dsBoton5 red" icon="fa fa-trash" title="Eliminar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" process="@this" 
+			     		actionListener="#{mbregistrooperacioncliente.obtenerIndicadorTablaRepresentanteLegal(1)}" action="#{mbregistrooperacioncliente.eliminarRepresentanteLegal(item)}" 
+			     		update=":form:tabView1:pnl66" rendered="#{mbregistrooperacioncliente.visualizarBtnEliminarRepresentanteLegal}"></p:commandButton>
+			     	</p:column>
+				</p:dataTable>
+				</div>
+				
+				<div class="ui-g-12 ui-g-nopad" style="#{mbregistrooperacioncliente.visualizarTblRepresentante2 ? 'display:block;' : 'display:none'}">
+				<p:dataTable id="tblRL2" value="#{mbregistrooperacioncliente.lstRL2}" var="item" styleClass="dsTabla1" paginator="true" rows="5" paginatorPosition="bottom"
+				 	rowKey="#{item.codigoOrden}" reflow="false">
+		            <f:facet name="header">
+		                <div class="dsCuadrarCentroEspacioentre">
+		                    <span>
+		                    	<p:outputLabel value="#{mbregistrooperacioncliente.oERL1Selected.nombreLargo}" styleClass="dsLabel4"/>
+		                    </span>
+				        	<p:commandLink styleClass="dsCmdlink2" onclick="PF('dlgAgregarTipoRepresentanteLegal').show();" actionListener="#{mbregistrooperacioncliente.obtenerIndicadorTablaRepresentanteLegal(2)}" update=":frmDlgAgregarTipoRepresentanteLegal" rendered="#{mbregistrooperacioncliente.visualizarBtnAgregarRepresentanteLegal}">
+				        		<i class="fas fa-plus"></i>
+				        	</p:commandLink>
+		                </div>
+		            </f:facet>
+					<p:column headerText="N° Documento" style="width: 90px">
+						<h:outputText value="#{item.documento}"/>
+					</p:column>
+					<p:column headerText="Nombre">
+						<div class="dsTextoCorto">
+							<h:outputText value="#{item.nombreLargo}"/>
+						</div>
+					</p:column>
+					<p:column headerText="" style="width: 90px">
+						<p:commandButton styleClass="dsBoton5 green" icon="fa fa-search" title="Ver" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();"
+						action="#{mbregistrooperacioncliente.modificarRepresentanteLegal(item)}" update=":frmDlgRepresentanteLegal, :frmDlgRepresentanteLegal:tabView2" 
+						rendered="#{mbregistrooperacioncliente.visualizarBtnVisualizarRepresentanteLegal}"></p:commandButton>
+						<p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Editar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+						action="#{mbregistrooperacioncliente.modificarRepresentanteLegal(item)}" update=":frmDlgRepresentanteLegal, :frmDlgRepresentanteLegal:tabView2"
+						rendered="#{mbregistrooperacioncliente.visualizarBtnModificarRepresentanteLegal}"></p:commandButton>
+			     		<p:commandButton styleClass="dsBoton5 green" icon="fa fa-gavel" title="Poderes" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperacioncliente.visualizarFacultadPoder(item)}" update=":frmDlgRepresentanteLegalFacultadPoder"></p:commandButton>
+			     		<p:commandButton styleClass="dsBoton5 green" icon="fa fa-group" title="Buscar Representante" 
+			     		onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+			     		action="#{mbregistrooperacioncliente.buscarRepresentanteLegalFiltro(item, 3)}"
+			     		update=":form:tabView1:pnl66" rendered="#{mbregistrooperacioncliente.visualizarBtnBuscarRepresentanteLegal(item)}">
+			     		</p:commandButton>
+			     		<p:commandButton styleClass="dsBoton5 red" icon="fa fa-trash" title="Eliminar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacioncliente.obtenerIndicadorTablaRepresentanteLegal(2)}" action="#{mbregistrooperacioncliente.eliminarRepresentanteLegal(item)}" 
+			     		update=":form:tabView1:pnl66" rendered="#{mbregistrooperacioncliente.visualizarBtnEliminarRepresentanteLegal}"></p:commandButton>
+			     	</p:column>
+				</p:dataTable>
+				</div>
+				
+				<div class="ui-g-12 ui-g-nopad" style="#{mbregistrooperacioncliente.visualizarTblRepresentante3 ? 'display:block;' : 'display:none'}">
+				<p:dataTable id="tblRL3" value="#{mbregistrooperacioncliente.lstRL3}" var="item" styleClass="dsTabla1" paginator="true" rows="5" paginatorPosition="bottom"
+				 	rowKey="#{item.codigoOrden}" reflow="false">
+		            <f:facet name="header">
+		                <div class="dsCuadrarCentroEspacioentre">
+		                    <span>
+		                    	<p:outputLabel value="#{mbregistrooperacioncliente.oERL2Selected.nombreLargo}" styleClass="dsLabel4"/>
+		                    </span>
+				        	<p:commandLink styleClass="dsCmdlink2" onclick="PF('dlgAgregarTipoRepresentanteLegal').show();" actionListener="#{mbregistrooperacioncliente.obtenerIndicadorTablaRepresentanteLegal(3)}" update=":frmDlgAgregarTipoRepresentanteLegal" rendered="#{mbregistrooperacioncliente.visualizarBtnAgregarRepresentanteLegal}">
+				        		<i class="fas fa-plus"></i>
+				        	</p:commandLink>
+		                </div>
+		            </f:facet>
+					<p:column headerText="N° Documento" style="width: 90px">
+						<h:outputText value="#{item.documento}"/>
+					</p:column>
+					<p:column headerText="Nombre">
+						<div class="dsTextoCorto">
+							<h:outputText value="#{item.nombreLargo}"/>
+						</div>
+					</p:column>
+					<p:column headerText="" style="width: 90px">
+						<p:commandButton styleClass="dsBoton5 green" icon="fa fa-search" title="Ver" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();"
+						action="#{mbregistrooperacioncliente.modificarRepresentanteLegal(item)}" update=":frmDlgRepresentanteLegal, :frmDlgRepresentanteLegal:tabView2" 
+						rendered="#{mbregistrooperacioncliente.visualizarBtnVisualizarRepresentanteLegal}"></p:commandButton>
+						<p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Editar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+						action="#{mbregistrooperacioncliente.modificarRepresentanteLegal(item)}" update=":frmDlgRepresentanteLegal, :frmDlgRepresentanteLegal:tabView2"
+						rendered="#{mbregistrooperacioncliente.visualizarBtnModificarRepresentanteLegal}"></p:commandButton>
+			     		<p:commandButton styleClass="dsBoton5 green" icon="fa fa-gavel" title="Poderes" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperacioncliente.visualizarFacultadPoder(item)}" update=":frmDlgRepresentanteLegalFacultadPoder"></p:commandButton>
+			     		<p:commandButton styleClass="dsBoton5 green" icon="fa fa-group" title="Buscar Representante" 
+			     		onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+			     		action="#{mbregistrooperacioncliente.buscarRepresentanteLegalFiltro(item, 4)}"
+			     		update=":form:tabView1:pnl66" rendered="#{mbregistrooperacioncliente.visualizarBtnBuscarRepresentanteLegal(item)}">
+			     		</p:commandButton>
+			     		<p:commandButton styleClass="dsBoton5 red" icon="fa fa-trash" title="Eliminar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacioncliente.obtenerIndicadorTablaRepresentanteLegal(3)}" action="#{mbregistrooperacioncliente.eliminarRepresentanteLegal(item)}" 
+			     		update=":form:tabView1:pnl66" rendered="#{mbregistrooperacioncliente.visualizarBtnEliminarRepresentanteLegal}"></p:commandButton>
+			     	</p:column>
+				</p:dataTable>
+				</div>
+				
+				<div class="ui-g-12 ui-g-nopad" style="#{mbregistrooperacioncliente.visualizarTblRepresentante4 ? 'display:block;' : 'display:none'}">
+				<p:dataTable id="tblRL4" value="#{mbregistrooperacioncliente.lstRL4}" var="item" styleClass="dsTabla1" paginator="true" rows="5" paginatorPosition="bottom"
+				 	rowKey="#{item.codigoOrden}" reflow="false">
+		            <f:facet name="header">
+		                <div class="dsCuadrarCentroEspacioentre">
+		                    <span>
+		                    	<p:outputLabel value="#{mbregistrooperacioncliente.oERL3Selected.nombreLargo}" styleClass="dsLabel4"/>
+		                    </span>
+				        	<p:commandLink styleClass="dsCmdlink2" onclick="PF('dlgAgregarTipoRepresentanteLegal').show();" actionListener="#{mbregistrooperacioncliente.obtenerIndicadorTablaRepresentanteLegal(4)}" update=":frmDlgAgregarTipoRepresentanteLegal" rendered="#{mbregistrooperacioncliente.visualizarBtnAgregarRepresentanteLegal}">
+				        		<i class="fas fa-plus"></i>
+				        	</p:commandLink>
+		                </div>
+		            </f:facet>
+					<p:column headerText="N° Documento" style="width: 90px">
+						<h:outputText value="#{item.documento}"/>
+					</p:column>
+					<p:column headerText="Nombre">
+						<div class="dsTextoCorto">
+							<h:outputText value="#{item.nombreLargo}"/>
+						</div>
+					</p:column>
+					<p:column headerText="" style="width: 90px">
+						<p:commandButton styleClass="dsBoton5 green" icon="fa fa-search" title="Ver" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();"
+						action="#{mbregistrooperacioncliente.modificarRepresentanteLegal(item)}" update=":frmDlgRepresentanteLegal, :frmDlgRepresentanteLegal:tabView2" 
+						rendered="#{mbregistrooperacioncliente.visualizarBtnVisualizarRepresentanteLegal}"></p:commandButton>
+						<p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Editar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+						action="#{mbregistrooperacioncliente.modificarRepresentanteLegal(item)}" update=":frmDlgRepresentanteLegal, :frmDlgRepresentanteLegal:tabView2"
+						rendered="#{mbregistrooperacioncliente.visualizarBtnModificarRepresentanteLegal}"></p:commandButton>
+			     		<p:commandButton styleClass="dsBoton5 green" icon="fa fa-gavel" title="Poderes" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperacioncliente.visualizarFacultadPoder(item)}" update=":frmDlgRepresentanteLegalFacultadPoder"></p:commandButton>
+			     		<p:commandButton styleClass="dsBoton5 green" icon="fa fa-group" title="Buscar Representante" 
+			     		onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+			     		action="#{mbregistrooperacioncliente.buscarRepresentanteLegalFiltro(item, 5)}"
+			     		update=":form:tabView1:pnl66" rendered="#{mbregistrooperacioncliente.visualizarBtnBuscarRepresentanteLegal(item)}">
+			     		</p:commandButton>
+			     		<p:commandButton styleClass="dsBoton5 red" icon="fa fa-trash" title="Eliminar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacioncliente.obtenerIndicadorTablaRepresentanteLegal(4)}" action="#{mbregistrooperacioncliente.eliminarRepresentanteLegal(item)}" 
+			     		update=":form:tabView1:pnl66" rendered="#{mbregistrooperacioncliente.visualizarBtnEliminarRepresentanteLegal}"></p:commandButton>
+			     	</p:column>
+				</p:dataTable>
+				</div>
+				
+				<div class="ui-g-12 ui-g-nopad" style="#{mbregistrooperacioncliente.visualizarTblRepresentante5 ? 'display:block;' : 'display:none'}">
+				<p:dataTable id="tblRL5" value="#{mbregistrooperacioncliente.lstRL5}" var="item" styleClass="dsTabla1" paginator="true" rows="5" paginatorPosition="bottom"
+				 	rowKey="#{item.codigoOrden}" reflow="false">
+		            <f:facet name="header">
+		                <div class="dsCuadrarCentroEspacioentre">
+		                    <span>
+		                    	<p:outputLabel value="#{mbregistrooperacioncliente.oERL4Selected.nombreLargo}" styleClass="dsLabel4"/>
+		                    </span>
+				        	<p:commandLink styleClass="dsCmdlink2" onclick="PF('dlgAgregarTipoRepresentanteLegal').show();" actionListener="#{mbregistrooperacioncliente.obtenerIndicadorTablaRepresentanteLegal(5)}" update=":frmDlgAgregarTipoRepresentanteLegal" rendered="#{mbregistrooperacioncliente.visualizarBtnAgregarRepresentanteLegal}">
+				        		<i class="fas fa-plus"></i>
+				        	</p:commandLink>
+		                </div>
+		            </f:facet>
+					<p:column headerText="N° Documento" style="width: 90px">
+						<h:outputText value="#{item.documento}"/>
+					</p:column>
+					<p:column headerText="Nombre">
+						<div class="dsTextoCorto">
+							<h:outputText value="#{item.nombreLargo}"/>
+						</div>
+					</p:column>
+					<p:column headerText="" style="width: 90px">
+						<p:commandButton styleClass="dsBoton5 green" icon="fa fa-search" title="Ver" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();"
+						action="#{mbregistrooperacioncliente.modificarRepresentanteLegal(item)}" update=":frmDlgRepresentanteLegal, :frmDlgRepresentanteLegal:tabView2" 
+						rendered="#{mbregistrooperacioncliente.visualizarBtnVisualizarRepresentanteLegal}"></p:commandButton>
+						<p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Editar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+						action="#{mbregistrooperacioncliente.modificarRepresentanteLegal(item)}" update=":frmDlgRepresentanteLegal, :frmDlgRepresentanteLegal:tabView2"
+						rendered="#{mbregistrooperacioncliente.visualizarBtnModificarRepresentanteLegal}"></p:commandButton>
+			     		<p:commandButton styleClass="dsBoton5 green" icon="fa fa-gavel" title="Poderes" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperacioncliente.visualizarFacultadPoder(item)}" update=":frmDlgRepresentanteLegalFacultadPoder"></p:commandButton>
+			     		<p:commandButton styleClass="dsBoton5 red" icon="fa fa-trash" title="Eliminar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacioncliente.obtenerIndicadorTablaRepresentanteLegal(5)}" action="#{mbregistrooperacioncliente.eliminarRepresentanteLegal(item)}" 
+			     		update=":form:tabView1:pnl66" rendered="#{mbregistrooperacioncliente.visualizarBtnEliminarRepresentanteLegal}"></p:commandButton>
+			     	</p:column>
+				</p:dataTable>
+				</div>
+				</div>
+	</p:panel>
+	</div>
+	
+    <div class="ui-g-12" style="#{mbregistrooperacioncliente.visualizarPnlDeudor ? 'display:block;' : 'display:none'}">
+		<p:panel styleClass="dsPanel2" widgetVar="pnl8" toggleable="true" collapsed="#{mbregistrooperacioncliente.minimizarPnlDeudor}" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+	        <f:facet name="header" >
+	            <i class="fa fa-table"></i> Lista de Deudor
+	        </f:facet>
+			<p:dataTable id="tblDeudor" value="#{mbregistrooperacioncliente.lstDeudor}" var="item" styleClass="dsTabla1" paginator="true" rows="5" paginatorPosition="bottom"
+			 	rowKey="#{item.codigoDeudor}" reflow="false">
+	            <f:facet name="header">
+	                <div class="dsCuadrarCentroEspacioentre">
+	                    <span></span>
+			        	<p:commandLink styleClass="dsCmdlink2" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperacioncliente.agregarDeudor()}" update=":frmDlgDeudor, :frmDlgDeudor:tabView3" rendered="#{mbregistrooperacioncliente.visualizarBtnAgregarDeudor}">
+			        		<i class="fas fa-plus"></i>
+			        	</p:commandLink>
+	                </div>
+	            </f:facet>
+				<p:column headerText="Código" style="width: 90px">
+					<h:outputText value="#{item.codigoDeudor}"/>
+				</p:column>
+				<p:column headerText="Nombre">
+					<div class="dsTextoCorto">
+						<h:outputText value="#{item.nombreLargo}"/>
+					</div>
+				</p:column>
+				<p:column headerText="N° Documento" style="width: 90px">
+					<h:outputText value="#{item.tercero.documento}"/>
+				</p:column>
+				<p:column headerText="" style="width: 50px">
+					<p:commandButton styleClass="dsBoton5 green" icon="fa fa-search" title="Ver" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbconsultaoperacionsolicitudcredito.modificarDeudor(item)}" update=":frmDlgDeudor, :frmDlgDeudor:tabView3" rendered="#{mbregistrooperacioncliente.visualizarBtnVisualizarDeudor}"></p:commandButton>
+					<p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Editar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperacioncliente.modificarDeudor(item)}" update=":frmDlgDeudor, :frmDlgDeudor:tabView3" rendered="#{mbregistrooperacioncliente.visualizarBtnModificarDeudor}"></p:commandButton>
+		     		<p:commandButton styleClass="dsBoton5 red" icon="fa fa-trash" title="Eliminar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperacioncliente.eliminarDeudor(item)}" update=":form:tabView1:tblDeudor" rendered="#{mbregistrooperacioncliente.visualizarBtnEliminarDeudor}"></p:commandButton>
+		     	</p:column>
+			</p:dataTable>
+		</p:panel>
+	</div>
+
+	<div class="ui-g-12">
+	<p:panel styleClass="dsPanel2" widgetVar="pnl12" toggleable="true" collapsed="#{mbregistrooperacioncliente.minimizarPnlDocumento}" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+        <f:facet name="header" >
+            <i class="fa fa-table"></i> Lista de Documentos
+        </f:facet>
+		<p:dataTable id="tblOperacionClienteDocumento" value="#{mbregistrooperacioncliente.lstOperacionClienteDocumento}" var="item" styleClass="dsTabla1" paginator="true" rows="5" paginatorPosition="bottom"
+					 rowKey="#{item.codigoDocumento}" reflow="true">
+			<p:column headerText="Nombre" styleClass="dsTextoCentro">
+				<h:outputText value="#{item.nombreDocumento}"/>
+			</p:column>
+			<p:column headerText="" styleClass="dsTextoCentro">
+				<p:commandButton styleClass="dsBoton5 green" icon="fa fa-download" title="Descargar" actionListener="#{mbregistrooperacioncliente.descargarDocumento(item)}" ajax="false" >
+      				<p:fileDownload value="#{mbregistrooperacioncliente.fileDownload}"/>
+      			</p:commandButton>
+			</p:column>
+		</p:dataTable>
+	</p:panel>
+	</div>
+	
+	</div>
+	</div>
+    </p:tab>
+    
+    </p:tabView>
+	</h:form>
+	
+	<p:dialog widgetVar="dlgDescripcionDocumentoCarga" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgDescripcionDocumentoCarga">
+		<div class="dsDlgDescripcionDocumentoCarga dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Ingrese Descripción"/>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:outputLabel for="txtDescripcionDocumentoCarga" value="Descripcion" styleClass="dsLabel1"/>
+					<p:inputText type="text" id="txtDescripcionDocumentoCarga" styleClass="dsInput1" value="#{mbregistrooperacioncliente.descripcionDocumentoCarga}" autocomplete="off" maxlength="20" required="true"></p:inputText>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacioncliente.listarDocumentoCargaSimple()}" update=":form:tabView1:tblDocumentoCarga, frmDlgDescripcionDocumentoCarga"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgRepresentanteLegal" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgRepresentanteLegal">
+		<div class="dsDlgRepresentanteLegal dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+	 				<p:outputLabel styleClass="dsLabel2" value="Agregar Representante Legal" rendered="#{mbregistrooperacioncliente.accionInternaRepresenanteLegal eq '0' ? true : false}"/>
+	 				<p:outputLabel styleClass="dsLabel2" value="Modificar Representante Legal" rendered="#{mbregistrooperacioncliente.accionInternaRepresenanteLegal eq '1' ? true : false}"/>
+	 				<p:outputLabel styleClass="dsLabel2" value="Representante Legal" rendered="#{mbregistrooperacioncliente.accionInternaRepresenanteLegal eq '2' ? true : false}"/>
+				</div>
+	 			<div class="dlgDerecha">
+	 				<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgRepresentanteLegal').hide();" process="@this"><i class="fas fa-times"></i>
+	 				    <p:resetInput target="@form" />
+	 			    </p:commandLink>
+	 			</div>
+			</div>
+			<p:tabView id="tabView2" dynamic="true" widgetVar="tabs2" activeIndex="#{mbregistrooperacioncliente.indicadorTabSeleccionRepresentante}">
+        	<p:tab id="tab2-1" title="Datos Generales" rendered="#{mbregistrooperacioncliente.visualizarTabRepresentante1}">
+				<div class="ui-g ui-fluid contenido">
+
+					<div style="#{mbregistrooperacioncliente.visualizarFrmRepresentantePN ? 'display:block;' : 'display:none'}">
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel for="idApellidoPatR" value="Apellido Paterno" styleClass="dsLabel1"/>
+						<p:inputText id="idApellidoPatR" type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.apellidoPaternoRepresentante}" autocomplete="off" maxlength="39" required="true"  requiredMessage="Campo Obligatorio" rendered="#{mbregistrooperacioncliente.visualizarFrmRepresentantePN}"></p:inputText>
+						<h:message for="idApellidoPatR" styleClass="dsMessage1"/>
+					</div>
+
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel for="idApellidoMatR" value="Apellido Materno" styleClass="dsLabel1"/>
+						<p:inputText id="idApellidoMatR" type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.apellidoMaternoRepresentante}" autocomplete="off" maxlength="39" required="true"  requiredMessage="Campo Obligatorio" rendered="#{mbregistrooperacioncliente.visualizarFrmRepresentantePN}"></p:inputText>
+						<h:message for="idApellidoMatR" styleClass="dsMessage1"/>
+					</div>
+
+					<div class="ui-g-12 ui-md-6 ui-lg-6">
+						<p:outputLabel for="idNombreR" value="Nombre" styleClass="dsLabel1"/>
+						<p:inputText id="idNombreR" type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.nombreRepresentante}" autocomplete="off" maxlength="60" required="true"  requiredMessage="Campo Obligatorio" rendered="#{mbregistrooperacioncliente.visualizarFrmRepresentantePN}"></p:inputText>
+						<h:message for="idNombreR" styleClass="dsMessage1"/>
+					</div>
+
+					<div class="ui-g-12 ui-md-12 ui-lg-12">
+						<p:outputLabel value="Nombre Largo" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.razonSocialRepresentante}" disabled="true" autocomplete="off" maxlength="140" rendered="#{mbregistrooperacioncliente.visualizarFrmRepresentantePN}"></p:inputText>
+					</div>
+					</div>
+
+					<div class="ui-g-12 ui-md-6 ui-lg-6" style="#{mbregistrooperacioncliente.visualizarFrmRepresentantePJ ? 'display:block;' : 'display:none'}">
+						<p:outputLabel for="idRazonSocialR" value="Razon Social" styleClass="dsLabel1"/>
+						<p:inputText id="idRazonSocialR" type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.razonSocialRepresentante}" autocomplete="off" maxlength="140" required="true"  requiredMessage="Campo Obligatorio" rendered="#{mbregistrooperacioncliente.visualizarFrmRepresentantePJ}"></p:inputText>
+						<h:message for="idRazonSocialR" styleClass="dsMessage1"/>
+					</div>
+
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel value="Nominativo" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.nominativo}" autocomplete="off" maxlength="5"></p:inputText>
+					</div>
+					
+					<div class="ui-g-12 ui-md-3 ui-lg-3" style="#{mbregistrooperacioncliente.visualizarFrmRepresentantePN ? 'display:block;' : 'display:none;'}">
+						<p:outputLabel for="idSexoR" value="Sexo" styleClass="dsLabel1"/>
+						<p:selectOneMenu id="idSexoR" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoGenero}" required="true" requiredMessage="Campo Obligatorio" rendered="#{mbregistrooperacioncliente.visualizarFrmRepresentantePN}">
+							<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+							<f:selectItems value="#{mbregistrooperacioncliente.lstSexo}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+						</p:selectOneMenu>
+						<h:message for="idSexoR" styleClass="dsMessage1"/>
+					</div>
+					
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel for="idTipoPersonaR" value="Tipo Persona" styleClass="dsLabel1"/>
+						<p:selectOneMenu id="idTipoPersonaR" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoTipoPersona}" required="true" requiredMessage="Campo Obligatorio">
+							<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+							<f:selectItems value="#{mbregistrooperacioncliente.lstTipoPersonaRepresentanteFiltro}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+						</p:selectOneMenu>
+						<h:message for="idTipoPersonaR" styleClass="dsMessage1"/>
+					</div>
+					
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel for="idTipoDocR" value="Tipo Documento" styleClass="dsLabel1"/>
+						<p:selectOneMenu id="idTipoDocR" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoTipoDocumento}" disabled="#{mbregistrooperacioncliente.deshabilitarTipoDocumentoRepresentante}" required="true" requiredMessage="Campo Obligatorio">
+							<p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerTipoDocumentoRepresentante()}" update="tabView2:idNroDocR"/>
+							<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+							<f:selectItems value="#{mbregistrooperacioncliente.lstDOIRepresentanteFiltro}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+						</p:selectOneMenu>
+						<h:message for="idTipoDocR" styleClass="dsMessage1"/>
+					</div>
+					
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel for="idNroDocR" 
+						value="N° Documento" styleClass="dsLabel1" disabled="#{mbregistrooperacioncliente.deshabilitarNumeroDocumentoRepresentante}"/>
+						<p:inputText 
+						id="idNroDocR"
+						type="text" styleClass="dsInput1"
+						value="#{mbregistrooperacioncliente.oERepresentanteLegalData.documento}" autocomplete="off"
+						maxlength="#{mbregistrooperacioncliente.maxLgnNumeroDocumentoRepresentante}"
+						requiredMessage="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoTipoDocumento eq '4' ? 'validaRuc'
+										:mbregistrooperacioncliente.oERepresentanteLegalData.codigoTipoDocumento eq 'D' or mbregistrooperacioncliente.oERepresentanteLegalData.codigoTipoDocumento eq '1' ? 'validaDni':'validaOtros'}"
+						validator="#{vlgeneral.validarDocumento}">
+						</p:inputText>
+						<h:message for="idNroDocR" styleClass="dsMessage1"/>
+					</div>
+					
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel for="idNroRucR" value="RUC" styleClass="dsLabel1"/>
+						<p:inputText id="idNroRucR" type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.ruc}" autocomplete="off" maxlength="11">
+							<p:keyFilter mask="num"></p:keyFilter>
+						</p:inputText>
+						<h:message for="idNroRucR" styleClass="dsMessage1"/>
+					</div>
+					
+					<div style="#{mbregistrooperacioncliente.visualizarFrmRepresentantePN ? 'display:block;' : 'display:none'}">
+						<div class="ui-g-12 ui-md-6 ui-lg-6">
+							<p:outputLabel value="Centro de Trabajo" styleClass="dsLabel1"/>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.centroTrabajo}" autocomplete="off" maxlength="40" rendered="#{mbregistrooperacioncliente.visualizarFrmRepresentantePN}"></p:inputText>
+						</div>
+						
+						<div class="ui-g-12 ui-md-3 ui-lg-3">
+							<div class="ui-g-11 ui-md-10 ui-lg-11 ui-g-nopad">
+								<p:outputLabel for="txtCargoLabR" value="Cargo" styleClass="dsLabel1"/>
+								<p:inputText id="txtCargoLabR" type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.cargoLaboral}" autocomplete="off" required="false" requiredMessage="Campo Obligatorio" rendered="#{mbregistrooperacioncliente.visualizarFrmRepresentantePN}"></p:inputText>
+								<h:message for="txtCargoLabR" styleClass="dsMessage1"/>
+							</div>
+							<div class="ui-g-1 ui-md-2 ui-lg-1 ui-g-nopad">
+								<br />
+								<div class="dsCuadrarCentro">
+								<p:commandLink styleClass="dsCmdlink1" immediate="true" process="@form" onclick="PF('dlgPreload').show()" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacioncliente.buscarCargoLaboral()}" update=":frmDlgBuscarCargoLaboral"><i class="fas fa-search"></i></p:commandLink>
+								</div>
+							</div>
+						</div>
+						 
+			        	<div class="ui-g-12 ui-md-3 ui-lg-3" style="#{mbregistrooperacioncliente.visualizarFrmContratantePN ? 'display:block;' : 'display:none'}">
+							<p:outputLabel for="idEstCivR" value="Estado Civil" styleClass="dsLabel1" />
+							<p:selectOneMenu id="idEstCivR" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoEstadoCivil}" required="false" requiredMessage="Campo Obligatorio" rendered="#{mbregistrooperacioncliente.visualizarFrmRepresentantePN}">
+								<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+								<f:selectItems value="#{mbregistrooperacioncliente.lstEstadoCivil}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+							</p:selectOneMenu>
+							<h:message for="idEstCivR" styleClass="dsMessage1"/>
+						</div>
+						
+						<div class="ui-g-12 ui-md-3 ui-lg-3">
+							<p:outputLabel for="calInicioDesde" value="Fecha Nacimiento" styleClass="dsLabel1"/>
+							<p:calendar id="calInicioDesde" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.fechaNacimiento}" 
+							maxdate="#{mbregistrooperacioncliente.fechaMaximo}"
+							navigator="true" pattern="dd-MM-yyyy" required="false" requiredMessage="Campo Obligatorio" rendered="#{mbregistrooperacioncliente.visualizarFrmRepresentantePN}"></p:calendar>
+							<h:message for="calInicioDesde" styleClass="dsMessage1"/>
+						</div>
+						
+			        	<div class="ui-g-12 ui-md-3 ui-lg-3">
+							<p:outputLabel for="idPaisNacR" value="Pais Nacimiento" styleClass="dsLabel1"/>
+							<p:selectOneMenu id="idPaisNacR" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoPaisNacimiento}" required="false" requiredMessage="Campo Obligatorio" rendered="#{mbregistrooperacioncliente.visualizarFrmRepresentantePN}">
+								<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+								<f:selectItems value="#{mbregistrooperacioncliente.lstPais}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>			
+	 						</p:selectOneMenu>
+							<h:message for="idPaisNacR" styleClass="dsMessage1"/>
+						</div>
+						
+			        	<div class="ui-g-12 ui-md-3 ui-lg-3">
+							<p:outputLabel for="idNivelInstrR" value="Nivel Instrucción" styleClass="dsLabel1"/>
+							<p:selectOneMenu id="idNivelInstrR" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoNivelInstruccion}" required="false" requiredMessage="Campo Obligatorio" rendered="#{mbregistrooperacioncliente.visualizarFrmRepresentantePN}">
+								<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+	 							<f:selectItems value="#{mbregistrooperacioncliente.lstNivelInstruccion}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+	 						</p:selectOneMenu>
+							<h:message for="idNivelInstrR" styleClass="dsMessage1"/>
+						</div>
+						
+			        	<div class="ui-g-12 ui-md-3 ui-lg-3">
+							<p:outputLabel for="idProfesionR" value="Profesión" styleClass="dsLabel1"/>
+							<p:selectOneMenu id="idProfesionR" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoProfesion}" required="false" requiredMessage="Campo Obligatorio" rendered="#{mbregistrooperacioncliente.visualizarFrmRepresentantePN}">
+								<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+	 							<f:selectItems value="#{mbregistrooperacioncliente.lstProfesion}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+	 						</p:selectOneMenu>
+							<h:message for="idProfesionR" styleClass="dsMessage1"/>
+						</div>
+					</div>
+				</div>
+			</p:tab>
+		    <p:tab id="tab2-2" title="Direcciones" rendered="#{mbregistrooperacioncliente.visualizarTabRepresentante2}">
+		    	<div class="ui-g ui-fluid contenido">
+					<div class="ui-g-12 ui-md-12 ui-lg-6">
+						<p:outputLabel for="idDirComercialR" value="Dirección Comercial" styleClass="dsLabel1"/>
+						<p:inputText id="idDirComercialR" type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.direccionComercial}" required="true" requiredMessage="Campo Obligatorio"></p:inputText>
+						<h:message for="idDirComercialR" styleClass="dsMessage1"/>
+					</div>
+					
+					<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
+						<div class="ui-g-4">
+							<p:outputLabel for="idDepartamentoR" value="Departamento" styleClass="dsLabel1"/>
+							<p:selectOneMenu id="idDepartamentoR" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoDepartamentoComercial}" required="true" requiredMessage="Campo Obligatorio">
+								<p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerDepartamentoComercial()}" update="tabView2:cbProvinciaComercialRepresentante"/>
+								<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+								<f:selectItems value="#{mbregistrooperacioncliente.lstDepartamentoComercial}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				            </p:selectOneMenu>
+				            <h:message for="idDepartamentoR" styleClass="dsMessage1"/>
+						</div>
+						
+						<div class="ui-g-4">
+							<p:outputLabel for="cbProvinciaComercialRepresentante" value="Provincia" styleClass="dsLabel1"/>
+							<p:selectOneMenu id="cbProvinciaComercialRepresentante" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoProvinciaComercial}" required="true" requiredMessage="Campo Obligatorio">
+								<p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerProvinciaComercial()}" update="tabView2:cbDistritoComercialRepresentante"/>
+								<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+								<f:selectItems value="#{mbregistrooperacioncliente.lstProvinciaComercial}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				            </p:selectOneMenu>
+				            <h:message for="cbProvinciaComercialRepresentante" styleClass="dsMessage1"/>
+						</div>
+						
+						<div class="ui-g-4">
+							<p:outputLabel for="cbDistritoComercialRepresentante" value="Distrito" styleClass="dsLabel1"/>
+							<p:selectOneMenu id="cbDistritoComercialRepresentante" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoDistritoComercial}" required="true" requiredMessage="Campo Obligatorio">
+								<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+								<f:selectItems value="#{mbregistrooperacioncliente.lstDistritoComercial}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				            </p:selectOneMenu>
+				            <h:message for="cbDistritoComercialRepresentante" styleClass="dsMessage1"/>
+						</div>
+					</div>
+					
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<p:outputLabel value="Ciudad" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.ciudadComercial}" autocomplete="off"></p:inputText>
+					</div>
+					
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<p:outputLabel value="Provincia/Estado" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.estadoProvinciaComercial}" autocomplete="off"></p:inputText>
+					</div>
+					
+					<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
+						<div class="ui-g-4">
+							<p:outputLabel value="Código Postal" styleClass="dsLabel1"/>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoPostalComercial}" autocomplete="off"></p:inputText>
+						</div>
+						
+						<div class="ui-g-4">
+							<p:outputLabel value="Telefono" styleClass="dsLabel1"/>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.telefonoComercial}" autocomplete="off"></p:inputText>
+						</div>
+						
+						<div class="ui-g-4">
+							<p:outputLabel value="Fax" styleClass="dsLabel1"/>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.faxComercial}" autocomplete="off"></p:inputText>
+						</div>
+					</div>
+					
+					<div class="ui-g-12 ui-md-12 ui-lg-6">
+						<p:outputLabel for="idDirDomiciliariaR" value="Dirección Domiciliaria" styleClass="dsLabel1"/>
+						<p:inputText id="idDirDomiciliariaR" type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.direccionDomiciliaria}" required="true" requiredMessage="Campo Obligatorio"></p:inputText>
+						<h:message for="idDirDomiciliariaR" styleClass="dsMessage1"/>
+					</div>
+					
+					<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
+						<div class="ui-g-4">
+							<p:outputLabel for="idDepartamentoDomR" value="Departamento" styleClass="dsLabel1"/>
+							<p:selectOneMenu id="idDepartamentoDomR" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoDepartamentoDomiciliaria}" required="true" requiredMessage="Campo Obligatorio">
+								<p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerDepartamentoDomiciliaria()}" update="tabView2:cbProvinciaDomiciliariaRepresentante" />
+								<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+								<f:selectItems value="#{mbregistrooperacioncliente.lstDepartamentoDomiciliaria}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				            </p:selectOneMenu>
+				            <h:message for="idDepartamentoDomR" styleClass="dsMessage1"/>
+						</div>
+						
+						<div class="ui-g-4">
+							<p:outputLabel for="cbProvinciaDomiciliariaRepresentante" value="Provincia" styleClass="dsLabel1"/>
+							<p:selectOneMenu id="cbProvinciaDomiciliariaRepresentante" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoProvinciaDomiciliaria}" required="true" requiredMessage="Campo Obligatorio">
+								<p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerProvinciaDomiciliaria()}" update="tabView2:cbDistritoDomiciliariaRepresentante"/>
+								<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+								<f:selectItems value="#{mbregistrooperacioncliente.lstProvinciaDomiciliaria}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				            </p:selectOneMenu>
+				            <h:message for="cbProvinciaDomiciliariaRepresentante" styleClass="dsMessage1"/>
+						</div>
+						
+						<div class="ui-g-4">
+							<p:outputLabel for="cbDistritoDomiciliariaRepresentante" value="Distrito" styleClass="dsLabel1"/>
+							<p:selectOneMenu id="cbDistritoDomiciliariaRepresentante" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoDistritoDomiciliaria}" required="true" requiredMessage="Campo Obligatorio">
+								<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+								<f:selectItems value="#{mbregistrooperacioncliente.lstDistritoDomiciliaria}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				            </p:selectOneMenu>
+				            <h:message for="cbDistritoDomiciliariaRepresentante" styleClass="dsMessage1"/>
+						</div>
+					</div>
+					
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<p:outputLabel value="Ciudad" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.ciudadDomiciliaria}" autocomplete="off"></p:inputText>
+					</div>
+					
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<p:outputLabel value="Provincia/Estado" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.estadoProvinciaDomiciliaria}" autocomplete="off"></p:inputText>
+					</div>
+					
+					<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
+						<div class="ui-g-4">
+							<p:outputLabel value="Código Postal" styleClass="dsLabel1"/>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoPostalDomiciliaria}" autocomplete="off"></p:inputText>
+						</div>
+						
+						<div class="ui-g-4">
+							<p:outputLabel value="Telefono" styleClass="dsLabel1"/>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.telefonoDomiciliaria}" autocomplete="off"></p:inputText>
+						</div>
+						
+						<div class="ui-g-4">
+							<p:outputLabel value="Fax" styleClass="dsLabel1"/>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.faxDomiciliaria}" autocomplete="off"></p:inputText>
+						</div>
+					</div>
+					
+					<div class="ui-g-12 ui-md-12 ui-lg-6">
+						<p:outputLabel value="Dirección Correspondencia" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.direccionCorrespondencia}"></p:inputText>
+					</div>
+					
+					<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
+						<div class="ui-g-4">
+							<p:outputLabel value="Departamento" styleClass="dsLabel1"/>
+							<p:selectOneMenu value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoDepartamentoCorrespondencia}">
+								<p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerDepartamentoCorrespondencia()}" update="tabView2:cbProvinciaCorrespondenciaRepresentante"/>
+								<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+								<f:selectItems value="#{mbregistrooperacioncliente.lstDepartamentoCorrespondencia}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				            </p:selectOneMenu>
+						</div>
+						
+						<div class="ui-g-4">
+							<p:outputLabel value="Provincia" styleClass="dsLabel1"/>
+							<p:selectOneMenu id="cbProvinciaCorrespondenciaRepresentante" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoProvinciaCorrespondencia}">
+								<p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerProvinciaCorrespondencia()}" update="tabView2:cbDistritoCorrespondenciaRepresentante"/>
+								<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+								<f:selectItems value="#{mbregistrooperacioncliente.lstProvinciaCorrespondencia}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				            </p:selectOneMenu>
+						</div>
+						
+						<div class="ui-g-4">
+							<p:outputLabel value="Distrito" styleClass="dsLabel1"/>
+							<p:selectOneMenu id="cbDistritoCorrespondenciaRepresentante" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoDistritoCorrespondencia}">
+								<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+								<f:selectItems value="#{mbregistrooperacioncliente.lstDistritoCorrespondencia}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				            </p:selectOneMenu>
+						</div>
+					</div>
+					
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<p:outputLabel value="Ciudad" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.ciudadCorrespondencia}" autocomplete="off"></p:inputText>
+					</div>
+					
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<p:outputLabel value="Provincia/Estado" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.estadoProvinciaCorrespondencia}" autocomplete="off"></p:inputText>
+					</div>
+					
+					<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
+						<div class="ui-g-4">
+							<p:outputLabel value="Código Postal" styleClass="dsLabel1"/>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoPostalCorrespondencia}" autocomplete="off"></p:inputText>
+						</div>
+						
+						<div class="ui-g-4">
+							<p:outputLabel value="Telefono" styleClass="dsLabel1"/>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.telefonoCorrespondencia}" autocomplete="off"></p:inputText>
+						</div>
+						
+						<div class="ui-g-4">
+							<p:outputLabel value="Fax" styleClass="dsLabel1"/>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.faxCorrespondencia}" autocomplete="off"></p:inputText>
+						</div>
+					</div>
+				</div>
+			</p:tab>
+
+		    <p:tab id="tab2-3" title="Datos del Conyugue" rendered="#{mbregistrooperacioncliente.visualizarTabRepresentante3}">
+		    	<div class="ui-g ui-fluid contenido">
+					<div class="ui-g-12 ui-md-6 ui-lg-6">
+						<p:outputLabel value="Nombre y Apellidos" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.nombreConyugue}" autocomplete="off"></p:inputText>
+					</div>
+					
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel value="Tipo Documento" styleClass="dsLabel1"/>
+						<p:selectOneMenu value="#{mbregistrooperacioncliente.oERepresentanteLegalData.codigoTipoDocumentoConyugue}">
+							<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+							<f:selectItems value="#{mbregistrooperacioncliente.lstDOI}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+						</p:selectOneMenu>
+					</div>
+					
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel value="N° Documento" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.documentoConyugue}" autocomplete="off"></p:inputText>
+					</div>
+					
+					<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
+						<div class="ui-g-4">
+							<p:outputLabel value="Telefono" styleClass="dsLabel1"/>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.telefonoDirecto}" autocomplete="off"></p:inputText>
+						</div>
+						
+						<div class="ui-g-4">
+							<p:outputLabel value="Central" styleClass="dsLabel1"/>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.telefonoCentral}" autocomplete="off"></p:inputText>
+						</div>
+						
+						<div class="ui-g-4">
+							<p:outputLabel value="Anexo" styleClass="dsLabel1"/>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.anexo}" autocomplete="off"></p:inputText>
+						</div>
+					</div>
+					
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel value="Fax" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.fax}" autocomplete="off"></p:inputText>
+					</div>
+				</div>
+			</p:tab>
+			<p:tab id="tab2-4" title="Información Adicional" rendered="#{mbregistrooperacioncliente.visualizarTabRepresentante4}">
+				<div class="ui-g ui-fluid contenido">
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel value="Nro Poderes" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.numeroFichaPoder}" autocomplete="off"></p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel value="Registro Poderes" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.registroPoder}" autocomplete="off"></p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel value="Fecha Ingreso" styleClass="dsLabel1"/>
+						<p:calendar value="#{mbregistrooperacioncliente.oERepresentanteLegalData.fechaIngreso}" navigator="true" pattern="dd-MM-yyyy"></p:calendar>
+					</div>
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel value="¿Firma documentos?" styleClass="dsLabel1"/>
+						<p:selectOneMenu value="#{mbregistrooperacioncliente.oERepresentanteLegalData.indicadorFirma}">
+			            	<f:selectItem itemLabel="No" itemValue="0" />
+			            	<f:selectItem itemLabel="Si" itemValue="1" />
+		            	</p:selectOneMenu>
+		        	</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Poderes 1ra pagina" styleClass="dsLabel1"/>
+						<p:inputTextarea type="text" id="idPoderCabPaginaRepresentante" onkeyup="limitaCaracter(60, 2, 'frmDlgRepresentanteLegal:tabView2:idPoderCabPaginaRepresentante');" 
+						styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.inscripcionPoder1}" autocomplete="off" rows="2"></p:inputTextarea>
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Poderes Pie pagina" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.inscripcionPoder2}" autocomplete="off" maxlength="60"></p:inputText>
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Observaciónes" styleClass="dsLabel1"/>
+						<p:inputTextarea type="text" id="idObservacionRepresentante" onkeyup="limitaCaracter(60, 2, 'frmDlgRepresentanteLegal:tabView2:idObservacionRepresentante');" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oERepresentanteLegalData.observacion}" autocomplete="off" rows="5"></p:inputTextarea>
+					</div>
+				</div>
+			</p:tab>
+			</p:tabView>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgRepresentanteLegal').hide();" process="@this">
+		                <p:resetInput target="@form" />
+				</p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacioncliente.guardarRepresentanteLegal()}" update=":form:tabView1:pnl66, :frmDlgRepresentanteLegal:tabView2, :frmDlgMensajeValidacion"
+				rendered="#{mbregistrooperacioncliente.visualizarBtnGrabarRepresentanteLegal}">
+				</p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgRepresentanteLegalFacultadPoder" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgRepresentanteLegalFacultadPoder">
+		<div class="dsDlgRepresentanteLegalFacultadPoder dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Datos Facultad Poder"/>
+				</div>
+				<div class="dlgDerecha">
+					<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgRepresentanteLegalFacultadPoder').hide();"><i class="fas fa-times"></i></p:commandLink>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid contenido">
+				<p:dataTable id="tblFacultadPoder" value="#{mbregistrooperacioncliente.lstFacultadPoder}" var="item" styleClass="dsTabla1" paginator="true" rows="5" paginatorPosition="bottom"
+				 	rowKey="#{item.codigoOrden}" reflow="false">
+		            <f:facet name="header">
+		                <div class="dsCuadrarCentroEspacioentre">
+		                    <span>Lista de Facultad Poder</span>
+				        	<p:commandLink styleClass="dsCmdlink2" process="@form" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperacioncliente.agregarFacultadPoder()}" update=":frmDlgFacultadPoder" rendered="#{mbregistrooperacioncliente.visualizarBtnAgregarFacultad}">
+				        		<i class="fas fa-plus"></i>
+				        	</p:commandLink>
+		                </div>
+		            </f:facet>
+					<p:column headerText="Facultad">
+						<h:outputText value="#{item.descripcionFacultad}"/>
+					</p:column>
+					<p:column headerText="Servicio">
+						<h:outputText value="#{item.descripcionServicio}"/>
+					</p:column>
+					<p:column headerText="Otorgamiento" styleClass="dsTextoCentro">
+						<h:outputText value="#{item.descripcionOtorgamiento}"/>
+					</p:column>
+					<p:column headerText="Tipo Firma" styleClass="dsTextoCentro" >
+						<h:outputText value="#{item.descripcionTipoFirma}"/>
+					</p:column>
+					<p:column headerText="Tipo Relación" styleClass="dsTextoCentro" >
+						<h:outputText value="#{item.descripcionTipoRelacion}"/>
+					</p:column>
+					<p:column headerText="Rep. Relacionado" styleClass="dsTextoCentro" >
+						<h:outputText value="#{item.descripcionRepresentanteRelacion}"/>
+					</p:column>
+					<p:column headerText="" styleClass="dsTextoCentro">
+						<p:commandButton styleClass="dsBoton5 red" icon="fa fa-trash" title="Eliminar" process="@form" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperacioncliente.eliminarFacultadPoder(item)}" update=":frmDlgRepresentanteLegalFacultadPoder" rendered="#{mbregistrooperacioncliente.visualizarBtnEliminarFacultad}"></p:commandButton>
+			     	</p:column>
+				</p:dataTable>
+			</div>
+			<div class="ui-g ui-fluid pie">
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgFacultadPoder" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgFacultadPoder">
+		<div class="dsDlgFacultadPoder dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Agregar Facultad Poder"/>
+				</div>
+				<div class="dlgDerecha">
+					<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgFacultadPoder').hide();"><i class="fas fa-times"></i></p:commandLink>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<p:outputLabel value="Facultad" styleClass="dsLabel1"/>
+					<p:selectOneMenu value="#{mbregistrooperacioncliente.oEFacultadPoderData.codigoFacultad}">
+						<p:ajax event="change" update="@this"/>
+						<f:selectItems value="#{mbregistrooperacioncliente.lstFacultad}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					</p:selectOneMenu>
+				</div>
+				
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<p:outputLabel value="Otorgamiento" styleClass="dsLabel1"/>
+					<p:selectOneMenu value="#{mbregistrooperacioncliente.oEFacultadPoderData.codigoOtorgamiento}">
+						<p:ajax event="change" update="@this"/>
+						<f:selectItems value="#{mbregistrooperacioncliente.lstOtorgamiento}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					</p:selectOneMenu>
+				</div>
+				
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<div class="ui-g-11 ui-md-10 ui-lg-11 ui-g-nopad">
+						<p:outputLabel value="Servicio" styleClass="dsLabel1"/>
+						<p:inputText type="text" id="txtDescripcionServicio" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEFacultadPoderData.descripcionServicio}" disabled="true"></p:inputText>
+					</div>
+					<div class="ui-g-1 ui-md-2 ui-lg-1 ui-g-nopad">
+						<br />
+						<div class="dsCuadrarCentro">
+						<p:commandLink styleClass="dsCmdlink1" immediate="true" process="@form" onclick="PF('dlgPreload').show()" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacioncliente.buscarServicio()}" update=":frmDlgBuscarServicio"><i class="fas fa-search"></i></p:commandLink>
+						</div>
+					</div>
+				</div>
+				
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<p:outputLabel value="Tipo Firma" styleClass="dsLabel1"/>
+					<p:selectOneMenu value="#{mbregistrooperacioncliente.oEFacultadPoderData.codigoTipoFirma}">
+						<p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerTipoFirma()}" update="pnlgFrmRepresentanteRelacion"/>
+		            	<f:selectItem itemLabel="Individual" itemValue="1" />
+		            	<f:selectItem itemLabel="Mancomunado" itemValue="2" />
+	            	</p:selectOneMenu>
+	        	</div>
+	        	
+	        	<h:panelGroup id="pnlgFrmRepresentanteRelacion" layout="block" style="#{mbregistrooperacioncliente.visualizarFrmRepresentanteRelacion ? 'display:block;' : 'display:none'}">
+					<div class="ui-g-12 ui-md-6 ui-lg-6">
+						<p:outputLabel value="Tipo Relación" styleClass="dsLabel1"/>
+						<p:selectOneMenu value="#{mbregistrooperacioncliente.oEFacultadPoderData.codigoTipoRelacion}">
+							<p:ajax event="change" update="@this"/>
+							<f:selectItems value="#{mbregistrooperacioncliente.lstTipoRelacion}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+						</p:selectOneMenu>
+					</div>
+					
+					<div class="ui-g-12 ui-md-6 ui-lg-6">
+						<div class="ui-g-11 ui-md-10 ui-lg-11 ui-g-nopad">
+							<p:outputLabel value="Representante Relacionado" styleClass="dsLabel1"/>
+							<p:inputText type="text" id="txtDescripcionRepresentanteRelacion" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEFacultadPoderData.descripcionRepresentanteRelacion}" disabled="true"></p:inputText>
+						</div>
+						<div class="ui-g-1 ui-md-2 ui-lg-1 ui-g-nopad">
+							<br />
+							<div class="dsCuadrarCentro">
+							<p:commandLink styleClass="dsCmdlink1" immediate="true" process="@form" onclick="PF('dlgPreload').show()" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacioncliente.buscarRepresentanteLegalRelacion()}" update=":frmDlgBuscarRepresentanteRelacion"><i class="fas fa-search"></i></p:commandLink>
+							</div>
+						</div>
+					</div>
+				</h:panelGroup>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgFacultadPoder').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacioncliente.guardarFacultadPoder()}" update=":frmDlgRepresentanteLegalFacultadPoder, frmDlgFacultadPoder" rendered="#{mbregistrooperacioncliente.visualizarBtnGrabarFacultad}"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgDeudor" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgDeudor">
+		<div class="dsDlgDeudor dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+	 				<p:outputLabel styleClass="dsLabel2" value="Agregar Deudor" rendered="#{mbregistrooperacioncliente.accionInternaDeudor eq '0' ? true : false}"/>
+	 				<p:outputLabel styleClass="dsLabel2" value="Modificar Deudor" rendered="#{mbregistrooperacioncliente.accionInternaDeudor eq '1' ? true : false}"/>
+				</div>
+				<div class="dlgDerecha">
+					<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgDeudor').hide();"><i class="fas fa-times"></i></p:commandLink>
+				</div>
+			</div>
+			<p:tabView id="tabView3" dynamic="true" widgetVar="tabs3" activeIndex="#{mbregistrooperacioncliente.indicadorTabSeleccion}">
+        	<p:tab id="tab3-1" title="Datos Generales">
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<div class="ui-g-11 ui-md-10 ui-lg-11 ui-g-nopad">
+						<p:outputLabel for="txtCodigoDeudor" value="Código Deudor" styleClass="dsLabel1"/>
+						<p:inputText type="text" id="txtCodigoDeudor" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEDeudorData.tercero.codigoCliente}" disabled="true" required="true" requiredMessage="Campo Obligatorio"></p:inputText>
+						<h:message for="txtCodigoDeudor" styleClass="dsMessage1"/>
+					</div>
+					<div class="ui-g-1 ui-md-2 ui-lg-1 ui-g-nopad">
+						<br />
+						<div class="dsCuadrarCentro">
+						<p:commandLink styleClass="dsCmdlink1" immediate="true" process="@form" onclick="PF('dlgPreload').show()" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacioncliente.buscarTercero()}" update=":frmDlgBuscarTercero"><i class="fas fa-search"></i></p:commandLink>
+						</div>
+					</div>
+				</div>
+				
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<p:outputLabel for="txtNombreD" value="Nombre" styleClass="dsLabel1"/>
+					<p:inputText id="txtNombreD" type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEDeudorData.tercero.nombreLargo}" autocomplete="off" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}" required="true" requiredMessage="Campo Obligatorio"></p:inputText>
+					<h:message for="txtNombreD" styleClass="dsMessage1"/>
+				</div>
+				
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<p:outputLabel for="txtNombreCortoD"  value="Nombre Corto" styleClass="dsLabel1"/>
+					<p:inputText id="txtNombreCortoD" type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEDeudorData.tercero.nombreCorte}" autocomplete="off" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}" required="true" requiredMessage="Campo Obligatorio"></p:inputText>
+					<h:message for="txtNombreCortoD" styleClass="dsMessage1"/>
+				</div>
+				
+				<div class="ui-g-12 ui-md-3 ui-lg-3">
+					<p:outputLabel value="Siglas" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEDeudorData.tercero.siglas}" autocomplete="off" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}"></p:inputText>
+				</div>
+				
+				<div class="ui-g-12 ui-md-3 ui-lg-3">
+					<div class="ui-g-11 ui-md-10 ui-lg-11 ui-g-nopad">
+						<p:outputLabel value="CIIU" styleClass="dsLabel1"/>
+						<p:inputText type="text" id="txtCodigoCIIU" styleClass="dsInput1" value="#{mbregistrooperacioncliente.codigoCIIUDeudor}" disabled="true"></p:inputText>
+					</div>
+					<div class="ui-g-1 ui-md-2 ui-lg-1 ui-g-nopad">
+						<br />
+						<div class="dsCuadrarCentro">
+						<p:commandLink styleClass="dsCmdlink1" immediate="true" process="@form" onclick="PF('dlgPreload').show()" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacioncliente.buscarCIIU()}" update=":frmDlgBuscarCIIU" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}"><i class="fas fa-search"></i></p:commandLink>
+						</div>
+					</div>
+				</div>
+				
+				<div class="ui-g-12 ui-md-3 ui-lg-3">
+					<p:outputLabel for="idTipoDocD" value="Tipo Documento" styleClass="dsLabel1"/>
+					<p:selectOneMenu id="idTipoDocD" value="#{mbregistrooperacioncliente.codigoTipoDocumentoDeudor}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}" required="true" requiredMessage="Campo Obligatorio">
+						<p:ajax event="change" update="@this"/>
+						<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+						<f:selectItems value="#{mbregistrooperacioncliente.lstDOI}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+					</p:selectOneMenu>
+					<h:message for="idTipoDocD" styleClass="dsMessage1"/>
+				</div>
+				
+				<div class="ui-g-12 ui-md-3 ui-lg-3">
+					<p:outputLabel for="idNroDocD" value="N° Documento" styleClass="dsLabel1"/>
+					<p:inputText id="idNroDocD" type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEDeudorData.tercero.documento}" autocomplete="off" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}" required="true" requiredMessage="Campo Obligatorio"></p:inputText>
+					<h:message for="idNroDocD" styleClass="dsMessage1"/>
+				</div>
+				
+				<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel for="idTelefonoD" value="Telefono" styleClass="dsLabel1"/>
+						<p:inputText id="idTelefonoD" type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEDeudorData.tercero.telefono1}" autocomplete="off" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}" required="true" requiredMessage="Campo Obligatorio"></p:inputText>
+						<h:message for="idTelefonoD" styleClass="dsMessage1"/>
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Anexo" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEDeudorData.tercero.anexo}" autocomplete="off" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}"></p:inputText>
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Fax" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEDeudorData.tercero.fax}" autocomplete="off" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}"></p:inputText>
+					</div>
+				</div>
+				
+				<div class="ui-g-12 ui-md-12 ui-lg-6">
+					<p:outputLabel for="idDireccionD" value="Dirección" styleClass="dsLabel1"/>
+					<p:inputText id="idDireccionD" type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEDeudorData.tercero.direccion}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}" required="true" requiredMessage="Campo Obligatorio"></p:inputText>
+					<h:message for="idDireccionD" styleClass="dsMessage1"/>
+				</div>
+				
+				<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel value="Departamento" styleClass="dsLabel1"/>
+						<p:selectOneMenu value="#{mbregistrooperacioncliente.codigoDepartamentoDeudor}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}">
+							<p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerDepartamentoDeudor()}" onstart="PF('blkDlgDeudor').show();" onsuccess="PF('blkDlgDeudor').hide();" update="cbProvinciaDeudor"/>
+							<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+							<f:selectItems value="#{mbregistrooperacioncliente.lstDepartamentoDeudor}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+			            </p:selectOneMenu>
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Provincia" styleClass="dsLabel1"/>
+						<p:selectOneMenu id="cbProvinciaDeudor" value="#{mbregistrooperacioncliente.codigoProvinciaDeudor}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}">
+							<p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerProvinciaDeudor()}" onstart="PF('blkDlgDeudor').show();" onsuccess="PF('blkDlgDeudor').hide();" update="cbDistritoDeudor"/>
+							<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+							<f:selectItems value="#{mbregistrooperacioncliente.lstProvinciaDeudor}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+			            </p:selectOneMenu>
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Distrito" styleClass="dsLabel1"/>
+						<p:selectOneMenu id="cbDistritoDeudor" value="#{mbregistrooperacioncliente.codigoDistritoDeudor}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}">
+							<p:ajax event="change" update="@this"/>
+							<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+							<f:selectItems value="#{mbregistrooperacioncliente.lstDistritoDeudor}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+			            </p:selectOneMenu>
+					</div>
+				</div>
+				
+				<div class="ui-g-12 ui-md-12 ui-lg-6">
+					<p:outputLabel for="idDireccionP" value="Dirección Postal" styleClass="dsLabel1"/>
+					<p:inputText id="idDireccionP" type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEDeudorData.tercero.direccionPostal}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}" required="true" requiredMessage="Campo Obligatorio"></p:inputText>
+					<h:message for="idDireccionP" styleClass="dsMessage1"/>
+				</div>
+				
+				<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel value="Departamento" styleClass="dsLabel1"/>
+						<p:selectOneMenu value="#{mbregistrooperacioncliente.codigoDepartamentoPostalDeudor}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}">
+							<p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerDepartamentoPostalDeudor()}" onstart="PF('blkDlgDeudor').show();" onsuccess="PF('blkDlgDeudor').hide();" update="cbProvinciaPostalDeudor"/>
+							<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+							<f:selectItems value="#{mbregistrooperacioncliente.lstDepartamentoPostalDeudor}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+			            </p:selectOneMenu>
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Provincia" styleClass="dsLabel1"/>
+						<p:selectOneMenu id="cbProvinciaPostalDeudor" value="#{mbregistrooperacioncliente.codigoProvinciaPostalDeudor}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}">
+							<p:ajax event="change" listener="#{mbregistrooperacioncliente.obtenerProvinciaPostalDeudor()}" onstart="PF('blkDlgDeudor').show();" onsuccess="PF('blkDlgDeudor').hide();" update="cbDistritoPostalDeudor"/>
+							<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+							<f:selectItems value="#{mbregistrooperacioncliente.lstProvinciaPostalDeudor}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+			            </p:selectOneMenu>
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Distrito" styleClass="dsLabel1"/>
+						<p:selectOneMenu id="cbDistritoPostalDeudor" value="#{mbregistrooperacioncliente.codigoDistritoPostalDeudor}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}">
+							<p:ajax event="change" update="@this"/>
+							<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+							<f:selectItems value="#{mbregistrooperacioncliente.lstDistritoPostalDeudor}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+			            </p:selectOneMenu>
+					</div>
+				</div>
+				
+				<div class="ui-g-12 ui-md-3 ui-lg-3">
+					<p:outputLabel value="Tipo Pago" styleClass="dsLabel1"/>
+					<p:selectOneMenu value="#{mbregistrooperacioncliente.codigoTipoPagoDeudor}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}">
+						<p:ajax event="change" update="@this"/>
+						<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+						<f:selectItems value="#{mbregistrooperacioncliente.lstTipoPago}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					</p:selectOneMenu>
+				</div>
+				
+				<div class="ui-g-12 ui-md-3 ui-lg-3">
+					<p:outputLabel value="Forma Pago" styleClass="dsLabel1"/>
+					<p:selectOneMenu value="#{mbregistrooperacioncliente.codigoFormaPagoDeudor}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}">
+						<p:ajax event="change" update="@this"/>
+						<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+						<f:selectItems value="#{mbregistrooperacioncliente.lstFormaPago}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+					</p:selectOneMenu>
+				</div>
+				
+				<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel value="Monto Limite" styleClass="dsLabel1"/>
+						<p:inputNumber type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEDeudorData.adicional.montoLimite}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}" decimalSeparator="," thousandSeparator="."></p:inputNumber>
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Monto Adicional" styleClass="dsLabel1"/>
+						<p:inputNumber type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEDeudorData.adicional.montoAdicional}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}" decimalSeparator="," thousandSeparator="."></p:inputNumber>
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Fecha Vencimiento" styleClass="dsLabel1"/>
+						<p:calendar value="#{mbregistrooperacioncliente.oEDeudorData.adicional.fechaVencimiento}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}" navigator="true" pattern="dd-MM-yyyy"></p:calendar>
+					</div>
+				</div>
+			</div>
+        	</p:tab>
+        	<p:tab id="tab3-2" title="Estado">
+				<div class="ui-g ui-fluid contenido">
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel value="Ult. Estado" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEDeudorData.estado.descripcionEstadoUltimo}" disabled="true"></p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel value="Usuario Registro" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEDeudorData.estado.usuarioUltimo}" disabled="true"></p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel value="Fecha Registro" styleClass="dsLabel1"/>
+						<p:calendar value="#{mbregistrooperacioncliente.oEDeudorData.estado.fechaRegistroUltimo}" navigator="true" pattern="dd-MM-yyyy" disabled="true"></p:calendar>
+					</div>
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel value="Hora Registro" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEDeudorData.estado.horaRegistroUltimo}" disabled="true"></p:inputText>
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Ult. Observaciónes" styleClass="dsLabel1"/>
+						<p:inputTextarea type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEDeudorData.estado.observacionUltimo}" disabled="true"></p:inputTextarea>
+					</div>
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<p:outputLabel value="Estado" styleClass="dsLabel1"/>
+						<p:selectOneMenu value="#{mbregistrooperacioncliente.codigoEstadoDeudor}" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}">
+							<p:ajax event="change" update="@this"/>
+							<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
+							<f:selectItems value="#{mbregistrooperacioncliente.lstEstadoDeudorFiltro}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+						</p:selectOneMenu>
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Observaciónes" styleClass="dsLabel1"/>
+						<p:inputTextarea type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oEDeudorData.estado.observacion}" autocomplete="off" disabled="#{mbregistrooperacioncliente.deshabilitarFrmDeudor}"></p:inputTextarea>
+					</div>
+				</div>
+        	</p:tab>
+			</p:tabView>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgDeudor').hide();" process="@this">
+				 	<p:resetInput target="@form" />	
+				</p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacioncliente.guardarDeudor()}" update=":form:tabView1:tblDeudor, frmDlgDeudor:tabView3" rendered="#{mbregistrooperacioncliente.visualizarBtnGrabarDeudor}"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	<p:blockUI block="frmDlgDeudor" widgetVar="blkDlgDeudor"></p:blockUI>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgSuscripcion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">
+	<h:form id="frmDlgSuscripcion">
+		<div class="dsDlgSuscripcion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Agregar Suscripción"/>
+				</div>
+				<div class="dlgDerecha">
+					<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgSuscripcion').hide();"><i class="fas fa-times"></i></p:commandLink>
+				</div>
+			</div>
+			<div class="contenido">
+				<div class="ui-g ui-fluid">
+					<div class="ui-g-8">
+						<p:outputLabel value="Nombre" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oESuscripcionData.nombreLargo}" autocomplete="off"></p:inputText>
+					</div>
+					<div class="ui-g-3">
+						<p:outputLabel value="Número" styleClass="dsLabel1"/>
+						<p:inputNumber type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.oESuscripcionData.numeroSuscripcion}" 
+						autocomplete="off" decimalPlaces="0" decimalSeparator="." thousandSeparator="," minValue="1" maxValue="#{mbregistrooperacioncliente.numeroSuscripcionMaximo}" ></p:inputNumber>
+					</div>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgSuscripcion').hide();" process="@this">
+				 	<p:resetInput target="@form" />	
+				</p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+				actionListener="#{mbregistrooperacioncliente.guardarSuscripcion()}" update=":form:tabView1:tblSuscripcion, :form:tabView1:txtNumeroSuscripcion, :frmDlgSuscripcion"
+				rendered="#{mbregistrooperacioncliente.visualizarBtnGrabarSuscripcion}"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgBuscarServicio" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">
+	<h:form id="frmDlgBuscarServicio">
+		<div class="dsDlgBuscarServicio dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Buscar Servicio"/>
+				</div>
+				<div class="dlgDerecha">
+					<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgBuscarServicio').hide();"><i class="fas fa-times"></i></p:commandLink>
+				</div>
+			</div>
+	    	<p:messages id="mensaje" showDetail="true" showSummary="false" closable="true" />
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:dataTable id="tblServicio" value="#{mbregistrooperacioncliente.lstServicio}" var="item" styleClass="dsTabla1" paginator="true" rows="10" paginatorPosition="bottom" selectionMode="single"
+								 selection="#{mbregistrooperacioncliente.oEServicioSelected}" rowKey="#{item.codigoServicio}" reflow="false">
+						<p:ajax event="rowDblselect" listener="#{mbregistrooperacioncliente.asignarServicio()}" update=":frmDlgFacultadPoder" oncomplete="PF('dlgBuscarServicio').hide()"/>
+						<p:column headerText="Código" styleClass="dsTextoCentro">
+							<h:outputText value="#{item.codigoServicio}"/>
+						</p:column>
+						<p:column headerText="Descripción">
+							<h:outputText value="#{item.descripcion}"/>
+						</p:column>
+						<p:column headerText="Moneda" styleClass="dsTextoCentro">
+							<h:outputText value="#{item.descripcionMoneda}"/>
+						</p:column>
+					</p:dataTable>
+				</div>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgBuscarRepresentanteRelacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">
+	<h:form id="frmDlgBuscarRepresentanteRelacion">
+		<div class="dsDlgBuscarRepresentanteRelacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Buscar Representante"/>
+				</div>
+				<div class="dlgDerecha">
+					<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgBuscarRepresentanteRelacion').hide();"><i class="fas fa-times"></i></p:commandLink>
+				</div>
+			</div>
+	    	<p:messages id="mensaje" showDetail="true" showSummary="false" closable="true" />
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:dataTable id="tblRepresentanteRelacion" value="#{mbregistrooperacioncliente.lstRepresentanteLegalRelacion}" var="item" styleClass="dsTabla1" paginator="true" rows="10" paginatorPosition="bottom" selectionMode="single"
+								 selection="#{mbregistrooperacioncliente.oERepresentanteLegalRelacionSelected}" rowKey="#{item.codigoOrden}" reflow="false">
+						<p:ajax event="rowDblselect" listener="#{mbregistrooperacioncliente.asignarRepresentanteLegalRelacion()}" update=":frmDlgFacultadPoder" oncomplete="PF('dlgBuscarRepresentanteRelacion').hide()"/>
+						<p:column headerText="Descripción" styleClass="dsTextoCentro">
+							<h:outputText value="#{item.nombreLargo}"/>
+						</p:column>
+					</p:dataTable>
+				</div>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgBuscarTercero" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">
+	<h:form id="frmDlgBuscarTercero">
+		<div class="dsDlgBuscarTercero dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Buscar Tercero"/>
+				</div>
+				<div class="dlgDerecha">
+					<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgBuscarTercero').hide();"><i class="fas fa-times"></i></p:commandLink>
+				</div>
+			</div>
+	    	<p:messages id="mensaje" showDetail="true" showSummary="false" closable="true" />
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:dataTable id="tblTercero" value="#{mbregistrooperacioncliente.lstTercero}" var="item" styleClass="dsTabla1" paginator="true" rows="10" paginatorPosition="bottom" selectionMode="single"
+								 selection="#{mbregistrooperacioncliente.oETerceroSelected}" rowKey="#{item.codigo2}" reflow="false">
+						<p:ajax event="rowDblselect" listener="#{mbregistrooperacioncliente.asignarTercero()}" update=":frmDlgDeudor:tabView3" onstart="PF('dlgBuscarTercero').hide(); PF('blkDlgDeudor').show();" onsuccess="PF('blkDlgDeudor').hide();"/>
+						<p:column headerText="Código" styleClass="dsTextoCentro">
+							<h:outputText value="#{item.codigo2}"/>
+						</p:column>
+						<p:column headerText="Descripción">
+							<h:outputText value="#{item.descripcion}"/>
+						</p:column>
+					</p:dataTable>
+				</div>
+			</div>
+		</div>
+	</h:form>
+	<p:blockUI block="frmDlgBuscarTercero" widgetVar="blkDlgBuscarTercero"></p:blockUI>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgBuscarCIIU" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">
+	<h:form id="frmDlgBuscarCIIU">
+		<div class="dsDlgBuscarCIIU dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Buscar CIIU"/>
+				</div>
+				<div class="dlgDerecha">
+					<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgBuscarCIIU').hide();"><i class="fas fa-times"></i></p:commandLink>
+				</div>
+			</div>
+	    	<p:messages id="mensaje" showDetail="true" showSummary="false" closable="true" />
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:dataTable id="tblCIIU" value="#{mbregistrooperacioncliente.lstCIIU}" var="item" styleClass="dsTabla1" paginator="true" rows="10" paginatorPosition="bottom" selectionMode="single"
+								 selection="#{mbregistrooperacioncliente.oECIIUSelected}" rowKey="#{item.codigo}" reflow="false" tableStyle="table-layout:auto">
+						<p:ajax event="rowDblselect" listener="#{mbregistrooperacioncliente.asignarCIIU()}" update=":frmDlgDeudor:tabView3:txtCodigoCIIU" oncomplete="PF('dlgBuscarCIIU').hide()"/>
+						<p:column headerText="Código" styleClass="dsTextoCentro">
+							<h:outputText value="#{item.codigo}"/>
+						</p:column>
+						<p:column headerText="Descripción">
+							<h:outputText value="#{item.descripcion}"/>
+						</p:column>
+					</p:dataTable>
+				</div>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgBuscarCargoLaboral" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">
+	<h:form id="frmDlgBuscarCargoLaboral">
+		<div class="dsDlgBuscarCargoLaboral dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Buscar Cargo"/>
+				</div>
+				<div class="dlgDerecha">
+					<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgBuscarCargoLaboral').hide();"><i class="fas fa-times"></i></p:commandLink>
+				</div>
+			</div>
+	    	<p:messages id="mensaje" showDetail="true" showSummary="false" closable="true" />
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:dataTable id="tblCargoLaboral" value="#{mbregistrooperacioncliente.lstCargoLaboral}" var="item" styleClass="dsTabla1" paginator="true" rows="10" paginatorPosition="bottom" selectionMode="single"
+								 selection="#{mbregistrooperacioncliente.oECargoLaboralSelected}" rowKey="#{item.codigo2}" reflow="false" tableStyle="table-layout:auto">
+						<p:ajax event="rowDblselect" listener="#{mbregistrooperacioncliente.asignarCargoLaboral()}" update=":frmDlgRepresentanteLegal:tabView2:txtCargoLabR" oncomplete="PF('dlgBuscarCargoLaboral').hide()"/>
+						<p:column headerText="Código" styleClass="dsTextoCentro">
+							<h:outputText value="#{item.codigo2}"/>
+						</p:column>
+						<p:column headerText="Descripción">
+							<h:outputText value="#{item.descripcion}"/>
+						</p:column>
+					</p:dataTable>
+				</div>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgAgregarTipoRepresentanteLegal" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgAgregarTipoRepresentanteLegal">
+		<div class="dsDlgAgregarTipoRepresentanteLegal dsDialogo4">
+	 		<div class="cabecera">
+	 			<div class="dlgIzquierda">
+	 				<p:outputLabel styleClass="dsLabel2" value="Agregar Representante Legal"/>
+	 			</div>
+			</div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="mensaje">
+					<p:outputLabel value="Seleccione tipo de representante Legal" styleClass="dsLabel3"/>
+				</div>
+				<div class="ui-g-12 ui-md-12 ui-lg-12">					
+					<p:selectOneMenu value="#{mbregistrooperacioncliente.indicadorTipoPersonaRepresentante}">
+		            	<f:selectItem itemLabel="Natural" itemValue="1" />
+		            	<f:selectItem itemLabel="Jurídico" itemValue="2" />
+		            </p:selectOneMenu>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgAgregarTipoRepresentanteLegal').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgAgregarTipoRepresentanteLegal').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperacioncliente.agregarRepresentanteLegal()}" update=":frmDlgRepresentanteLegal"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgSalir" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgSalir">
+		<div class="dsDlgSalir dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Salir"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="¿Estas seguro que deseas salir?" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgSalir').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgSalir').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperacioncliente.salir()}"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgMensajeValidacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgMensajeValidacion">
+		<div class="dsDlgMensajeValidacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Validación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mbregistrooperacioncliente.mensajeValidacion}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" onclick="PF('dlgMensajeValidacion').hide();"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgMensajeOperacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgMensajeOperacion">
+		<div class="dsDlgMensajeOperacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Operación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mbregistrooperacioncliente.oEMensaje.descMensaje}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@this" onclick="PF('dlgMensajeOperacion').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperacioncliente.salir()}"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+
+	<p:dialog widgetVar="dlgBuscarNotario" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true"> 
+	<h:form id="frmDlgBuscarNotario">
+		<div class="dsDlgBuscarNotario dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Buscar Notario"/>
+				</div>
+	 			<div class="dlgDerecha">
+	 				<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgBuscarNotario').hide();" >
+	 				<i class="fas fa-times"></i>
+	 			</p:commandLink>
+	 			</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<div class="ui-g-12 ui-md-6 ui-lg-4 ui-xl-4">
+						<p:outputLabel value="Tipo de Búsqueda" styleClass="dsLabel1"/>				
+					    <p:selectOneMenu value="#{mbregistrooperacioncliente.codigoBuscarPersona}" >
+			            	<f:selectItem itemLabel="[Seleccione]" itemValue="0" />
+			            	<f:selectItem itemLabel="Código Socio" itemValue="1" />
+			            	<f:selectItem itemLabel="Nombre Socio" itemValue="2" />
+			            	<f:selectItem itemLabel="Número de Documento" itemValue="3" />
+		                </p:selectOneMenu>	
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-4 ui-xl-4"> 
+						<p:outputLabel value="Descripción" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacioncliente.descripcionBuscarPersona}" autocomplete="off" maxlength="50">
+						</p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-4">
+						<p:commandButton styleClass="dsBoton1 tamanio1 principal" value="Buscar" onclick="PF('blkDlgBuscarNotario').show();" 
+						oncomplete="PF('blkDlgBuscarNotario').hide();" action="#{mbregistrooperacioncliente.buscarSocio()}" 
+						update=":frmDlgBuscarNotario:tblNotario"></p:commandButton>
+					</div>
+				</div>
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:dataTable id="tblNotario" value="#{mbregistrooperacioncliente.lstNotario}" var="item" styleClass="dsTabla1" paginator="true" rows="3" paginatorPosition="bottom" selectionMode="single"
+						selection="#{mbregistrooperacioncliente.oENotarioSelected}"  rowKey="#{item.codigoCliente}" reflow="false" >
+						<p:ajax event="rowDblselect" listener="#{mbregistrooperacioncliente.asignarNotario()}" update="form:tabView1:idDescripcionNotario" oncomplete="PF('dlgBuscarNotario').hide()"/> 
+						<p:column headerText="Código" styleClass="dsTextoCentro" visible="true" width="80px;">
+							<h:outputText value="#{item.codigoCliente}"/> 
+						</p:column>
+						<p:column headerText="Nombre" styleClass="dsTextoCentro" visible="true">
+						    <div class="dsTextoCorto">
+							   <h:outputText value="#{item.nombreLargo}"/> 
+						    </div>
+						</p:column>
+						<p:column headerText="Documento" styleClass="dsTextoCentro" visible="true">
+							   <h:outputText value="#{item.documento}"/>
+						</p:column>	 			
+					</p:dataTable>
+				</div>
+			</div>
+		</div>
+	</h:form>
+	<p:blockUI block="frmDlgBuscarNotario" widgetVar="blkDlgBuscarNotario"></p:blockUI>
+	</p:dialog>
+
+
+</f:view>
+</ui:define>
+</ui:composition>

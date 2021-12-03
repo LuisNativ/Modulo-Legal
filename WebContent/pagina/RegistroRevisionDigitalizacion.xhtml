@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  template="/pagina/maestra.xhtml">
+<ui:define name="contenido">
+<h:head>
+</h:head>
+<f:view>
+	<h:form id="form" enctype="multipart/form-data">
+
+	<div class="ui-g ui-fluid">
+	<div class="ui-g-12 ui-md-12 ui-lg-12">
+	<div class="dsPaginaTitulo">
+        <div class="tituloIzquieda">
+            <h4><i class="fa fa-folder-open"></i> M&#243;dulo : Consultas <small> > Solicitud</small></h4>
+        </div>
+    </div>
+    </div>
+    </div>
+	
+	<p:panel widgetVar="pnl1" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px" rendered="true">
+        <f:facet name="header" >
+            <i class="fas fa-comments"></i> Datos del Mensaje
+        </f:facet>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-md-12 ui-lg-12">
+				<p:outputLabel value="Asunto" styleClass="dsLabel1"/>
+				<p:inputText type="text" styleClass="dsInput1" value="#{mbrevisiondigitalizacion.oERevisionSolicitudLoad.descripcionAsunto}" autocomplete="off" maxlength="250" disabled="#{mbrevisiondigitalizacion.deshabilitar}"></p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-12 ui-lg-12">
+				<p:inputTextarea type="text" styleClass="dsInput1" value="#{mbrevisiondigitalizacion.oERevisionSolicitudLoad.descripcionMensajeDigitalizacion}" autocomplete="off" maxlength="9999" disabled="true"></p:inputTextarea>
+				<!-- Agregar Documento Carga Multiple sin descripcion -->
+				<p:fileUpload
+					value="#{mbrevisiondigitalizacion.files}"
+					style="font-size:11px;"
+		       		sizeLimit="15728640"
+		       		allowTypes="/(\.|\/)(jpe?g|png|pdf|doc|docx|xls|xlsx)$/"
+					accept=".jpg, .jpeg, .png, .pdf, .doc, .docx, .xls, .xlsx"
+					fileUploadListener="#{mbrevisiondigitalizacion.agregarDocumentoCarga}"
+					mode="advanced"
+		       		auto="true" 
+		       		multiple="true"
+		       		dragDropSupport="true"
+		       		label="Adjuntar"
+		       		uploadLabel="Cargar"
+		       		cancelLabel="Cancelar"
+		       		invalidFileMessage="Tipo de archivo incorrecto, archivos permitidos jpg, png, jpeg"
+		       		invalidSizeMessage="Tamaño del archivo excede el límite de 15Mbs"
+		       		update="tblDocumentoCarga"
+		       		oncomplete="invocaListarDocumentoCargaMultiple()"
+		       		previewWidth= "20">
+		       	</p:fileUpload>
+				<p:dataTable id="tblDocumentoCarga" value="#{mbrevisiondigitalizacion.lstDocumentoCarga}" var="item" styleClass="dsTabla2"
+							 rowKey="#{item.data}" reflow="true" emptyMessage="">
+					<p:column headerText="" styleClass="dsTextoCentro">
+						<div class="contenedorFila">
+						<div>
+						<h:outputText value="#{item.nombre}"/>
+						</div>
+						<div>
+						<h:outputText value="#{item.descripcionSize}"/>
+						</div>
+						<div>
+						<p:commandButton styleClass="dsBoton3" icon="fa fa-remove" process="@this" action="#{mbrevisiondigitalizacion.eliminarDocumentoCarga(item)}" update="tblDocumentoCarga">
+		      			</p:commandButton>
+		      			</div>
+		      			</div>
+					</p:column>
+				</p:dataTable>
+			</div>
+		</div>
+	</p:panel>
+
+	<p:panel widgetVar="pnl2" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+        <f:facet name="header" >
+            <i class="fa fa-table"></i> Lista de Revisiones
+        </f:facet>
+		<p:dataTable id="tblRevisionMensaje" value="#{mbrevisiondigitalizacion.lstRevisionMensaje}" var="item" styleClass="dsTabla1" paginator="true" rows="5" paginatorPosition="bottom" selectionMode="single"
+					 selection="#{mbrevisiondigitalizacion.oERevisionMensajeSelected}" rowKey="#{item.codigoMensaje}" reflow="true">
+			<p:ajax event="rowSelect" listener="#{mbrevisiondigitalizacion.filtrarDocumento()}" update=":form:tblRevisionDocumento"/>
+			<p:column headerText="N° Revisión" styleClass="dsTextoCentro">
+				<h:outputText value="#{item.codigoRevision}"/>
+			</p:column>
+			<p:column headerText="Descripción">
+				<h:outputText value="#{item.abreviacionMensaje}"/>
+			</p:column>
+			<p:column headerText="N° Documentos" styleClass="dsTextoCentro">
+				<h:outputText value="#{item.numeroDocumento}"/>
+			</p:column>
+			<p:column headerText="Usuario de Registro" styleClass="dsTextoCentro" >
+				<h:outputText value="#{item.descripcionUsuarioEnvio}"/>
+			</p:column>
+			<p:column headerText="Fecha Registro" styleClass="dsTextoCentro" >
+				<h:outputText value="#{item.fechaEnvio}"/>
+			</p:column>
+			<p:column headerText="Hora Registro" styleClass="dsTextoCentro" >
+				<h:outputText value="#{item.horaEnvio}"/>
+			</p:column>
+		</p:dataTable>
+	</p:panel>
+
+	<p:panel widgetVar="pnl3" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+        <f:facet name="header" >
+            <i class="fa fa-table"></i> Lista de Documentos
+        </f:facet>
+		<p:dataTable id="tblRevisionDocumento" value="#{mbrevisiondigitalizacion.lstRevisionDocumentoFiltro}" var="item" styleClass="dsTabla1" paginator="true" rows="5" paginatorPosition="bottom"
+					 rowKey="#{item.codigoDocumento}" reflow="true">
+			<p:column headerText="Nombre" styleClass="dsTextoCentro">
+				<h:outputText value="#{item.nombreDocumento}"/>
+			</p:column>
+		</p:dataTable>
+	</p:panel>
+
+	<div class="ui-g ui-fluid dsCuadrarCentro">
+		<p:commandButton styleClass="dsBoton1 tamanio1 secundario" value="Volver" icon="fa fa-arrow-left" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbrevisiondigitalizacion.salir()}" rendered="#{mbrevisiondigitalizacion.indicadorSalir eq '1' ? true : false}"></p:commandButton>
+		<p:commandButton styleClass="dsBoton1 tamanio1 principal" value="Enviar" icon="fa fa-arrow-right" iconPos="right" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbrevisiondigitalizacion.obtenerCodigoEstadoSeleccion(1)}" update=":frmDlgMensajeValidacion, :frmDlgMensajeOperacion" rendered="#{mbrevisiondigitalizacion.oEOpcionLoad.indicadorEnviar eq '1' ? true : false}"></p:commandButton>
+	</div>
+	
+	<p:remoteCommand name="controlarSesion" immediate="true" process="@this" action="#{mbrevisiondigitalizacion.controlarSesion}"/>
+	<p:remoteCommand name="listarDocumentoCargaMultiple" process="@this" action="#{mbrevisiondigitalizacion.listarDocumentoCargaMultiple()}" update=":form:tblDocumentoCarga"/>
+	</h:form>
+	
+	<p:dialog widgetVar="dlgConfirmacionAdjuntar" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgConfirmacionAdjuntar">
+		<div class="dsDlgConfirmacionAdjuntar dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Confirmación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="No adjunto documentos ¿Desea continuar?" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgConfirmacionAdjuntar').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgConfirmacionAdjuntar').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbrevisiondigitalizacion.guardar()}" update=":frmDlgMensajeOperacion"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgMensajeValidacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgMensajeValidacion">
+		<div class="dsDlgMensajeValidacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Validación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mbrevisiondigitalizacion.mensajeValidacion}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" onclick="PF('dlgMensajeValidacion').hide();"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgMensajeOperacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgMensajeOperacion">
+		<div class="dsDlgMensajeOperacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Operación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mbrevisiondigitalizacion.oEMensaje.descMensaje}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@this" onclick="PF('dlgMensajeOperacion').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbrevisiondigitalizacion.salir()}"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+    <script type="text/javascript">
+    	window.setInterval(invocaControlarSesion, 10000);
+	</script>
+</f:view>
+</ui:define>
+</ui:composition>

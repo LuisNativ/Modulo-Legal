@@ -1,0 +1,899 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  template="/pagina/maestra.xhtml">
+<ui:define name="contenido">
+<h:head>
+</h:head>
+<f:view>
+	<h:form id="form" enctype="multipart/form-data">
+	
+	<div class="ui-g ui-fluid">
+		<div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad">
+	        <div class="dsCuadrarCentroInicio tituloIzquieda">
+				<h4><i class="fa fa-folder-open"></i> M&#243;dulo : Operaciones <small> > Levantamiento de Garantias</small></h4>
+	        </div>
+	    </div>
+	    
+	    <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad dsCuadrarCentroFin">
+	    
+		<p:commandButton styleClass="dsBoton1 tamanio1 secundario" value="Volver" icon="fa fa-arrow-left" 
+		onclick="PF('dlgSalir').show();" 
+		rendered="#{mbregistrooperacionlevantamientogarantia.visualizarBtnSalir}"/>
+		
+		<p:commandButton styleClass="dsBoton1 tamanio4 principal" value="Generar Documento"
+		action="#{mbregistrooperacionlevantamientogarantia.imprimirDocumento1()}"
+		rendered="#{mbregistrooperacionlevantamientogarantia.visualizarBtnGenerarDocumento1}" ajax="false"/>
+
+		<p:commandButton styleClass="dsBoton1 tamanio4 principal" value="Generar Documento Base"
+		action="#{mbregistrooperacionlevantamientogarantia.imprimirDocumento2(1)}"
+		rendered="#{mbregistrooperacionlevantamientogarantia.visualizarBtnGenerarDocumento2}" ajax="false"/>
+
+		<p:commandButton styleClass="dsBoton1 tamanio4 principal" value="Generar Documento Acumulado"
+		action="#{mbregistrooperacionlevantamientogarantia.imprimirDocumento2(2)}"
+		rendered="#{mbregistrooperacionlevantamientogarantia.visualizarBtnGenerarDocumento3}" ajax="false"/>
+
+		<p:commandButton styleClass="dsBoton1 tamanio4 principal" value="Generar Documento Condicional"
+		action="#{mbregistrooperacionlevantamientogarantia.imprimirDocumento2(3)}"
+		rendered="#{mbregistrooperacionlevantamientogarantia.visualizarBtnGenerarDocumento4}" ajax="false"/>
+
+		<p:commandButton styleClass="dsBoton1 tamanio4 principal" value="Enviar Solicitud" icon="fa fa-arrow-right" iconPos="right" 
+		onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacionlevantamientogarantia.obtenerEstado(1)}" 
+		update=":frmDlgMensajeValidacion, :frmDlgMensajeConfirmacion" 
+		rendered="#{mbregistrooperacionlevantamientogarantia.visualizarBtnEnviar}"/>
+		
+		<p:commandButton styleClass="dsBoton1 tamanio1 principal" value="Rechazar" icon="fa fa-arrow-right" iconPos="right" 
+		onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacionlevantamientogarantia.obtenerEstado(2)}" 
+		update=":frmDlgMensajeValidacion, :frmDlgMensajeConfirmacion" 
+		rendered="#{mbregistrooperacionlevantamientogarantia.visualizarBtnRechazar}"/>
+		
+		<p:commandButton styleClass="dsBoton1 tamanio1 principal" value="Confirmar" icon="fa fa-arrow-right" iconPos="right" 
+		onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacionlevantamientogarantia.obtenerEstado(3)}" 
+		update=":frmDlgMensajeValidacion, :frmDlgMensajeConfirmacion" 
+		rendered="#{mbregistrooperacionlevantamientogarantia.visualizarBtnConfirmar}"/>
+		
+		<p:commandButton id="btnEnviar3" styleClass="dsBoton1 tamanio1 principal" value="Observado" icon="fa fa-arrow-right" iconPos="right" 
+		onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacionlevantamientogarantia.obtenerEstado(6)}" 
+		update=":frmDlgMensajeValidacion, :frmDlgMensajeConfirmacion"
+		rendered="#{mbregistrooperacionlevantamientogarantia.visualizarBtnEnProcesoLevantamiento}"/>    
+
+		<p:commandButton id="btnEnviar" styleClass="dsBoton1 tamanio4 principal" value="Liberar Garantía" icon="fa fa-arrow-right" iconPos="right" 
+		onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacionlevantamientogarantia.obtenerEstado(4)}" 
+		update=":frmDlgMensajeValidacion, :frmDlgMensajeConfirmacion"
+		rendered="#{mbregistrooperacionlevantamientogarantia.visualizarBtnLiberar}"/>
+		
+		<p:commandButton id="btnEnviar2" styleClass="dsBoton1 tamanio1 principal" value="Enviar" icon="fa fa-arrow-right" iconPos="right" 
+		onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacionlevantamientogarantia.obtenerEstado(5)}" 
+		update=":frmDlgMensajeValidacion, :frmDlgMensajeConfirmacion"
+		rendered="#{mbregistrooperacionlevantamientogarantia.visualizarBtnEntregar}"/>
+
+		<p:commandButton styleClass="dsBoton1 tamanio1 principal" value="Archivar" icon="fa fa-arrow-right" iconPos="right" 
+		onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacionlevantamientogarantia.obtenerEstado(7)}" 
+		update=":frmDlgMensajeValidacion, :frmDlgMensajeConfirmacion"
+		rendered="#{mbregistrooperacionlevantamientogarantia.visualizarBtnArchivar}"/>
+
+		<p:commandButton styleClass="dsBoton1 tamanio1 principal" value="Grabar" icon="fa fa-arrow-right" iconPos="right" 
+		onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacionlevantamientogarantia.obtenerEstado(8)}" 
+		update=":frmDlgMensajeValidacion, :frmDlgMensajeConfirmacion"
+		rendered="#{mbregistrooperacionlevantamientogarantia.visualizarBtnGrabar}"/>
+	    </div>
+    </div>
+	  	
+    <div class="ui-g ui-fluid ui-g-nopad">
+    <div class="ui-g-12">
+		<div class="ui-g-12 ui-md-6 ui-lg-3">
+			<p:outputLabel value="Socio" styleClass="dsLabel1"/>
+			<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEClienteData.documento}, #{mbregistrooperacionlevantamientogarantia.oEClienteData.nombreLargo}" disabled="true"></p:inputText>
+		</div>
+		<div class="ui-g-12 ui-md-6 ui-lg-3 ui-g-nopad">
+			<div class="ui-g-6">
+				<p:outputLabel value="N° Garantía" styleClass="dsLabel1"/>
+				<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.codigoGarantia}" disabled="true"></p:inputText>
+			</div>
+			<div class="ui-g-6">
+				<p:outputLabel value="Estado Garantía" styleClass="dsLabel1"/>
+				<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionSituacion}" disabled="true"></p:inputText>
+			</div>
+		</div>
+		<div class="ui-g-12 ui-md-6 ui-lg-3 ui-g-nopad">
+			<div class="ui-g-6">
+				<p:outputLabel value="Estado Levantamiento" styleClass="dsLabel1"/>
+				<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaSolicitudLoad.descripcionEstadoLevantamiento}" disabled="true"></p:inputText>
+			</div>
+		</div>
+	</div>
+	
+	<div class="ui-g-12">
+	<p:panel styleClass="dsPanel2" widgetVar="pnl2" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+        <f:facet name="header" >
+            <i class="fa fa-table"></i> Datos de la Garantía
+        </f:facet>
+	    <div class="ui-g ui-fluid ui-g-nopad">
+	    	<h:panelGroup layout="block" rendered="#{mbregistrooperacionlevantamientogarantia.visualizarFrmGarantiaPredio}">
+	           <div class="ui-g-12 ui-md-3 ui-lg-4">
+					<p:outputLabel value="Ubicación" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.ubicacion1}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   </div>
+			   <div class="ui-g-12 ui-md-12 ui-lg-4 ui-g-nopad">
+				<div class="ui-g-4">
+					<p:outputLabel value="Departamento" styleClass="dsLabel1"/>
+					<p:selectOneMenu id="idDepartamentoPredio" value="#{mbregistrooperacionlevantamientogarantia.codigoDepartamentoGarantia}" disabled="true">
+						<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+						<f:selectItems value="#{mbregistrooperacionlevantamientogarantia.lstDepartamentoGarantia}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+		            </p:selectOneMenu>
+				</div>				
+				<div class="ui-g-4">
+					<p:outputLabel value="Provincia" styleClass="dsLabel1"/>
+					<p:selectOneMenu id="cbProvinciaPredio" value="#{mbregistrooperacionlevantamientogarantia.codigoProvinciaGarantia}" disabled="true">
+						<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+						<f:selectItems value="#{mbregistrooperacionlevantamientogarantia.lstProvinciaGarantia}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+		            </p:selectOneMenu>
+				</div>					
+				<div class="ui-g-4">
+					<p:outputLabel value="Distrito" styleClass="dsLabel1"/>
+					<p:selectOneMenu id="cbDistritoGarantia" value="#{mbregistrooperacionlevantamientogarantia.codigoDistritoGarantia}" disabled="true">
+						<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+						<f:selectItems value="#{mbregistrooperacionlevantamientogarantia.lstDistritoGarantia}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+		            </p:selectOneMenu>
+				</div>
+			    </div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-6">
+						<p:outputLabel value="Área de Terreno" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.montoVariable2}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}">
+							<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+						</p:inputText>
+			   		</div>
+			   		<div class="ui-g-6">
+						<p:outputLabel value="Área Construida" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.montoVariable3}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}">
+							<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+						</p:inputText>
+			   		</div>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel value="Uso" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionA}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+			   		<div class="ui-g-2">
+						<p:outputLabel value="Pisos" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.numeroVariable1}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+			   		<div class="ui-g-6">
+						<p:outputLabel value="Tipo Prenda" styleClass="dsLabel1"/>
+						<p:selectOneMenu value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.codigoTipoBien}" disabled="true">
+							<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+							<f:selectItems value="#{mbregistrooperacionlevantamientogarantia.lstTipoPrendaGarantia}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				        </p:selectOneMenu>
+			   		</div>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel value="Moneda" styleClass="dsLabel1"/>
+						<p:selectOneMenu value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.codigoMoneda}" disabled="true">
+							<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+							<f:selectItems value="#{mbregistrooperacionlevantamientogarantia.lstTipoMoneda}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+				        </p:selectOneMenu>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Informe Tasación" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.numeroVariable4}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Fecha Tasación" styleClass="dsLabel1"/>
+						<p:calendar value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.fechaValoracion}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:calendar>
+			   		</div>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-12">
+						<p:outputLabel value="Tasador" styleClass="dsLabel1"/>
+						<p:inputText type="text" id="idDescripcionTasador" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionTasador}" disabled="true"></p:inputText>
+			   		</div>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel value="Valor Gravamen" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.montoGravamen}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}">
+							<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+						</p:inputText>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Fecha Gravamen" styleClass="dsLabel1"/>
+						<p:calendar value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.fechaGravamen}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:calendar>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Límite" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.montoVariable1}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}">
+							<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+						</p:inputText>
+			   		</div>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel value="Fecha Nva. Valor." styleClass="dsLabel1"/>
+						<p:calendar value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.fechaVariable1}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:calendar>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Valor Actual" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.montoEjecucion}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}">
+							<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+						</p:inputText>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Valor Realización" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.montoValoracion}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}">
+						<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+						</p:inputText>
+					</div>
+				</div>
+			    <div class="ui-g-12 ui-md-6 ui-lg-4">
+					<p:outputLabel value="Propietario Bien" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" vvalue="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionPropietario}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			    </div>
+			    <div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel value="Cia. De Seguros" styleClass="dsLabel1"/>
+						<p:selectOneMenu value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.codigoCiaSeguro}" disabled="true">
+							<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+							<f:selectItems value="#{mbregistrooperacionlevantamientogarantia.lstTipoCiaSeguro}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo}"/>
+				        </p:selectOneMenu>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Nro. Poliza" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.poliza}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}">
+							<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+						</p:inputText>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Correl. Poli" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.codigoInspector}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}">
+							<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+						</p:inputText>
+			   		</div>
+				</div>
+	           <div class="ui-g-12 ui-md-6 ui-lg-4">
+					<p:outputLabel value="Distri" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.ubicacion2}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   </div>
+			    <div class="ui-g-12 ui-md-6 ui-lg-4">
+					<p:outputLabel value="Nomb. Propi" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionB}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   </div>
+			    <div class="ui-g-12 ui-md-6 ui-lg-4">
+					<p:outputLabel value="Seguro" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionC}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   </div>
+			   <div class="ui-g-12 ui-md-6 ui-lg-4">
+					<p:outputLabel value="Registro" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.comentario}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   </div>
+	    	</h:panelGroup>
+	    	
+	    	<h:panelGroup layout="block" rendered="#{mbregistrooperacionlevantamientogarantia.visualizarFrmGarantiaVehicular}">
+				<div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel value="Placa" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.placa}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			        </div>	
+					<div class="ui-g-4">
+						<p:outputLabel value="Clase" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.clase}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Marca" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.marca}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-3">
+						<p:outputLabel value="Modelo" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.modelo}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+			   		<div class="ui-g-3">
+						<p:outputLabel value="Carrocería" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.carroceria}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+			   		<div class="ui-g-3">
+						<p:outputLabel value="Fabricación" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.anioFabricacion}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+			   		<div class="ui-g-3">
+						<p:outputLabel value="Color" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.comentario}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel value="Nro. Serie" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.ubicacion1}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Nro. Motor" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.ubicacion2}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Tipo Prenda" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionTipoBien}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel value="Moneda" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionMoneda}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>				   		
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Informe Tasación" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.numeroVariable4}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Fecha Tasación" styleClass="dsLabel1"/>
+						<p:calendar value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.fechaValoracion}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:calendar>
+
+			   		</div>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel value="Valor Realización" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.montoValoracion}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}">
+							<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+						</p:inputText>
+			   		</div>
+			   		<div class="ui-g-8">
+						<p:outputLabel value="Tasador" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.codigoTasador}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+				
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel value="Valor Gravamen" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.montoGravamen}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}">
+							<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+						</p:inputText>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Fecha Gravamen" styleClass="dsLabel1"/>
+						<p:calendar  value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.fechaGravamen}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:calendar>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Límite" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.montoVariable1}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}">
+							<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+						</p:inputText>
+			   		</div>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel value="Fecha Nva. Valor." styleClass="dsLabel1"/>
+						<p:calendar  value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.fechaVariable1}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:calendar>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Valor Actual" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.montoEjecucion}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}">
+							<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+						</p:inputText>
+			   		</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Fabricación" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.anioFabricacion}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>							
+					</div>
+				</div>
+			    <div class="ui-g-12 ui-md-6 ui-lg-4">
+					<p:outputLabel value="Propietario Bien" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionPropietario}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			    </div>
+			    <div class="ui-g-12 ui-md-6 ui-lg-4">
+					<p:outputLabel value="Depositario" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionDepositario}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			    </div>
+			    <div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-8">
+						<p:outputLabel value="Cia. De Seguros" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionCiaSeguro}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Nro. Poliza" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.poliza}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}">
+						</p:inputText>
+			   		</div>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<p:outputLabel value="Nomb. Deposi." styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionA}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<p:outputLabel value="Nomb. Propiet." styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionB}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<p:outputLabel value="Cia. De Seguros" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionC}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel value="Correl. Poli" styleClass="dsLabel1"/>
+						<p:inputNumber styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.codigoInspector}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}" autocomplete="off" minValue="0" maxValue="999">
+					</p:inputNumber>
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Fecha Ini. Poliza" styleClass="dsLabel1"/>
+						<p:calendar  value="" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:calendar>
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Fecha Fin Poliza" styleClass="dsLabel1"/>
+						<p:calendar  value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.fechaVencimientoPoliza}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:calendar>
+					</div>
+				</div>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" rendered="#{mbregistrooperacionlevantamientogarantia.visualizarFrmGarantiaMaquinaria}">
+				<div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-12">
+						<p:outputLabel value="Descripción" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionC}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			    	</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Cantidad" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.numeroVariable2}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Moneda" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionMoneda}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Informe Tasación" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.numeroVariable4}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Fecha Tasación" styleClass="dsLabel1"/>
+						<p:calendar  value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.fechaValoracion}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:calendar>
+			   		</div>
+			   		<div class="ui-g-8">
+						<p:outputLabel value="Tasador" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionTasador}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+				   	<div class="ui-g-12">
+						<p:outputLabel value="Cia. de Seguros" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionCiaSeguro}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+				   	</div>
+			    </div>
+			           		
+			    <div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel value="Marca" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.marca}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Modelo" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.modelo}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Serie" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionB}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Valor de Gravamen" styleClass="dsLabel1"/>
+						<p:inputNumber type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.montoGravamen}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}" decimalSeparator="." thousandSeparator=","></p:inputNumber>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Fecha de Gravamen" styleClass="dsLabel1"/>
+						<p:calendar value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.fechaGravamen}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:calendar>
+			   		</div>
+			   		<div class="ui-g-4">
+						<p:outputLabel value="Límite" styleClass="dsLabel1"/>
+						<p:inputNumber type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.montoVariable1}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}" decimalSeparator="." thousandSeparator=","></p:inputNumber>
+			   		</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Depositario" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionDepositario}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+				   	</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Nro. Poliza" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.poliza}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Correlativo Poli." styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.codigoInspector}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+				</div>
+				
+				<div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad">
+					<div class="ui-g-4">
+						<p:outputLabel value="Nro. Motor" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionA}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			        </div>
+					<div class="ui-g-8">
+						<p:outputLabel value="Tipo de Prenda" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionTipoBien}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Fecha Nva. Valoriz." styleClass="dsLabel1"/>
+						<p:calendar value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.fechaVariable1}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:calendar>
+			   		</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Valor Actual" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.montoEjecucion}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+			   		</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Valor Relización" styleClass="dsLabel1"/>
+						<p:inputNumber type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.montoValoracion}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}" decimalSeparator="." thousandSeparator=","></p:inputNumber>
+			   		</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Propietario Bien" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.descripcionPropietario}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+				   	</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Cobertura" styleClass="dsLabel1"/>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEGarantiaData.comentario}" disabled="#{mbregistrooperacionlevantamientogarantia.deshabilitarFrmGarantia}"></p:inputText>
+				   	</div>
+				</div>
+			</h:panelGroup>
+		</div>
+	</p:panel>
+	</div>
+	</div>
+	
+	<div class="ui-g ui-fluid dsCuadrarCentro">
+	</div>
+
+	<div class="ui-g-12" style="#{mbregistrooperacionlevantamientogarantia.visualizarPnlDocumentoLevantamiento ? 'display:block;' : 'display:none'}">
+		<p:panel styleClass="dsPanel2" widgetVar="pnl15" toggleable="true" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+		  <f:facet name="header">
+	            <i class="fas fa-file"></i> Documentos de Levantamiento
+	            <p:commandButton id="btnGuardarDocumento" styleClass="dsBoton1 tamanio4 principal" 
+				    value="Subir Documento" 
+					icon="fa fa-cloud-upload"  iconPos="right" 
+					style="#{mbregistrooperacionlevantamientogarantia.deshabilitarGrabarDocumento ? 'display: none;' : 'display:inline-block;'}"
+					action="#{mbregistrooperacionlevantamientogarantia.grabarDocumento()}" immediate="true"
+					onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+					update=":form:tblDocumentoCarga,:form:btnGuardarDocumento,:frmDlgMensajeOperacionAjax">
+				</p:commandButton>
+	       </f:facet>
+	       <div class="ui-g ui-fluid ui-g-nopad">
+			<div class="ui-g-12">
+				<p:dataTable id="tblOperacionDocumento" value="#{mbregistrooperacionlevantamientogarantia.lstOperacionDocumentoFiltro}" var="item" styleClass="dsTabla1" paginator="true" rows="5" paginatorPosition="bottom"
+				 rowKey="#{item.codigoDocumento}" reflow="true" resizableColumns="true" resizeMode="expand">
+					<p:column headerText="Nombre Doc." width="150px;">
+					    <div class="dsTextoCorto">
+						    <h:outputText value="#{item.nombreDocumentoOriginal}"/>
+					    </div>
+					</p:column>
+					<p:column headerText="¿Tiene Firma?" styleClass="dsTextoCentro" width="50px;">
+						<h:outputText value="#{item.firmaDocumento}"/>
+					</p:column>
+					<p:column headerText="Estado" styleClass="dsTextoCentro" width="80px;">
+						<h:outputText value="#{item.descripcionEstadoDocumento}"/>
+					</p:column>
+					<p:column headerText="Usuario Reg." styleClass="dsTextoCentro" width="80px;">
+						<h:outputText value="#{item.usuarioRegist}"/>
+					</p:column>
+					<p:column headerText="Fecha Reg." styleClass="dsTextoCentro" width="80px;">
+						<h:outputText value="#{item.fechaRegistro} #{item.horaRegistro}"/>
+					</p:column>
+					<p:column headerText="Acciones" styleClass="dsTextoCentro" width="50px;">
+						<p:commandButton styleClass="dsBoton5 green" icon="fa fa-download" title="Descargar" actionListener="#{mbregistrooperacionlevantamientogarantia.descargarDocumento(item)}" ajax="false" immediate="true">
+		      				<p:fileDownload value="#{mbregistrooperacionlevantamientogarantia.fileDownload}"/>
+		      			</p:commandButton>
+		      			<p:commandButton styleClass="dsBoton5 green" icon="fa fa-file" title="Solicitar Firma" actionListener="#{mbregistrooperacionlevantamientogarantia.visualizarObservacionFirma(item)}" update=":frmDlgSolicitudFirma"
+		      			rendered="#{item.estadoDocumento eq 55 ? true : false}" immediate="true">
+		      			</p:commandButton>
+		      			<p:commandButton styleClass="dsBoton5 red" icon="fa fa-eye" title="Visualizar Observación" actionListener="#{mbregistrooperacionlevantamientogarantia.visualizarObservacionFirma(item)}" update=":frmDlgSolicitudFirma,:frmDlgSolicitudFirma:idSolicitarFirma"
+		      			rendered="#{item.estadoDocumento eq 56 ? true : false}" immediate="true">
+		      			</p:commandButton>
+		      			<p:commandButton styleClass="dsBoton5 green" icon="fa fa-check" title="Verificar Firma" actionListener="#{mbregistrooperacionlevantamientogarantia.verificarFirma(item)}" update=":frmDlgFirma" immediate="true">
+		      			</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</div>
+			<div class="ui-g-12">
+				<p:outputLabel value="Adjuntar documentos" styleClass="dsLabel1"/>
+	       		<!-- Agregar Documento Carga Simple con descripcion -->
+				<p:fileUpload
+						value="#{mbregistrooperacionlevantamientogarantia.files}"
+						style="font-size:11px;"
+			       		sizeLimit="15728640"
+			       		allowTypes="/(\.|\/)(jpe?g|png|pdf|doc|docx|xls|xlsx)$/"
+						accept=".jpg, .jpeg, .png, .pdf, .doc, .docx, .xls, .xlsx"
+						fileUploadListener="#{mbregistrooperacionlevantamientogarantia.agregarDocumentoCarga}"
+						mode="advanced"
+			       		auto="true" 
+			       		multiple="false"
+			       		dragDropSupport="true"
+			       		label="Adjuntar"
+			       		uploadLabel="Cargar"
+			       		cancelLabel="Cancelar"
+			       		invalidFileMessage="Tipo de archivo incorrecto, archivos permitidos jpg, png, jpeg, pdf, docx, xls, xlsx"
+			       		invalidSizeMessage="Tamaño del archivo excede el límite de 15Mbs"
+			       		
+			       		update=":form:tblDocumentoCarga,:form:btnGuardarDocumento"
+			       		previewWidth= "20">
+			    </p:fileUpload>
+				<p:dataTable id="tblDocumentoCarga" value="#{mbregistrooperacionlevantamientogarantia.lstDocumentoCarga}" var="item" styleClass="dsTabla2"
+								 rowKey="#{item.data}" reflow="true" emptyMessage="">
+						<p:column headerText="" styleClass="dsTextoCentro">
+							<div class="contenedorFila">
+							<div>
+							<h:outputText value="#{item.nombre}"/>
+							</div>
+							<div>
+							<h:outputText value="#{item.descripcionSize}"/>
+							</div>
+							<div>
+							<p:commandButton styleClass="dsBoton3" icon="fa fa-remove" process="@this" action="#{mbregistrooperacionlevantamientogarantia.eliminarDocumentoCarga(item)}" update="tblDocumentoCarga,:form:btnGuardarDocumento">
+			      			</p:commandButton>
+			      			</div>
+			      			</div>
+						</p:column>
+				</p:dataTable>
+			</div>
+		</div>
+	    </p:panel>			
+	</div>
+
+	<div class="ui-g-12" style="#{mbregistrooperacionlevantamientogarantia.visualizarPnlCreditoRelacionado ? 'display:block;' : 'display:none'}">
+		<p:panel styleClass="dsPanel2" widgetVar="pnl4" toggleable="true" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+	        <f:facet name="header" >
+	            <i class="fa fa-table"></i> Préstamos Asociados a la Garantía
+	        </f:facet>
+			<p:dataTable  value="#{mbregistrooperacionlevantamientogarantia.lstCreditoGarantia}" var="item" styleClass="dsTabla1" paginator="true" rows="3" paginatorPosition="bottom" reflow="false" resizableColumns="true" resizeMode="expand">
+				<p:column headerText="Descripción" styleClass="dsTextoCentro">
+					<h:outputText value="#{item.servicio} - #{item.numeroOperacion}"/>
+				</p:column>
+				<p:column headerText="Fec. Asig." styleClass="dsTextoCentro">
+					<h:outputText value="#{item.fechaRegistro} #{item.horaRegistro}"/>
+				</p:column>
+				<p:column headerText="Socio" styleClass="dsTextoCentro">
+					 <div class="dsTextoCorto">
+					 	<h:outputText value="#{item.codigoCliente} #{item.nombreCliente}"/>
+					 </div>	
+				</p:column>
+				<p:column headerText="Importe Asig." styleClass="dsTextoCentro" >
+					<h:outputText value="#{item.montoImporteCubierto}">
+	                     <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+	                </h:outputText>
+				</p:column>
+				<p:column headerText="Saldo Crédito" styleClass="dsTextoCentro" >
+					<h:outputText value="#{item.montoSaldoCredito}">
+	                     <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+	                </h:outputText>
+				</p:column>
+				<p:column headerText="% Coberturado" styleClass="dsTextoCentro" >
+					<h:outputText value="#{item.porcentajeCoberturado}">
+	                     <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+	                </h:outputText>
+				</p:column>
+				<p:column headerText="Monto Coberturado" styleClass="dsTextoCentro" >
+					<h:outputText value="#{item.montoCoberturado}">
+	                     <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+	                </h:outputText>
+				</p:column>	
+				<p:column headerText="Estado" styleClass="dsTextoCentro" >
+					<h:outputText value="#{item.descripcionEstadoCredito}">
+	                     <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+	                </h:outputText>
+				</p:column>				
+	            <p:columnGroup type="footer">
+	                <p:row>
+		                <p:column  style="text-align:right"/>
+		                <p:column  style="text-align:right"/>
+	                    <p:column  style="text-align:right" footerText="TOTAL:"/>
+	                    <p:column>
+	                        <f:facet name="footer">
+	                            <h:outputText value="#{mbregistrooperacionlevantamientogarantia.montoAcumuladoAsignadoCredito}">
+	                                <f:convertNumber type="currency" currencySymbol="$"/>
+	                            </h:outputText>
+	                        </f:facet>
+	                    </p:column>
+	                    <p:column>
+	                        <f:facet name="footer">
+	                            <h:outputText value="#{mbregistrooperacionlevantamientogarantia.montoAcumuladoSaldoCredito}">
+	                                <f:convertNumber type="currency" currencySymbol="$"/>
+	                            </h:outputText>
+	                        </f:facet>
+	                    </p:column>
+	                    <p:column  style="text-align:right"/>
+		                 <p:column>
+	                        <f:facet name="footer">
+	                            <h:outputText value="#{mbregistrooperacionlevantamientogarantia.montoAcumuladoCoberturado}">
+	                                <f:convertNumber type="currency" currencySymbol="$"/>
+	                            </h:outputText>
+	                        </f:facet>
+	                    </p:column>
+	                    <p:column  style="text-align:right"/>
+	                </p:row>
+				</p:columnGroup>
+			</p:dataTable>
+		</p:panel>
+	</div>
+	
+
+	</h:form>
+	
+	
+	<p:dialog widgetVar="dlgSolicitudFirma" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgSolicitudFirma">
+		<div class="dsDlgSolicitudFirma dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="#{mbregistrooperacionlevantamientogarantia.deshabilitarSolFirma ? 'Observación' : '¿Solicitar Firma de Documento?' }"/>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:outputLabel for="txtObservacionFirma" value="Observación" styleClass="dsLabel1"/>
+					<p:inputTextarea type="text" id="txtObservacionFirma"  styleClass="dsInput1" value="#{mbregistrooperacionlevantamientogarantia.oEOperacionDocumento.obervacionDocumento}" autocomplete="off" maxlength="250"></p:inputTextarea>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="#{mbregistrooperacionlevantamientogarantia.deshabilitarSolFirma ? 'Aceptar' : 'Cancelar'}" onclick="PF('dlgSolicitudFirma').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" id="idSolicitarFirma" value="Aceptar"  onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacionlevantamientogarantia.guardarSolicitudFirma()}" update=":frmDlgMensajeOperacionAjax"
+				style="#{mbregistrooperacionlevantamientogarantia.deshabilitarSolFirma ? 'display: none;':'display: block;'}"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+
+	<p:dialog widgetVar="dlgFirma" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgFirma">
+		<div class="dsDlgDescripcionDocumentoCarga dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="¿Tiene Firma?"/>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:outputLabel value="Firma" styleClass="dsLabel1"/>
+					<p:selectOneMenu   value="#{mbregistrooperacionlevantamientogarantia.codigoFirmaSiNo}">
+						<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+						<f:selectItems value="#{mbregistrooperacionlevantamientogarantia.lstValorSiNo}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+			        </p:selectOneMenu>
+								       
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgFirma').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Grabar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" actionListener="#{mbregistrooperacionlevantamientogarantia.procesarFirma()}" update=":frmDlgMensajeOperacionAjax"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+
+	
+	<p:dialog widgetVar="dlgDetalleMensaje" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">
+	<h:form id="frmDlgDetalleMensaje">
+		<div class="dsDlgDetalleMensaje dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Detalle"/>
+				</div>
+				<div class="dlgDerecha">
+					<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgDetalleMensaje').hide();"><i class="fas fa-times"></i></p:commandLink>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="dsScrollVertical1">
+					<p:inputTextarea type="text" styleClass="dsInput1 dsModelo3" value="#{mbregistrooperacionlevantamientogarantia.descripcionMensajeSeleccion}" disabled="true"></p:inputTextarea>
+				</div>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgSalir" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgSalir">
+		<div class="dsDlgSalir dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Salir"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="¿Estas seguro que deseas salir?" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgSalir').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgSalir').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperacionlevantamientogarantia.salir()}"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgMensajeConfirmacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgMensajeConfirmacion">
+		<div class="dsDlgMensajeConfirmacion dsDialogo4">
+	 		<div class="cabecera">
+	 			<div class="dlgIzquierda">
+	 				<p:outputLabel styleClass="dsLabel2" value="Mensaje de Confirmación"/>
+	 			</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mbregistrooperacionlevantamientogarantia.mensajeConfirmacion}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="No" onclick="PF('dlgMensajeConfirmacion').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Si" process="@form" onclick="PF('dlgPreload').show();" action="#{mbregistrooperacionlevantamientogarantia.guardar()}" update=":frmDlgMensajeOperacion"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgMensajeValidacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgMensajeValidacion">
+		<div class="dsDlgMensajeValidacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Validación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<p:inputTextarea type="text" styleClass="dsInput1 dsModelo4" value="#{mbregistrooperacionlevantamientogarantia.mensajeValidacion}" disabled="true"></p:inputTextarea>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" onclick="PF('dlgMensajeValidacion').hide();"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgMensajeOperacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgMensajeOperacion">
+		<div class="dsDlgMensajeOperacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Operación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mbregistrooperacionlevantamientogarantia.oEMensaje.descMensaje}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@this" onclick="PF('dlgMensajeOperacion').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperacionlevantamientogarantia.salir()}"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+
+	<p:dialog widgetVar="dlgMensajeOperacionAjax" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgMensajeOperacionAjax">
+		<div class="dsDlgMensajeOperacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Operación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mbregistrooperacionlevantamientogarantia.oEMensaje.descMensaje}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@this" onclick="PF('dlgMensajeOperacionAjax').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbregistrooperacionlevantamientogarantia.actualizarDatoasAjax()}" update=":form:tblOperacionDocumento"></p:commandButton> 
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+    <script type="text/javascript">
+		window.setInterval(invocaControlarSesion, 10000);
+	</script>
+</f:view>
+</ui:define>
+</ui:composition>

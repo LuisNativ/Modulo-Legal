@@ -1,0 +1,461 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  template="/pagina/maestra.xhtml">
+<ui:define name="contenido">
+<h:head>
+<style>
+</style>
+</h:head> 
+<f:view>   
+	<div class="ui-g ui-fluid">
+	     <div class="dsCuadrarCentroInicio tituloIzquieda">
+	         <h4><i class="fa fa-folder-open"></i> M&#243;dulo : Operaciones <small> > Gestión de Garantias</small></h4>
+	     </div>
+	</div>				
+	<p:tabView id="tabView1" dynamic="true" widgetVar="tabs1" activeIndex="#{mblistagarantiaporconstituir.indicadorTabView}">
+    <p:tab id="tab1-1" title="Pendiente de Registro">  			
+		<p:panel styleClass="dsPanel2" widgetVar="pnl1" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+		 
+		    <f:facet name="header" >
+		        <i class="fa fa-table"></i> Solicitudes con Garantías pendientes de Registro
+		    </f:facet>
+			<h:form id="form">
+			 		<div class="ui-g ui-fluid ui-g-nopad">
+						<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-3">
+							<p:outputLabel value="Tipo de Búsqueda" styleClass="dsLabel1"/>				
+							<p:selectOneMenu value="#{mblistagarantiaporconstituir.codigoBuscarSolicitud}">
+				            	<f:selectItem itemLabel="Nro Solicitud" itemValue="0" />
+				            	<f:selectItem itemLabel="Nombre Socio" itemValue="1" />
+				            </p:selectOneMenu>
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-3">
+							<p:outputLabel value="Descripción" styleClass="dsLabel1"/>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mblistagarantiaporconstituir.descripcionBuscarSolicitud}" autocomplete="off" maxlength="50">
+							</p:inputText>
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-3">
+							<p:commandButton styleClass="dsBoton1 tamanio1 principal" value="Buscar" onclick="PF('dlgPreload').show();" 
+							oncomplete="PF('dlgPreload').hide();" action="#{mblistagarantiaporconstituir.buscarGarantiaSolicitud()}" 
+							update=":tabView1:form:tabView2:tblGarantia"></p:commandButton>
+						</div>
+					</div>
+		    <p:tabView id="tabView2" dynamic="true" widgetVar="tabs2" activeIndex="0">
+		    <p:ajax event="tabChange" listener="#{mblistagarantiaporconstituir.onTabChange}"/>
+		    	<p:tab id="tab2-1" title="Garantía Real Nueva">    		
+						<p:dataTable id="tblGarantia" value="#{mblistagarantiaporconstituir.lstGarantiaSolicitudNueva}" var="item" styleClass="dsTabla3" paginator="true" rows="12" paginatorPosition="bottom"
+									 rowKey="#{item.codigoGarantia}" reflow="true" tableStyle="table-layout:auto">
+							<p:column headerText="N°Sol" styleClass="dsTextoCentro" style="width: 70px">
+								<h:outputText value="#{item.numeroSolicitud}"/>
+							</p:column>
+							<p:column headerText="Nombre del Socio" styleClass="dsTextoCentro">
+								<div class="dsTextoCorto">
+									<h:outputText value="#{item.codigoCliente}, #{item.nombreLargo}"/>
+								</div>
+							</p:column>
+							<p:column headerText="Fecha Rev." styleClass="dsTextoCentro" style="width: 70px">
+								<h:outputText value="#{item.fechaRevision}"/>
+							</p:column>
+							<p:column headerText="Importe Sol." styleClass="dsTextoCentro" style="width: 120px">
+								<h:outputText value="#{item.montoSolicitud}">
+									<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="N° Sec." styleClass="dsTextoCentro" style="width: 80px">
+								<h:outputText value="#{item.secuenciaGarantia}"/>
+							</p:column>
+							<p:column headerText="Tipo de Garantìa" style="width: 180px" styleClass="dsTextoCentro">
+								<div class="dsTextoCorto">
+									<h:outputText value="#{item.descripcionTipoGarantiaReal}" /> 
+								</div>
+							</p:column>
+							<p:column headerText="Estado" style="width: 180px" styleClass="dsTextoCentro">
+									<h:outputText value="#{item.descripcionEstadoGarantiaSolicitud}" 
+									styleClass="#{item.codigoEstadoGarantiaSolicitud eq 52 ? 'dsText3 orange'
+												:item.codigoEstadoGarantiaSolicitud eq 53 ? 'dsText3 blue'
+												:item.codigoEstadoGarantiaSolicitud eq 54 ? 'dsText3 green'
+												:null}"/>					
+							</p:column>
+							<p:column headerText="" style="width: 80px">
+								<p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Evaluar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mblistagarantiaporconstituir.evaluarSolicitud(item)}" style="#{item.codigoEstadoGarantiaSolicitud eq 54 ? 'display:none;' : 'display:block;'}"></p:commandButton>
+					     	</p:column>
+						</p:dataTable>
+		    	</p:tab>
+		    	<p:tab id="tab2-2" title="Garantía Real Existente">
+		    	   <p:dataTable id="tblGarantiaExistente" value="#{mblistagarantiaporconstituir.lstGarantiaSolicitudExistente}" var="item" styleClass="dsTabla3" paginator="true" rows="12" paginatorPosition="bottom"
+							 rowKey="#{item.codigoGarantia}" reflow="true" tableStyle="table-layout:auto">
+						<p:column headerText="N°Sol" styleClass="dsTextoCentro" style="width: 70px">
+							<h:outputText value="#{item.numeroSolicitud}"/>
+						</p:column>
+						<p:column headerText="Nombre del Socio" styleClass="dsTextoCentro">
+							<div class="dsTextoCorto">
+								<h:outputText value="#{item.codigoCliente}, #{item.nombreLargo}"/>
+							</div>
+						</p:column>
+						<p:column headerText="Fecha" styleClass="dsTextoCentro" style="width: 70px">
+							<h:outputText value="#{item.fechaRevision}"/>
+						</p:column>
+						<p:column headerText="Importe Sol." styleClass="dsTextoCentro" style="width: 120px">
+						   <div class="dsTextoCentro">
+							   	<h:outputText value="#{item.abreviacionMonedaSolicitud} #{item.montoSolicitud}">
+									<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+						   </div>
+							
+						</p:column>
+						<p:column headerText="Nro. Garantía" styleClass="dsTextoCentro" style="width: 180px">
+							<div class="dsTextoCorto dsTextoCentro">
+								<h:outputText value="#{item.numeroGarantiaReal}"/>
+							</div>
+						</p:column>
+						<p:column headerText="N°" styleClass="dsTextoCentro" style="width: 80px">
+							<h:outputText value="#{item.secuenciaGarantia}"/>
+						</p:column>
+						<p:column headerText="Tipo de Garantìa" styleClass="dsTextoCentro" style="width: 180px">
+							<div class="dsTextoCorto dsTextoCentro">
+								<h:outputText value="#{item.descripcionTipoGarantiaReal}"/>
+							</div>
+						</p:column>
+						
+						<p:column headerText="Estado" style="width: 180px" styleClass="dsTextoCentro">
+								<h:outputText value="#{item.descripcionEstadoGarantiaSolicitud}" 
+								styleClass="#{item.codigoEstadoGarantiaSolicitud eq 52 ? 'dsText3 orange'
+											:item.codigoEstadoGarantiaSolicitud eq 53 ? 'dsText3 blue'
+											:item.codigoEstadoGarantiaSolicitud eq 54 ? 'dsText3 green'
+											:null}"/>					
+						</p:column>
+						<p:column headerText="" style="width: 80px">
+							<p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Evaluar Garantía" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mblistagarantiaporconstituir.evaluarSolicitud(item)}" style="#{item.codigoEstadoGarantiaSolicitud eq 54 ? 'display:none;' : 'display:block;'}"></p:commandButton>
+				     	</p:column>
+					</p:dataTable>
+		    	</p:tab>
+		    </p:tabView>
+			</h:form>
+		</p:panel>   	   
+	</p:tab>
+    <p:tab id="tab1-2" title="Mantenimiento">
+        <h:form id="formMantenimiento">
+
+		<p:panel styleClass="dsPanel2" widgetVar="pnl2" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+		    <f:facet name="header" >
+		        <i class="fa fa-table"></i> Mantenimiento de Garantías
+		         <p:commandButton styleClass="dsBoton1 tamanio3 principal" value="Nueva Garantía" onclick="PF('dlgPreload').show();" 
+				oncomplete="PF('dlgPreload').hide();" action="#{mblistagarantiaporconstituir.buscarTiposGarantia()}" 
+				update=":frmDlgBuscarTipoGarantia:tblTipoGarantia" disabled="#{mblistagarantiaporconstituir.indicadorBoton}"></p:commandButton>
+		    </f:facet>
+		    <div class="ui-g ui-fluid ui-g-nopad">
+			<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-3">
+				<p:outputLabel value="Tipo de Búsqueda" styleClass="dsLabel1"/>				
+				<p:selectOneMenu value="#{mblistagarantiaporconstituir.codigoBuscarGarantia}">
+					<p:ajax event="change" listener="#{mblistagarantiaporconstituir.validarLongitudCaracteres()}" update=":tabView1:formMantenimiento:idDescripcionGarantia" />
+	            	<f:selectItem itemLabel="[Seleccione]" itemValue="0" />
+	            	<f:selectItem itemLabel="Código Socio" itemValue="1" />
+	            	<f:selectItem itemLabel="Nombre Socio" itemValue="2" />
+	            	<f:selectItem itemLabel="Código de Garantía" itemValue="3" />
+	            	<f:selectItem itemLabel="Partida Registral" itemValue="4" />
+	            </p:selectOneMenu>
+			</div>
+			<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-3">
+				<p:outputLabel value="Descripción" styleClass="dsLabel1"/>
+				<p:inputText id="idDescripcionGarantia" type="text" styleClass="dsInput1" value="#{mblistagarantiaporconstituir.descripcionBuscarGarantia}" autocomplete="off" maxlength="#{mblistagarantiaporconstituir.cantidadCaracteres}" onkeypress="if (event.keyCode == 13) { return false;}">
+				</p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-3">
+				<p:commandButton styleClass="dsBoton1 tamanio1 principal" value="Buscar" onclick="PF('dlgPreload').show();" 
+				oncomplete="PF('dlgPreload').hide();" action="#{mblistagarantiaporconstituir.buscarGarantiaVigente()}" 
+				update=":tabView1:formMantenimiento:tblGarantiaMantenimiento, :tabView1:formMantenimiento,:frmDlgMensaje"></p:commandButton>
+			</div>
+			
+			<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-4">
+				<p:outputLabel value="Socio" styleClass="dsLabel1"/>
+				<p:inputText  type="text" styleClass="dsInput1" value="#{mblistagarantiaporconstituir.oEGarantiaData.nombreCorto}" disabled="true">
+				</p:inputText>
+			</div>
+			
+			<div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+				<div class="ui-g-4">
+					<div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+						<p:fieldset legend="Créditos Directos" toggleable="true" toggleSpeed="500" styleClass="dsFieldSet1">
+							<div class="ui-g-6">
+								<p:outputLabel value="Moneda Nacional" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mblistagarantiaporconstituir.creditoDirMonedaNacional}" disabled="true">
+									<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</p:inputText>
+							</div>
+							<div class="ui-g-6">
+								<p:outputLabel value="Moneda Extranjero" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mblistagarantiaporconstituir.creditoDirMonedaExtranjera}" disabled="true">
+									<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</p:inputText>
+							</div>
+					    </p:fieldset>
+				    </div>
+				</div>
+				<div class="ui-g-4">
+					<div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+						<p:fieldset legend="Créditos Indirectos" toggleable="true" toggleSpeed="500" styleClass="dsFieldSet1">
+							<div class="ui-g-6">
+								<p:outputLabel value="Moneda Nacional" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mblistagarantiaporconstituir.creditoIndMonedaNacional}" disabled="true">
+									<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</p:inputText>
+							</div>
+							<div class="ui-g-6">
+								<p:outputLabel value="Moneda Extranjero" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mblistagarantiaporconstituir.creditoIndMonedaExtranjera}" disabled="true">
+									<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</p:inputText>
+							</div>
+					    </p:fieldset>
+				    </div>
+				</div>
+				<div class="ui-g-4">
+					<div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+						<p:fieldset legend="Garantías" toggleable="true" toggleSpeed="500" styleClass="dsFieldSet1"> 
+							<div class="ui-g-6">
+								<p:outputLabel value="Moneda Nacional" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mblistagarantiaporconstituir.garantiaMonedaNacional}" disabled="true">
+									<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</p:inputText>
+							</div>
+							<div class="ui-g-6">
+								<p:outputLabel value="Moneda Extranjero" styleClass="dsLabel1"/>
+								<p:inputText type="text" styleClass="dsInput1" value="#{mblistagarantiaporconstituir.garantiaMonedaExtranjera}" disabled="true">
+									<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</p:inputText>
+							</div>
+					    </p:fieldset>
+				    </div>
+				</div>
+		   
+			</div>
+
+
+			</div>
+			<p:dataTable id="tblGarantiaMantenimiento" value="#{mblistagarantiaporconstituir.lstGarantiaVigente}" var="item" styleClass="dsTabla3" paginator="true" rows="5" paginatorPosition="bottom" 
+						 rowKey="#{item.codigoGarantia}" reflow="true" resizableColumns="true" resizeMode="expand">
+				<p:column headerText="Servicio" styleClass="dsTextoCentro" width="50px;">
+					<h:outputText value="#{item.codigoServicio}" />
+				</p:column>
+				<p:column headerText="Nro. Garantía" styleClass="dsTextoCentro" width="70px;">
+					<h:outputText value="#{item.codigoGarantia}"/>
+				</p:column>
+				<p:column headerText="Socio" styleClass="dsTextoCentro" width="200px;">
+				    <div class="dsTextoCorto">
+						<h:outputText value="#{item.nombreCorto}"/>
+				    </div>
+				</p:column>
+				<p:column headerText="Tipo" styleClass="dsTextoCentro">
+				    <div class="dsTextoCorto">
+						<h:outputText value="#{item.descripcionTipoGarantia}"/>
+				    </div>
+				</p:column>
+				<p:column headerText="Fecha Ingreso" styleClass="dsTextoCentro">
+					<h:outputText value="#{item.fechaIngreso}" />
+				</p:column>
+				<p:column headerText="Monto Gravamen" styleClass="dsTextoCentro">
+					<h:outputText value="#{item.abreviacionMoneda} #{item.montoGravamen}">
+						<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Estado" styleClass="dsTextoCentro" >
+					<h:outputText value="#{item.descripcionEstadoGarantia}"/>
+				</p:column>
+				<p:column headerText="" styleClass="dsTextoCentro">
+					<p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Editar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mblistagarantiaporconstituir.modificarGarantia(item)}"></p:commandButton>
+					<p:commandButton styleClass="dsBoton5 green" icon="fa fa-file-text" title="Trámite" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mblistagarantiaporconstituir.tramiteGarantia(item)}"></p:commandButton>
+		     	</p:column>
+			</p:dataTable>
+		</p:panel>
+		</h:form>	   
+    </p:tab>
+    <p:tab id="tab1-3" title="Tipos de Garantía">
+        <h:form id="formTipoGarantia">
+		<p:panel styleClass="dsPanel2" widgetVar="pnl2" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+		    <f:facet name="header" >
+		        <i class="fa fa-table"></i> Tipo de Garantías
+		         <p:commandButton styleClass="dsBoton1 tamanio3 principal" value="Nuevo" action="#{mblistagarantiaporconstituir.nuevoTipoGarantia()}" update=":frmDlgNuevoTipoGarantia"></p:commandButton>
+		    </f:facet>
+		    <div class="ui-g ui-fluid ui-g-nopad">
+
+			</div>
+			<div class="ui-g ui-fluid ui-g-nopad">
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<p:outputLabel styleClass="dsLabel2" value="Tipos de Garantía"/>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<p:outputLabel styleClass="dsLabel2" value="Otras Garantías"/>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<p:dataTable id="tblTipoDeGarantia" value="#{mblistagarantiaporconstituir.lstTipoGarantiaReal}" var="item" styleClass="dsTabla1" paginator="true" rows="15" paginatorPosition="bottom" 
+						 rowKey="#{item.codigo2}" reflow="true" >
+		                <p:column headerText="Nro. Tipo Garantía" styleClass="dsTextoCentro" visible="true" >
+							<h:outputText value="#{item.codigo2}"/>
+						</p:column>
+						<p:column headerText="Descripción" styleClass="dsTextoCentro" visible="true">
+						    <div class="dsTextoCorto">
+							   <h:outputText value="#{item.descripcion}"/>
+						    </div>
+						</p:column>					
+					</p:dataTable>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<p:dataTable id="tblOtroTipoGarantia" value="#{mblistagarantiaporconstituir.lstTipoGarantiaOtros}" var="item" styleClass="dsTabla1" paginator="true" rows="10" paginatorPosition="bottom" 
+						 rowKey="#{item.codigo2}" reflow="true" >
+		                <p:column headerText="Nro. Tipo Garantía" styleClass="dsTextoCentro" visible="true" >
+							<h:outputText value="#{item.codigo2}"/>
+						</p:column>
+						<p:column headerText="Descripción" styleClass="dsTextoCentro" visible="true">
+						    <div class="dsTextoCorto">
+							   <h:outputText value="#{item.descripcion}"/>
+						    </div>
+						</p:column>
+						<p:column headerText="" styleClass="dsTextoCentro">
+					      <p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Editar" onclick="PF('dlgNuevoTipoGarantia').show();" oncomplete="PF('dlgPreload').hide();" action="#{mblistagarantiaporconstituir.modificarTipoGarantia(item)}" update=":frmDlgNuevoTipoGarantia">
+					      </p:commandButton>
+		     	        </p:column>
+					</p:dataTable>
+				</div>
+			</div>
+			
+		 	
+
+			 
+			
+		</p:panel>
+		</h:form>	   
+    </p:tab>
+    </p:tabView>
+
+    <p:dialog widgetVar="dlgNuevoTipoGarantia" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgNuevoTipoGarantia">
+		<div class="dsDlgNuevoTipoGarantia dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="#{mblistagarantiaporconstituir.indicadorNuevoTipoGarantia? 'Nuevo Tipo De Garantía':'Actualizar Tipo de Garantía'}"/>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:outputLabel  value="Descripción" styleClass="dsLabel1"/>
+					<p:inputText type="text" id="idDescripcion" styleClass="dsInput1" value="#{mblistagarantiaporconstituir.oEGeneralData.descripcion}" autocomplete="off" maxlength="30"></p:inputText>
+					<p:outputLabel id="validacion" value="#{mblistagarantiaporconstituir.mensajeValidacion}" style="font-size: 10px;color:red;font-weight: bold;"/> 
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgNuevoTipoGarantia').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar"  onclick="PF('dlgConfirmacion').show();"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+
+	 <p:dialog widgetVar="dlgConfirmacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgConfirmacion">
+		<div class="dsDlgMensajeConfirmacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="¿Está seguro de realizar esta operación?"/>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid contenido">
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgConfirmacion').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();PF('dlgConfirmacion').hide();" action="#{mblistagarantiaporconstituir.guardarTipoGarantia()}" update=":frmDlgNuevoTipoGarantia:validacion,:frmDlgMensajeOperacion"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	
+	<p:dialog widgetVar="dlgBuscarTipoGarantia" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">
+	<h:form id="frmDlgBuscarTipoGarantia">
+		<div class="dsDlgBuscarUsuarioEmisor dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Buscar Tipo de Garantia"/>
+				</div>
+	 			<div class="dlgDerecha">
+	 				<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgBuscarTipoGarantia').hide();"><i class="fas fa-times"></i></p:commandLink>
+	 			</div>	
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:outputLabel value="Nombre" styleClass="dsLabel1"/>
+					<p:inputText type="text" styleClass="dsInput1" value="#{mblistagarantiaporconstituir.tipoGarantiaBuscar}" autocomplete="off" maxlength="50" onkeypress="if (event.keyCode == 13) { onchange(); return false;}">
+						<p:ajax event="change" onstart="PF('blkDlgBuscarTipoGarantia').show();" onsuccess="PF('blkDlgBuscarTipoGarantia').hide();" listener="#{mblistagarantiaporconstituir.filtrarTipoGarantia()}" update="tblTipoGarantia"/>
+					</p:inputText>
+				</div>
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:dataTable id="tblTipoGarantia" value="#{mblistagarantiaporconstituir.lstTipoGarantiaFiltro}" var="item" styleClass="dsTabla1" paginator="true" rows="10" paginatorPosition="bottom" sortBy="#{item.codigo2}" 
+								  rowKey="#{item.codigo}" reflow="false" >
+						<p:column headerText="Código" styleClass="dsTextoCentro" visible="true" width="50px;">
+							<h:outputText value="#{item.codigo2}"/>
+						</p:column>
+						<p:column headerText="Nombre" styleClass="dsTextoCentro" visible="true">
+						    <div class="dsTextoCorto">
+							   <h:outputText value="#{item.nombreCorto}"/>
+						    </div>
+						</p:column>
+						<p:column headerText="" styleClass="dsTextoCentro">
+					      <p:commandButton styleClass="dsBoton5" icon="fa fa-check" title="Elegir" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mblistagarantiaporconstituir.nuevaGarantia(item)}"></p:commandButton>
+		     	        </p:column>
+					</p:dataTable>
+				</div>
+			</div>
+		</div>
+	</h:form>
+	<p:blockUI block="frmDlgBuscarTipoGarantia" widgetVar="blkDlgBuscarTipoGarantia"></p:blockUI>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgMensaje" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgMensaje">
+		<div class="dsDlgMensajeOperacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Sistema"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mblistagarantiaporconstituir.oEMensaje.descMensaje}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar"  onclick="PF('dlgMensaje').hide();" ></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+
+	<p:dialog widgetVar="dlgMensajeOperacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgMensajeOperacion">
+		<div class="dsDlgMensajeOperacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Operación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mblistagarantiaporconstituir.oEMensaje.descMensaje}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" onclick="PF('dlgMensajeOperacion').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mblistagarantiaporconstituir.salir()}" update="tabView1:formTipoGarantia:tblTipoDeGarantia,tabView1:formTipoGarantia:tblOtroTipoGarantia"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+
+	
+</f:view>
+</ui:define>
+</ui:composition>

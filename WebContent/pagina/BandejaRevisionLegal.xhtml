@@ -1,0 +1,478 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  template="/pagina/maestra.xhtml">
+<ui:define name="contenido">
+<h:head>
+<style>
+</style>
+</h:head> 
+<f:view>
+	<h:form id="form">
+	
+	<div class="ui-g ui-fluid">
+        <div class="dsCuadrarCentroInicio tituloIzquieda">
+            <h4><i class="fa fa-folder-open"></i> M&#243;dulo : Mi Bandeja <small> > Consultas</small></h4>
+        </div>
+        
+		<p:commandLink styleClass="dsCmdlink3" title="Nueva Consulta Manual" process="@form" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbbandejarevisionlegal.agregar(2)}">
+			<h:graphicImage value="/resources/images/nuevo-doc.png" styleClass="pic" />
+		</p:commandLink>
+		<p:commandLink styleClass="dsCmdlink4" title="Grafico Estadistico" onclick="PopupCenter(1,'Chart',screen.width,screen.height);">
+			<i class="fas fa-chart-pie"></i>
+		</p:commandLink>
+    </div>    
+    
+    <div class="ui-g ui-fluid ui-g-nopad">
+    <div class="ui-g-12">
+	<p:panel id="pnl1" widgetVar="pnl1" toggleable="true" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+    <f:facet name="header" >
+        <i class="fa fa-search"></i> Búsqueda de Consultas
+    </f:facet>
+    <div class="ui-g ui-fluid ui-g-nopad">
+		<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-3">
+		<p:outputLabel value="Prioridad" styleClass="dsLabel1"/>
+		<p:selectOneMenu id="cbNivel" value="#{mbbandejarevisionlegal.codigoNivel}">
+			<p:ajax event="change" onstart="PF('blkPanel').show();" onsuccess="PF('blkPanel').hide();" listener="#{mbbandejarevisionlegal.listarSolicitud()}" update="tabView1"/>
+			<f:selectItem itemValue="0" itemLabel="Todos"/>
+			<f:selectItems value="#{mbbandejarevisionlegal.lstNivel}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+		</p:selectOneMenu>
+		</div>
+		<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-3">
+		<p:outputLabel value="Estado" styleClass="dsLabel1"/>
+		<p:selectOneMenu id="cbEstado" value="#{mbbandejarevisionlegal.codigoEstado}">
+			<p:ajax event="change" onstart="PF('blkPanel').show();" onsuccess="PF('blkPanel').hide();" listener="#{mbbandejarevisionlegal.obtenerEstado()}" update="tabView1"/>
+			<f:selectItem itemValue="0" itemLabel="Todos"/>
+			<f:selectItems value="#{mbbandejarevisionlegal.lstEstado}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
+		</p:selectOneMenu>
+		</div>
+		<div class="ui-g-6 ui-md-6 ui-lg-3 ui-xl-3">
+		<p:outputLabel value="Fecha Inicio" styleClass="dsLabel1"/>
+		<p:selectOneMenu id="cbFechaInicio" value="#{mbbandejarevisionlegal.codigoFechaInicio}">
+			<p:ajax event="change" onstart="PF('blkPanel').show();" onsuccess="PF('blkPanel').hide();" listener="#{mbbandejarevisionlegal.obtenerCodigoFechaInicio(1)}" update="tabView1, calInicioDesde, calInicioHasta"/>
+			<f:selectItem itemValue="0" itemLabel="Hoy"/>
+			<f:selectItem itemValue="1" itemLabel="7 días"/>
+			<f:selectItem itemValue="2" itemLabel="2 semanas"/>
+			<f:selectItem itemValue="3" itemLabel="1 mes"/>
+			<f:selectItem itemValue="4" itemLabel="Por rango"/>
+		</p:selectOneMenu>
+		</div>
+		<div class="ui-g-3 ui-md-3 ui-lg-3 ui-xl-3">
+			<p:outputLabel value="Desde" styleClass="dsLabel1"/>
+			<p:calendar id="calInicioDesde" value="#{mbbandejarevisionlegal.fechaInicioDesde}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbbandejarevisionlegal.deshabilitarFechaInicio}">
+				<p:ajax event="dateSelect" onstart="PF('blkPanel').show();" onsuccess="PF('blkPanel').hide();" listener="#{mbbandejarevisionlegal.validarFechaInicio()}" update="calInicioHasta, tabView1" />
+			</p:calendar>
+		</div>
+		<div class="ui-g-3 ui-md-3 ui-lg-3 ui-xl-3">
+			<p:outputLabel value="Hasta" styleClass="dsLabel1"/>
+			<p:calendar id="calInicioHasta" value="#{mbbandejarevisionlegal.fechaInicioHasta}" mindate="#{mbbandejarevisionlegal.fechaInicioDesde}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbbandejarevisionlegal.deshabilitarFechaInicio}">
+				<p:ajax event="dateSelect" onstart="PF('blkPanel').show();" onsuccess="PF('blkPanel').hide();" listener="#{mbbandejarevisionlegal.listarSolicitud()}" update="tabView1" />
+			</p:calendar>
+		</div>
+		<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-3">
+			<p:outputLabel value="Evaluado por" styleClass="dsLabel1"/>
+			<p:selectOneMenu id="cbUsuarioEval" value="#{mbbandejarevisionlegal.codigoUsuarioEvaluacion}">
+				<p:ajax event="change" onstart="PF('blkPanel').show();" onsuccess="PF('blkPanel').hide();" listener="#{mbbandejarevisionlegal.listarSolicitud()}" update="tabView1"/>
+				<f:selectItem itemValue="0" itemLabel="Todos"/>
+				<f:selectItems value="#{mbbandejarevisionlegal.lstUsuarioEvaluacion}" var="lst" itemLabel="#{lst.nombreCorto}" itemValue="#{lst.codigo2}"/>
+			</p:selectOneMenu>
+		</div>
+		<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-3">
+			<p:outputLabel value="Persona" styleClass="dsLabel1"/>
+			<p:inputText type="text" styleClass="dsInput1" value="#{mbbandejarevisionlegal.nombrePersona}" autocomplete="off" maxlength="50" onkeypress="if (event.keyCode == 13) { onchange(); return false; }">
+				<p:ajax event="change" onstart="PF('blkPanel').show();" onsuccess="PF('blkPanel').hide();" listener="#{mbbandejarevisionlegal.listarSolicitud()}" update="tabView1"/>
+			</p:inputText>
+		</div>
+		<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-3">
+			<p:outputLabel value="Asunto" styleClass="dsLabel1"/>
+			<p:inputText type="text" styleClass="dsInput1" value="#{mbbandejarevisionlegal.descripcionAsunto}" autocomplete="off" maxlength="250" onkeypress="if (event.keyCode == 13) { onchange(); return false; }">
+				<p:ajax event="change" onstart="PF('blkPanel').show();" onsuccess="PF('blkPanel').hide();" listener="#{mbbandejarevisionlegal.listarSolicitud()}" update="tabView1"/>
+			</p:inputText>
+		</div>
+	</div>
+	</p:panel>
+	</div>
+	
+	<div class="ui-g-12">
+	<p:panel id="pnl2" widgetVar="pnl2" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+        <f:facet name="header">
+            <i class="fa fa-table"></i> Lista de Consultas
+        </f:facet>		
+        <p:tabView id="tabView1" dynamic="true" widgetVar="tabs" activeIndex="#{mbbandejarevisionlegal.indicadorTabSeleccion}">
+	    	<p:tab id="tabPendiente" title="Pendiente">
+				<p:dataTable value="#{mbbandejarevisionlegal.lstRevisionSolicitudPendiente}" var="item" styleClass="dsTabla3" paginator="true" rows="12" paginatorPosition="bottom"
+							 rowKey="#{item.codigoSolicitud}" reflow="true" tableStyle="table-layout:auto">
+					<p:column headerText="N°" styleClass="dsTextoCentro">
+						<h:outputText value="#{item.codigoSolicitud}"/>
+					</p:column>
+					<p:column headerText="Prioridad" styleClass="dsTextoCentro" priority="6">
+						<h:outputText value="#{item.descripcionNivel}"/>
+					</p:column>			
+					<p:column headerText="Tipo Envío" styleClass="dsTextoCentro" priority="6">
+						<h:outputText value="#{item.descripcionTipoEnvio}"/>
+					</p:column>
+					<p:column headerText="Estado" styleClass="dsTextoCentro">
+						<h:outputText value="#{item.descripcionEstado}"
+						styleClass="#{item.codigoEstado eq 1 ? 'dsText2 purple'
+									:item.codigoEstado eq '2' ? 'dsText2 yellow'
+									:item.codigoEstado eq '3' ? 'dsText2 lightblue'
+									:item.codigoEstado eq '4' ? 'dsText2 brown'
+									:item.codigoEstado eq '5' ? 'dsText2 blue'
+									:item.codigoEstado eq '6' ? 'dsText2 green'
+									:item.codigoEstado eq '7' ? 'dsText2 red'
+									:item.codigoEstado eq '8' ? 'dsText2 pink'
+									:item.codigoEstado eq '9' ? 'dsText2 red'
+									:null}"/>
+						<h:outputText value="Nuevo"
+						styleClass="#{item.numeroRevision eq '0' and item.numeroMensaje eq '1' and item.codigoEstado eq '2' ? 'dsText1' : null}"
+						rendered="#{item.numeroRevision eq '0' and item.numeroMensaje eq '1' and item.codigoEstado eq '2' ? true : false}"/>
+					</p:column>
+					<p:column headerText="Asunto" styleClass="dsTextoCentro">
+						<h:outputText value="#{item.abreviacionAsunto}"/>
+					</p:column>
+					<p:column headerText="Persona">
+						<h:outputText value="#{item.nombrePersona}"/>
+					</p:column>
+					<p:column headerText="N° Revisiones" styleClass="dsTextoCentro" priority="6">
+						<h:outputText value="#{item.numeroRevision}"/>
+					</p:column>
+					<p:column headerText="Fecha Inicio" styleClass="dsTextoCentro" priority="6">
+						<h:outputText value="#{item.fechaInicio}"/>
+					</p:column>
+					<p:column headerText="Tiempo Transcurrido" priority="6">
+						<p:commandLink styleClass="#{item.diaTranscurrido eq '0' ? 'dsCmdlink8 color1'
+													:item.diaTranscurrido eq '1' ? 'dsCmdlink8 color1'
+													:item.diaTranscurrido eq '2' ? 'dsCmdlink8 color2'
+													:item.diaTranscurrido ge '3' ? 'dsCmdlink8 color3'
+													:null}">
+							<i class="far fa-clock"></i>
+						</p:commandLink>
+						<h:outputText value="#{item.tiempoTranscurrido}"/>
+					</p:column>
+					<p:column headerText="Área Emisor" styleClass="dsTextoCentro" priority="6">
+						<h:outputText value="#{item.descripcionAreaEmisor}"/>
+					</p:column>
+					<p:column headerText="Emisor" styleClass="dsTextoCentro" priority="6">
+						<h:outputText value="#{item.descripcionAbreviacionEmisor}"/>
+					</p:column>
+					<p:column headerText="Evaluado por:" styleClass="dsTextoCentro" priority="6">
+						<h:outputText value="#{item.descripcionUsuarioEvaluacion}"/>
+					</p:column>
+					<p:column headerText="" styleClass="dsTextoCentro">
+						<p:commandButton styleClass="dsBoton2" icon="fa fa-pencil" title="Revisar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbbandejarevisionlegal.modificar(item)}" rendered="#{item.indicadorEditar eq '1' ? true : false}" update=":frmDlgMensajeOperacion"></p:commandButton>
+						<p:commandButton styleClass="dsBoton2" icon="fa fa-trash" title="Eliminar" action="#{mbbandejarevisionlegal.obtenerOpcionEliminar(item)}" rendered="#{item.indicadorEliminarAtajo eq '1' ? true : false}"></p:commandButton>
+						<p:commandButton styleClass="dsBoton2" icon="fa fa-ban" title="Cancelar" action="#{mbbandejarevisionlegal.obtenerOpcionCancelar(item)}" rendered="#{item.indicadorCancelarAtajo eq '1' ? true : false}"></p:commandButton>
+						<p:commandButton styleClass="dsBoton2" icon="fa fa-group" title="Cambiar a Publico" action="#{mbbandejarevisionlegal.obtenerOpcionPublicar(item)}" rendered="#{item.indicadorPublicar eq '1' ? true : false}"></p:commandButton>
+						<p:commandButton styleClass="dsBoton2" icon="fa fa-paper-plane" title="Reasignar Emisor" action="#{mbbandejarevisionlegal.filtrarUsuariosReasignar(item, 1)}" update=":frmDlgReasignacion" rendered="#{item.indicadorReasignarEmisor eq '1' ? true : false}"></p:commandButton>
+		      			<p:commandButton styleClass="dsBoton2" icon="fa fa-paper-plane" title="Reasignar" action="#{mbbandejarevisionlegal.filtrarUsuariosReasignar(item, 2)}" update=":frmDlgReasignacion" rendered="#{item.indicadorReasignarReceptor eq '1' ? true : false}"></p:commandButton>
+			     	</p:column>
+				</p:dataTable>
+			</p:tab>
+			
+			<p:tab id="tabHistorico" title="Histórico">
+				<p:dataTable value="#{mbbandejarevisionlegal.lstRevisionSolicitudHistorico}" var="item" styleClass="dsTabla3" paginator="true" rows="12" paginatorPosition="bottom"
+							 rowKey="#{item.codigoSolicitud}" reflow="true" tableStyle="table-layout:auto">
+					<p:column headerText="N°" styleClass="dsTextoCentro">
+						<h:outputText value="#{item.codigoSolicitud}"/>
+					</p:column>
+					<p:column headerText="Prioridad" styleClass="dsTextoCentro" priority="6">
+						<h:outputText value="#{item.descripcionNivel}"/>
+					</p:column>			
+					<p:column headerText="Tipo Envío" styleClass="dsTextoCentro" priority="6">
+						<h:outputText value="#{item.descripcionTipoEnvio}"/>
+					</p:column>
+					<p:column headerText="Estado" styleClass="dsTextoCentro">
+						<h:outputText value="#{item.descripcionEstado}"
+						styleClass="#{item.codigoEstado eq 1 ? 'dsText2 purple'
+									:item.codigoEstado eq '2' ? 'dsText2 yellow'
+									:item.codigoEstado eq '3' ? 'dsText2 lightblue'
+									:item.codigoEstado eq '4' ? 'dsText2 brown'
+									:item.codigoEstado eq '5' ? 'dsText2 blue'
+									:item.codigoEstado eq '6' ? 'dsText2 green'
+									:item.codigoEstado eq '7' ? 'dsText2 red'
+									:item.codigoEstado eq '8' ? 'dsText2 pink'
+									:item.codigoEstado eq '9' ? 'dsText2 red'
+									:null}"/>
+					</p:column>
+					<p:column headerText="Asunto" styleClass="dsTextoCentro">
+						<h:outputText value="#{item.abreviacionAsunto}"/>
+					</p:column>
+					<p:column headerText="Persona">
+						<h:outputText value="#{item.nombrePersona}"/>
+					</p:column>
+					<p:column headerText="N° Revisiones" styleClass="dsTextoCentro" priority="6">
+						<h:outputText value="#{item.numeroRevision}"/>
+					</p:column>
+					<p:column headerText="Fecha Inicio" styleClass="dsTextoCentro" priority="6">
+						<h:outputText value="#{item.fechaInicio}"/>
+					</p:column>
+					<p:column headerText="Tiempo Transcurrido" priority="6">
+						<p:commandLink styleClass="#{item.diaTranscurrido eq '0' ? 'dsCmdlink8 color1'
+													:item.diaTranscurrido eq '1' ? 'dsCmdlink8 color1'
+													:item.diaTranscurrido eq '2' ? 'dsCmdlink8 color2'
+													:item.diaTranscurrido ge '3' ? 'dsCmdlink8 color3'
+													:null}">
+							<i class="far fa-clock"></i>
+						</p:commandLink>
+						<h:outputText value="#{item.tiempoTranscurrido}"/>
+					</p:column>
+					<p:column headerText="Área Emisor" styleClass="dsTextoCentro" priority="6">
+						<h:outputText value="#{item.descripcionAreaEmisor}"/>
+					</p:column>
+					<p:column headerText="Emisor" styleClass="dsTextoCentro" priority="6">
+						<h:outputText value="#{item.descripcionAbreviacionEmisor}"/>
+					</p:column>
+					<p:column headerText="Evaluado por:" styleClass="dsTextoCentro" priority="6">
+						<h:outputText value="#{item.descripcionUsuarioEvaluacion}"/>
+					</p:column>
+					<p:column headerText="" styleClass="dsTextoCentro">
+						<p:commandButton styleClass="dsBoton2" icon="fa fa-search" title="Visualizar Detalle" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbbandejarevisionlegal.visualizarSolicitudDetalle(item)}"></p:commandButton>
+						<p:commandButton styleClass="dsBoton2" icon="fa fa-eye" title="Visualizar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbbandejarevisionlegal.visualizar(item)}" rendered="#{item.indicadorVisualizar eq '1' ? true : false}"></p:commandButton>
+			     	</p:column>
+				</p:dataTable>
+			</p:tab>
+		</p:tabView>
+	</p:panel>
+	</div>
+	</div>
+	
+	<p:remoteCommand name="listarSolicitud" immediate="true" process="@form" action="#{mbbandejarevisionlegal.listarSolicitud()}" update=":form:tabView1"/>
+	<p:remoteCommand name="verificarSolicitudSesion" immediate="true" process="@this" action="#{mbbandejarevisionlegal.verificarSolicitudSesion()}"/>
+	</h:form>
+	
+	<p:blockUI block=":form:pnl1, :form:pnl2" widgetVar="blkPanel"></p:blockUI>
+	
+	<p:dialog widgetVar="dlgDetalleSolicitud" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgDetalleSolicitud">
+		<div class="dsDlgDetalleSolicitud dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Detalle"/>
+				</div>
+	 			<div class="dlgDerecha">
+	 				<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgDetalleSolicitud').hide();"><i class="fas fa-times"></i></p:commandLink>
+	 			</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-3 ui-lg-3">
+					<p:outputLabel value="Código Solicitud" styleClass="dsLabel1"/>
+					<p:inputText value="#{mbbandejarevisionlegal.oERevisionSolicitudData.codigoSolicitud}" styleClass="dsInput1" disabled="true"/>
+				</div>
+				<div class="ui-g-12 ui-md-3 ui-lg-3">
+					<p:outputLabel value="Estado" styleClass="dsLabel1"/>
+					<p:inputText value="#{mbbandejarevisionlegal.oERevisionSolicitudData.descripcionEstado}" styleClass="dsInput1" disabled="true"/>
+				</div>
+				<div class="ui-g-12">
+					<p:dataTable value="#{mbbandejarevisionlegal.lstRevisionMensaje}" var="item" styleClass="dsTabla1" paginator="true" rows="5" paginatorPosition="bottom"
+								  rowKey="#{item.codigoMensaje}" reflow="false">
+						<p:column headerText="N° Revisión" styleClass="dsTextoCentro">
+							<h:outputText value="#{item.codigoRevision}"/>
+						</p:column>
+						<p:column headerText="Descripción">
+							<div class="dsTextoCorto">
+								<h:outputText value="#{item.abreviacionMensaje}"/>
+							</div>
+						</p:column>
+						<p:column headerText="N° Documentos" styleClass="dsTextoCentro">
+							<h:outputText value="#{item.numeroDocumento}"/>
+						</p:column>
+						<p:column headerText="Usuario de Registro" styleClass="dsTextoCentro" >
+							<h:outputText value="#{item.descripcionUsuarioEnvio}"/>
+						</p:column>
+						<p:column headerText="Fecha Registro" styleClass="dsTextoCentro" >
+							<h:outputText value="#{item.fechaEnvio}"/>
+						</p:column>
+						<p:column headerText="Hora Registro" styleClass="dsTextoCentro" >
+							<h:outputText value="#{item.horaEnvio}"/>
+						</p:column>
+						<p:column headerText="" styleClass="dsTextoCentro">
+							<p:commandButton styleClass="dsBoton2" icon="fa fa-search" title="Visualizar Detalle" onclick="PF('dlgPreload').show();" 
+							oncomplete="PF('dlgPreload').hide();" action="#{mbbandejarevisionlegal.visualizarMensaje(item)}"
+							update=":frmDlgDetalleSolicitud:txtMensajeDetalle"></p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</div>
+				<div class="ui-g-12">
+						<p:inputTextarea id="txtMensajeDetalle" type="text" styleClass="dsInput1" value="#{mbbandejarevisionlegal.descripcionMensajeSeleccion}" autoResize="false" rows="15" disabled="true"></p:inputTextarea>
+				</div>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgReasignacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgReasignacion">
+		<div class="dsDlgReasignacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Reasignar Solicitud"/>
+				</div>
+	 			<div class="dlgDerecha">
+	 				<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgReasignacion').hide();"><i class="fas fa-times"></i></p:commandLink>
+	 			</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:outputLabel value="Usuario actual: " styleClass="dsLabel1 titulo"/>
+					<p:outputLabel value="#{mbbandejarevisionlegal.descripcionUsuarioReasignar}" styleClass="dsLabel3"/>
+				</div>
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+				<p:dataTable value="#{mbbandejarevisionlegal.lstUsuarioReasignacionFiltro}" var="item" styleClass="dsTabla1" paginator="true" rows="10" paginatorPosition="bottom" selectionMode="single"
+							 selection="#{mbbandejarevisionlegal.oEUsuarioReasignacionSelected}" rowKey="#{item.idUsuario}" reflow="false">
+					<p:column headerText="Nombre" styleClass="dsTextoCentro">
+						<h:outputText value="#{item.nombreCompleto}"/>
+					</p:column>
+				</p:dataTable>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgReasignacion').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgReasignacion').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbbandejarevisionlegal.reasignarSolicitud()}" update=":form:tabView1, :frmDlgMensajeOperacion"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgConfirmacionCancelar" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgConfirmacionCancelar">
+		<div class="dsDlgConfirmacionCancelar dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Cancelar Solicitud"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="mensaje">
+					<p:outputLabel value="¿Estas seguro que deseas cancelar la solicitud?" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgConfirmacionCancelar').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgConfirmacionCancelar').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbbandejarevisionlegal.cancelarSolicitud()}" update=":form:tabView1, :frmDlgMensajeOperacion"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgConfirmacionEliminar" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgConfirmacionEliminar">
+		<div class="dsDlgConfirmacionEliminar dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Eliminar Solicitud"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="mensaje">
+					<p:outputLabel value="¿Estas seguro que deseas eliminar la solicitud?" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgConfirmacionEliminar').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgConfirmacionEliminar').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbbandejarevisionlegal.eliminarSolicitud()}" update=":form:tabView1, :frmDlgMensajeOperacion"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgConfirmacionPublicar" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgConfirmacionPublicar">
+		<div class="dsDlgConfirmacionPublicar dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Publicar Solicitud"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="ui-g ui-fluid contenido">
+				<div class="mensaje">
+					<p:outputLabel value="¿Estas seguro que deseas cambiar la solicitud a publico?" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgConfirmacionPublicar').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgConfirmacionPublicar').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbbandejarevisionlegal.publicarSolicitud()}" update=":form:tabView1, :frmDlgMensajeOperacion"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgBuscarSolicitud" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgBuscarSolicitud">
+		<div class="dsDlgBuscarSolicitud dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Buscar Solicitud"/>
+				</div>
+	 			<div class="dlgDerecha">
+	 				<p:commandLink styleClass="dsCmdlink5" onclick="PF('dlgBuscarSolicitud').hide();"><i class="fas fa-times"></i></p:commandLink>
+	 			</div>	
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="ui-g ui-fluid contenido">
+
+			</div>
+			<div class="ui-g ui-fluid pie">
+				<p:commandButton styleClass="dsBoton1 secundario" value="Cancelar" onclick="PF('dlgBuscarSolicitud').hide();"></p:commandButton>
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" onclick="PF('dlgBuscarSolicitud').hide(); PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbbandejarevisionlegal.listarSolicitud()}" update=":form:tabView1"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgMensajeValidacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="true" dynamic="true">	
+	<h:form id="frmDlgMensajeValidacion">
+		<div class="dsDlgMensajeValidacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Validación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mbbandejarevisionlegal.mensajeValidacion}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" onclick="PF('dlgMensajeValidacion').hide();"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgMensajeOperacion" showEffect="fade" hideEffect="fade" modal="true" responsive="true" resizable="false" draggable="false" closeOnEscape="false" dynamic="true">	
+	<h:form id="frmDlgMensajeOperacion">
+ 		<div class="dsDlgMensajeOperacion dsDialogo4">
+	 		<div class="cabecera">
+				<div class="dlgIzquierda">
+					<p:outputLabel styleClass="dsLabel2" value="Mensaje de Operación"/>
+				</div>
+			</div>
+			<div class="dsLineaHorizontal"></div>
+			<div class="contenido">
+				<div class="mensaje">
+					<p:outputLabel value="#{mbbandejarevisionlegal.oEMensaje.descMensaje}" styleClass="dsLabel3"/>
+				</div>
+			</div>
+			<div class="pie">
+				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" onclick="PF('dlgMensajeOperacion').hide();"></p:commandButton>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+    <script type="text/javascript">	
+		window.setInterval(invocaListarSolicitud, 120000);
+		window.setInterval(invocaVerificarSolicitudSesion, 60000);
+	</script>
+</f:view>
+</ui:define>
+</ui:composition>
