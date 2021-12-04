@@ -1226,6 +1226,24 @@ public class COperacion {
 		return resultado;
 	}
 	
+	public List<EOperacionClienteDocumento> listarEvaluacionClienteDocumento(long numeroSolicitud, int codigoTipoCliente, int codigoCliente){
+		IConexion oIConexion = null;
+		List<EOperacionClienteDocumento> resultado = null;
+		DAOOperacion oDAOOperacion= null;
+		try {
+			oIConexion = FabricaConexion.creaConexion();		
+			oDAOOperacion = new DAOOperacion(oIConexion);
+			resultado = oDAOOperacion.listarEvaluacionClienteDocumento(numeroSolicitud, codigoTipoCliente, codigoCliente);			
+		} catch (Exception e) {
+			UManejadorLog.error("Control: Error al listar documento " + e.getMessage());
+		} finally {
+			if (oIConexion != null) {
+				oIConexion.cierraConexion();
+			}
+		}
+		return resultado;
+	}
+	
 	public EOperacionCliente buscarEvaluacionCliente(long numeroSolicitud, int codigoTipoCliente, int codigoCliente){
 		IConexion oIConexion = null;
 		EOperacionCliente resultado = null;

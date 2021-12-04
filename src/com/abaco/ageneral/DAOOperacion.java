@@ -1267,6 +1267,42 @@ public class DAOOperacion extends InstanciaAcceso{
 		return lstOperacionCliente;
 	}
 	
+	public List<EOperacionClienteDocumento> listarEvaluacionClienteDocumento(long numeroSolicitud, int codigoTipoCliente, int codigoCliente) {
+		List<Object> lstParametrosEntrada;
+		ResultSet oResultSet = null;
+		EOperacionClienteDocumento oEOperacionClienteDocumento= null;
+		List<EOperacionClienteDocumento> lstOperacionClienteDocumento = null;
+		
+		try {	
+			lstParametrosEntrada = new ArrayList<Object>();
+			lstParametrosEntrada.add(numeroSolicitud);
+			lstParametrosEntrada.add(codigoTipoCliente);
+			lstParametrosEntrada.add(codigoCliente);
+			 
+			oResultSet = objConexion.ejecutaConsulta(SP_ABACOINLEGAL_SEL_OPERACION_CLIENTE_DOCUMENTO, lstParametrosEntrada, null);
+			if (oResultSet != null) {
+				lstOperacionClienteDocumento = new ArrayList<EOperacionClienteDocumento>();
+				while (oResultSet.next()) {
+					oEOperacionClienteDocumento=new EOperacionClienteDocumento();
+					oEOperacionClienteDocumento.setNumeroSolicitud(oResultSet.getInt("NROSOL"));
+					oEOperacionClienteDocumento.setCodigoTipoCliente(oResultSet.getInt("TIPCLI"));
+					oEOperacionClienteDocumento.setCodigoCliente(oResultSet.getInt("CODCLI"));
+					oEOperacionClienteDocumento.setCodigoDocumento(oResultSet.getInt("CODDOC"));
+					oEOperacionClienteDocumento.setCodigoDocumentoLaserFiche(oResultSet.getString("CODDOCLSF"));
+					oEOperacionClienteDocumento.setNombreDocumento(oResultSet.getString("NOMDOC"));
+					oEOperacionClienteDocumento.setNombreDocumentoLaserFiche(oResultSet.getString("NOMDOCLSF"));
+					oEOperacionClienteDocumento.setNombreDocumentoOriginal(oResultSet.getString("NOMDOCORI"));
+					
+					lstOperacionClienteDocumento.add(oEOperacionClienteDocumento);
+				}								
+			}						
+			
+		} catch(Exception objEx) {
+			UManejadorLog.error("Acceso: Problemas al obtener.", objEx);
+		}
+		return lstOperacionClienteDocumento;
+	}
+	
 	public EOperacionCliente buscarEvaluacionCliente(long numeroSolicitud, int codigoTipoCliente, int codigoCliente) {
 		List<Object> lstParametrosEntrada;
 		ResultSet oResultSet = null;
@@ -1356,41 +1392,5 @@ public class DAOOperacion extends InstanciaAcceso{
 			UManejadorLog.error("Acceso: Problemas al obtener.", objEx);
 		}
 		return oEOperacionCliente;
-	}
-	
-	public List<EOperacionClienteDocumento> listarEvaluacionClienteDocumento(long numeroSolicitud, int codigoTipoCliente, int codigoCliente) {
-		List<Object> lstParametrosEntrada;
-		ResultSet oResultSet = null;
-		EOperacionClienteDocumento oEOperacionClienteDocumento= null;
-		List<EOperacionClienteDocumento> lstOperacionClienteDocumento = null;
-		
-		try {	
-			lstParametrosEntrada = new ArrayList<Object>();
-			lstParametrosEntrada.add(numeroSolicitud);
-			lstParametrosEntrada.add(codigoTipoCliente);
-			lstParametrosEntrada.add(codigoCliente);
-			 
-			oResultSet = objConexion.ejecutaConsulta(SP_ABACOINLEGAL_SEL_OPERACION_CLIENTE_DOCUMENTO, lstParametrosEntrada, null);
-			if (oResultSet != null) {
-				lstOperacionClienteDocumento = new ArrayList<EOperacionClienteDocumento>();
-				while (oResultSet.next()) {
-					oEOperacionClienteDocumento=new EOperacionClienteDocumento();
-					oEOperacionClienteDocumento.setNumeroSolicitud(oResultSet.getInt("NROSOL"));
-					oEOperacionClienteDocumento.setCodigoTipoCliente(oResultSet.getInt("TIPCLI"));
-					oEOperacionClienteDocumento.setCodigoCliente(oResultSet.getInt("CODCLI"));
-					oEOperacionClienteDocumento.setCodigoDocumento(oResultSet.getInt("CODDOC"));
-					oEOperacionClienteDocumento.setCodigoDocumentoLaserFiche(oResultSet.getString("CODDOCLSF"));
-					oEOperacionClienteDocumento.setNombreDocumento(oResultSet.getString("NOMDOC"));
-					oEOperacionClienteDocumento.setNombreDocumentoLaserFiche(oResultSet.getString("NOMDOCLSF"));
-					oEOperacionClienteDocumento.setNombreDocumentoOriginal(oResultSet.getString("NOMDOCORI"));
-					
-					lstOperacionClienteDocumento.add(oEOperacionClienteDocumento);
-				}								
-			}						
-			
-		} catch(Exception objEx) {
-			UManejadorLog.error("Acceso: Problemas al obtener.", objEx);
-		}
-		return lstOperacionClienteDocumento;
 	}
 }

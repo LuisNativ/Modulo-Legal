@@ -286,6 +286,7 @@ public class MBRegistroOperacionCliente implements Serializable {
 	
 	@Getter @Setter private boolean minimizarPnlRepresentanteLegal;
 	@Getter @Setter private boolean minimizarPnlDeudor;
+	@Getter @Setter private boolean minimizarPnlDocumento;
 	
 	@Getter @Setter private boolean visualizarBtnSalir;
 	@Getter @Setter private boolean visualizarBtnGrabar;
@@ -607,6 +608,7 @@ public class MBRegistroOperacionCliente implements Serializable {
 			}
 			
 			listarDesplegable();
+			listarDocumento();
 			listarRepresentanteLegal();
 			listarDeudor();
 			listarClienteSuscripcion();
@@ -620,6 +622,9 @@ public class MBRegistroOperacionCliente implements Serializable {
 			}
 			if(lstDeudor.size() > 0){
 				minimizarPnlDeudor = false;
+			}
+			if(lstOperacionClienteDocumento.size() > 0){
+				minimizarPnlDocumento = false;
 			}
 		}
 	}
@@ -713,6 +718,10 @@ public class MBRegistroOperacionCliente implements Serializable {
 	//*************************************//
 	//Metodos para documento de carga
 	//*************************************//
+	
+	public void listarDocumento(){
+		lstOperacionClienteDocumento = oBOOperacion.listarEvaluacionClienteDocumento(oEOperacionClienteLoad.getNumeroSolicitud(), oEOperacionClienteLoad.getCodigoTipoCliente(), oEOperacionClienteLoad.getCodigoCliente());
+	}
 	
 	public void eliminarDocumentoCarga(EDocumentoCarga oEDocumentoCargaItem){
 		lstDocumentoCarga.remove(oEDocumentoCargaItem);
@@ -2001,6 +2010,7 @@ public class MBRegistroOperacionCliente implements Serializable {
 	public void inicializar() {
 		minimizarPnlRepresentanteLegal = true;
 		minimizarPnlDeudor = true;
+		minimizarPnlDocumento = true;
 		
 		visualizarBtnSalir = false;
 		visualizarBtnGrabar = false;

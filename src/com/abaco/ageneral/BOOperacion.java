@@ -123,6 +123,10 @@ public class BOOperacion {
 		List<EOperacionCliente> lista=oCOperacion.listarEvaluacionCliente(codigo, descripcion, eUsuario);
 		return lista;
 	}
+	public List<EOperacionClienteDocumento> listarEvaluacionClienteDocumento(long numeroSolicitud, int codigoTipoCliente, int codigoCliente){
+		List<EOperacionClienteDocumento> lista=oCOperacion.listarEvaluacionClienteDocumento(numeroSolicitud, codigoTipoCliente, codigoCliente);
+		return lista;
+	}
 	public EOperacionCliente buscarEvaluacionCliente(long numeroSolicitud, int codigoTipoCliente, int codigoCliente){
 		EOperacionCliente resultado=oCOperacion.buscarEvaluacionCliente(numeroSolicitud, codigoTipoCliente, codigoCliente);
 		return resultado;
