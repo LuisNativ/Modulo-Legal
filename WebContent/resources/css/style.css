@@ -275,6 +275,7 @@ ui-inputfield ui-inputtextarea ui-widget ui-state-default ui-corner-all ui-input
 	text-align: justify !important;
 	resize: none !important;
 }
+
 /*Se usa para mostrar mensaje detalle*/
 .dsInput1.dsModelo3.ui-inputfield.ui-inputtextarea.ui-state-default{
 	background-color: transparent !important;

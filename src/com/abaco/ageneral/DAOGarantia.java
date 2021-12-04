@@ -1062,11 +1062,53 @@ public class DAOGarantia extends InstanciaAcceso{
 					oEGarantiaTramite.setCiudadInscripcion(UFuncionesGenerales.revisaCadena(oResultSet.getString("CIUINS")));
 					
 					oEGarantiaTramite.setDescripcionNotario(UFuncionesGenerales.revisaCadena(oResultSet.getString("DESCNOTARIO")));
-					
+					//Validacion para Historico Antes/Despues
+					oEGarantiaTramite.setValidarNumeroHojaIngresoLegal(oResultSet.getInt("HOJINL") == oResultSet.getInt("@HOJINL") ? false : true);
+					oEGarantiaTramite.setValidarFechaIngreso(oResultSet.getDate("FECINL").equals(oResultSet.getDate("AFECINL"))  ? false: true);
+					oEGarantiaTramite.setValidarEvaluacionDocumento(oResultSet.getInt("EVADOC") == oResultSet.getInt("@EVADOC") ? false: true);
+					oEGarantiaTramite.setValidarFechaElaboracionContrato(oResultSet.getDate("FECELC").equals(oResultSet.getDate("AFECELC")) ? false: true);
+					oEGarantiaTramite.setValidarUsuarioElaboracionContrato(UFuncionesGenerales.revisaCadena(oResultSet.getString("USRELC")).equals(
+							UFuncionesGenerales.revisaCadena(oResultSet.getString("@USRELC"))) ? false : true);
+					oEGarantiaTramite.setValidarFechaFirmaContrato(oResultSet.getDate("FECFIC").equals(oResultSet.getDate("AFECFIC")) ? false: true);
+					oEGarantiaTramite.setValidarFechaIngresoNotaria(oResultSet.getDate("FECFIN").equals(oResultSet.getDate("AFECFIN")) ? false: true);
+					oEGarantiaTramite.setValidarFechaLegalizacionFirma(UFuncionesGenerales.revisaFecha(oResultSet.getDate("FECLEF")).equals(
+							UFuncionesGenerales.revisaFecha(oResultSet.getDate("AFECLEF"))) ? false: true);
+					oEGarantiaTramite.setValidarNumeroKardex(oResultSet.getInt("KARDEN") == oResultSet.getInt("@KARDEN") ? false : true);
+					oEGarantiaTramite.setValidarCodigoNotario(oResultSet.getInt("NOTARI") == oResultSet.getInt("@NOTARI") ? false : true);
+					oEGarantiaTramite.setValidarFechaIngresoRegistro(oResultSet.getDate("FECINR").equals(oResultSet.getDate("AFECINR")) ? false: true);
+					oEGarantiaTramite.setValidarFechaVigenciaAsiento(oResultSet.getDate("FECVAP").equals(oResultSet.getDate("AFECVAP")) ? false: true);
 					oEGarantiaTramite.setValidarObservacion1(UFuncionesGenerales.revisaCadena(oResultSet.getString("OBSER1")).equals(
 							                                 UFuncionesGenerales.revisaCadena(oResultSet.getString("@OBSER1"))) ? false : true);
 					oEGarantiaTramite.setValidarObservacion2(UFuncionesGenerales.revisaCadena(oResultSet.getString("OBSER2")).equals(
                             UFuncionesGenerales.revisaCadena(oResultSet.getString("@OBSER2"))) ? false : true);
+					oEGarantiaTramite.setValidarFechaObservacion(oResultSet.getDate("FECOBS").equals(oResultSet.getDate("AFECOBS")) ? false: true);
+					oEGarantiaTramite.setValidarFechaTacha(oResultSet.getDate("FECTAC").equals(oResultSet.getDate("AFECTAC")) ? false: true);
+					oEGarantiaTramite.setValidarFechaInscripcion(oResultSet.getDate("FECINS").equals(oResultSet.getDate("AFECINS")) ? false: true);
+					oEGarantiaTramite.setValidarFichaInscripcion(UFuncionesGenerales.revisaCadena(oResultSet.getString("FICINS")).equals(
+							UFuncionesGenerales.revisaCadena(oResultSet.getString("@FICINS"))) ? false : true);
+					oEGarantiaTramite.setValidarTomoInscripcion(UFuncionesGenerales.revisaCadena(oResultSet.getString("TOMINS")).equals(
+							UFuncionesGenerales.revisaCadena(oResultSet.getString("@TOMINS"))) ? false : true);
+					oEGarantiaTramite.setValidarCiudadInscripcion(UFuncionesGenerales.revisaCadena(oResultSet.getString("CIUINS")).equals(
+							UFuncionesGenerales.revisaCadena(oResultSet.getString("@CIUINS"))) ? false : true);
+					oEGarantiaTramite.setValidarFechaIngresoRegistroB(oResultSet.getDate("FECBINR").equals(oResultSet.getDate("AFECBINR")) ? false: true);
+					oEGarantiaTramite.setValidarFechaVigenciaAsientoB(oResultSet.getDate("FECBVAP").equals(oResultSet.getDate("AFECBVAP")) ? false: true);
+					oEGarantiaTramite.setValidarDescripcionObservacionBloqueo1(UFuncionesGenerales.revisaCadena(oResultSet.getString("BOBSE1")).equals(
+                            UFuncionesGenerales.revisaCadena(oResultSet.getString("@BOBSE1"))) ? false : true);
+					oEGarantiaTramite.setValidarDescripcionObservacionBloqueo2(UFuncionesGenerales.revisaCadena(oResultSet.getString("BOBSE2")).equals(
+                            UFuncionesGenerales.revisaCadena(oResultSet.getString("@BOBSE2"))) ? false : true);
+					oEGarantiaTramite.setValidarFechaObservacionB(oResultSet.getDate("FECBOBS").equals(oResultSet.getDate("AFECBOBS")) ? false: true);
+					oEGarantiaTramite.setValidarFechaTachaB(oResultSet.getDate("FECBTAC").equals(oResultSet.getDate("AFECBTAC")) ? false: true);
+					oEGarantiaTramite.setValidarFechaInscripcionB(oResultSet.getDate("FECBINS").equals(oResultSet.getDate("AFECBINS")) ? false: true);
+					oEGarantiaTramite.setValidarFichaInscripcionB(UFuncionesGenerales.revisaCadena(oResultSet.getString("BFICIN")).equals(
+							UFuncionesGenerales.revisaCadena(oResultSet.getString("@BFICIN"))) ? false : true);
+					oEGarantiaTramite.setValidarTomoInscripcionB(UFuncionesGenerales.revisaCadena(oResultSet.getString("BTOMIN")).equals(
+							UFuncionesGenerales.revisaCadena(oResultSet.getString("@BTOMIN"))) ? false : true);
+					oEGarantiaTramite.setValidarCiudadInscripcionB(UFuncionesGenerales.revisaCadena(oResultSet.getString("BCIUIN")).equals(
+							UFuncionesGenerales.revisaCadena(oResultSet.getString("@BCIUIN"))) ? false : true);
+					oEGarantiaTramite.setValidarTituloA(UFuncionesGenerales.revisaCadena(oResultSet.getString("TITULA")).equals(
+							UFuncionesGenerales.revisaCadena(oResultSet.getString("@TITULA"))) ? false : true);
+					oEGarantiaTramite.setValidarTituloB(UFuncionesGenerales.revisaCadena(oResultSet.getString("TITULB")).equals(
+							UFuncionesGenerales.revisaCadena(oResultSet.getString("@TITULB"))) ? false : true);
 					lstGarantia.add(oEGarantiaTramite);
 				}								
 			}						

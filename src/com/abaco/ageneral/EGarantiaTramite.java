@@ -58,9 +58,38 @@ public @Data class EGarantiaTramite {
 	
 	
 	//Para Historico
-	private boolean validarfechaIngreso;
+	private boolean validarNumeroHojaIngresoLegal;
+	private boolean validarFechaIngreso;
+	private boolean validarEvaluacionDocumento;
+	private boolean validarFechaElaboracionContrato;
+	private boolean validarUsuarioElaboracionContrato;
+	private boolean validarFechaFirmaContrato;
+	private boolean validarFechaIngresoNotaria;
+	private boolean validarFechaLegalizacionFirma;
+	private boolean validarNumeroKardex;
+	private boolean validarCodigoNotario;
+	private boolean validarFechaIngresoRegistro;
+	private boolean validarFechaVigenciaAsiento;
 	private boolean validarObservacion1;
 	private boolean validarObservacion2;
+	private boolean validarFechaObservacion;
+	private boolean validarFechaTacha;
+	private boolean validarFechaInscripcion;
+	private boolean validarFichaInscripcion;
+	private boolean validarTomoInscripcion;
+	private boolean validarCiudadInscripcion;
+	private boolean validarDescripcionObservacionBloqueo1;
+	private boolean validarDescripcionObservacionBloqueo2;
+	private boolean validarFechaIngresoRegistroB;
+	private boolean validarFechaVigenciaAsientoB;
+	private boolean validarFechaObservacionB;
+	private boolean validarFechaTachaB;
+	private boolean validarFechaInscripcionB;
+	private boolean validarFichaInscripcionB;
+	private boolean validarTomoInscripcionB;
+	private boolean validarCiudadInscripcionB;
+	private boolean validarTituloA;
+	private boolean validarTituloB;
 	
 	
 }

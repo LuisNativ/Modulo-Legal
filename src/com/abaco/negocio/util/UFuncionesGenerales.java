@@ -124,6 +124,14 @@ public class UFuncionesGenerales {
 		return datFecha;
 	}
 	
+	public static Date revisaFecha(Date dtFecha) {
+		Date strResultado = dtFecha;
+		if (strResultado == null) {
+			strResultado = new Date();
+		}
+		return strResultado;
+	}
+	
 	public static String convierteCadenaMayuscula(String strCadena) {
 		return revisaCadena(strCadena).toUpperCase();
 	}
