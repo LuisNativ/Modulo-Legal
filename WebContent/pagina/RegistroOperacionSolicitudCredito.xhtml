@@ -457,9 +457,6 @@
 						<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
 						<f:selectItems value="#{mbregistrooperacionsolicitudcredito.lstFacultadOperar}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
 					</p:selectOneMenu>
-					<!--
-					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oEEvaluacionSolicitudCreditoLegalData.codigoFacultadOperar}" autocomplete="off"></p:inputText>
-					-->
 				</div>
 				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel value="Capital Social R.P" styleClass="dsLabel1"/>
@@ -510,13 +507,6 @@
 					<p:outputLabel value="Fecha Constitución" styleClass="dsLabel1"/>
 					<p:calendar value="#{mbregistrooperacionsolicitudcredito.oEInformeLegalAdicionalData.fechaConstitucion}" disabled="#{mbregistrooperacionsolicitudcredito.deshabilitarFrmContratante}" navigator="true" pattern="dd-MM-yyyy"></p:calendar>
 				</div>
-
-				<!--
-				<div class="ui-g-12 ui-md-12 ui-lg-6">
-					<p:outputLabel value="Notario" styleClass="dsLabel1"/>
-					<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oEInformeLegalAdicionalData.descripcionNotario}" maxlength="70" autocomplete="off"></p:inputText>
-				</div>
-				-->
 			    <div class="ui-g-12 ui-md-12 ui-lg-6">
 					<div class="ui-g-11 ui-md-10 ui-lg-11 ui-g-nopad">		
 							<p:outputLabel value="Notario" styleClass="dsLabel1"/>

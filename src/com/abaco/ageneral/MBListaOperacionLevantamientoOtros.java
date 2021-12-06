@@ -143,13 +143,23 @@ public class MBListaOperacionLevantamientoOtros implements Serializable {
 	}
 
 	public void listarLevantamiento() {
-		lstGarantiaPendiente = oBOOperacion.listarEvaluacionLevantamientoGarantia(0, "", oEUsuario);
+		if(oEUsuario.getCodigoArea() == UArea.CREDITOS){
+			lstGarantiaPendiente = oBOOperacion.listarEvaluacionLevantamientoGarantia(0, "", oEUsuario, 2);
+		}else {
+			lstGarantiaPendiente = oBOOperacion.listarEvaluacionLevantamientoGarantia(0, "", oEUsuario, 1);
+		}
+		//lstGarantiaPendiente = oBOOperacion.listarEvaluacionLevantamientoGarantia(0, "", oEUsuario, 2);
 		lstGarantiaCredito = oBOGarantia.listarGarantiaPorLiberar(0, "");
 		lstGarantiaLiberada = oBOGarantia.listarGarantiaLiberada(2, "");
 	}
 	
 	public void buscarGarantia() {
-		lstGarantiaPendiente = oBOOperacion.listarEvaluacionLevantamientoGarantia(0, "", oEUsuario);
+		if(oEUsuario.getCodigoArea() == UArea.CREDITOS){
+			lstGarantiaPendiente = oBOOperacion.listarEvaluacionLevantamientoGarantia(0, "", oEUsuario, 2);
+		}else {
+			lstGarantiaPendiente = oBOOperacion.listarEvaluacionLevantamientoGarantia(0, "", oEUsuario, 1);
+		}
+		//lstGarantiaPendiente = oBOOperacion.listarEvaluacionLevantamientoGarantia(0, "", oEUsuario, 2);
 		lstGarantiaCredito = oBOGarantia.listarGarantiaPorLiberar(0, "");
 		lstGarantiaLiberada = oBOGarantia.listarGarantiaLiberada(codigoBuscarGarantia, descripcionBuscarGarantia);
 	}

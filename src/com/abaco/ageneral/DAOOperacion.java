@@ -56,12 +56,13 @@ public class DAOOperacion extends InstanciaAcceso{
 	//EVALUACION LEVANTAMIENTO GARANTIA
 	private static final String SP_ABACOINLEGAL_INS_OPERACION_LEVANTAMIENTOGARANTIA = "{ CALL GESTIONDOC.SP_ABACOINLEGAL_INS_OPERACION_LEVANTAMIENTOGARANTIA("+parametrosSP(10)+") }";
 	private static final String SP_ABACOINLEGAL_UPD_OPERACION_LEVANTAMIENTOGARANTIA = "{ CALL GESTIONDOC.SP_ABACOINLEGAL_UPD_OPERACION_LEVANTAMIENTOGARANTIA("+parametrosSP(11)+") }";
+	private static final String SP_ABACOINLEGAL_SEL_OPERACION_LEVANTAMIENTOGARANTIA_LEGAL = "{ CALL GESTIONDOC.SP_ABACOINLEGAL_SEL_OPERACION_LEVANTAMIENTOGARANTIA_LEGAL("+parametrosSP(3)+") }";
 	private static final String SP_ABACOINLEGAL_SEL_OPERACION_LEVANTAMIENTOGARANTIA_OTROS = "{ CALL GESTIONDOC.SP_ABACOINLEGAL_SEL_OPERACION_LEVANTAMIENTOGARANTIA_OTROS("+parametrosSP(3)+") }";
 	
 	//EVALUACION CLIENTE
 	private static final String SP_ABACOINLEGAL_INS_UPD_OPERACION_CLIENTE = "{ CALL GESTIONDOC.SP_ABACOINLEGAL_INS_UPD_OPERACION_CLIENTE("+parametrosSP(10)+") }";
 	private static final String SP_ABACOINLEGAL_INS_OPERACION_CLIENTE_DOCUMENTO = "{ CALL GESTIONDOC.SP_ABACOINLEGAL_INS_OPERACION_CLIENTE_DOCUMENTO("+parametrosSP(12)+") }";
-	private static final String SP_ABACOINLEGAL_UPD_OPERACION_CLIENTE="{ CALL GESTIONDOC.SP_ABACOINLEGAL_UPD_OPERACION_CLIENTE("+parametrosSP(54)+") }";
+	private static final String SP_ABACOINLEGAL_UPD_OPERACION_CLIENTE="{ CALL GESTIONDOC.SP_ABACOINLEGAL_UPD_OPERACION_CLIENTE("+parametrosSP(60)+") }";
 	private static final String SP_ABACOINLEGAL_SEL_OPERACION_CLIENTE="{ CALL GESTIONDOC.SP_ABACOINLEGAL_SEL_OPERACION_CLIENTE("+parametrosSP(2)+") }";
 	private static final String SP_ABACOINLEGAL_SEL_OPERACION_CLIENTE_DOCUMENTO="{ CALL GESTIONDOC.SP_ABACOINLEGAL_SEL_OPERACION_CLIENTE_DOCUMENTO("+parametrosSP(3)+") }";
 	private static final String SP_ABACOINLEGAL_BUS_OPERACION_CLIENTE="{ CALL GESTIONDOC.SP_ABACOINLEGAL_BUS_OPERACION_CLIENTE("+parametrosSP(3)+") }";
@@ -1045,7 +1046,7 @@ public class DAOOperacion extends InstanciaAcceso{
 		return mensaje;
 	}
 	
-	public List<EGarantiaSolicitud> listarEvaluacionLevantamientoGarantia(int codigo, String descripcion,EUsuario eUsuario) {
+	public List<EGarantiaSolicitud> listarEvaluacionLevantamientoGarantia(int codigo, String descripcion, EUsuario eUsuario, int indicadorConsulta) {
 		List<Object> lstParametrosEntrada;
 		ResultSet oResultSet = null;
 		EGarantiaSolicitud oEGarantia= null;
@@ -1057,7 +1058,11 @@ public class DAOOperacion extends InstanciaAcceso{
 			lstParametrosEntrada.add(descripcion);
 			lstParametrosEntrada.add(eUsuario.getNombreUsuario());
 			
-			oResultSet = objConexion.ejecutaConsulta(SP_ABACOINLEGAL_SEL_OPERACION_LEVANTAMIENTOGARANTIA_OTROS, lstParametrosEntrada, null);
+			if(indicadorConsulta == 1){
+				oResultSet = objConexion.ejecutaConsulta(SP_ABACOINLEGAL_SEL_OPERACION_LEVANTAMIENTOGARANTIA_LEGAL, lstParametrosEntrada, null);
+			}else if(indicadorConsulta == 2){
+				oResultSet = objConexion.ejecutaConsulta(SP_ABACOINLEGAL_SEL_OPERACION_LEVANTAMIENTOGARANTIA_OTROS, lstParametrosEntrada, null);
+			}
 			if (oResultSet != null) {
 				lstGarantia = new ArrayList<EGarantiaSolicitud>();
 				while (oResultSet.next()) {
@@ -1157,6 +1162,9 @@ public class DAOOperacion extends InstanciaAcceso{
 			lstParametrosEntrada.add(eOperacionCliente.getCodigoTipoDocumento());
 			lstParametrosEntrada.add(eOperacionCliente.getNumeroDocumento());
 			lstParametrosEntrada.add(eOperacionCliente.getRuc());
+			lstParametrosEntrada.add(eOperacionCliente.getApellidoPaterno());
+			lstParametrosEntrada.add(eOperacionCliente.getApellidoMaterno());
+			lstParametrosEntrada.add(eOperacionCliente.getNombre());
 			lstParametrosEntrada.add(eOperacionCliente.getNombreLargo());
 			lstParametrosEntrada.add(eOperacionCliente.getDireccionReal());
 			lstParametrosEntrada.add(eOperacionCliente.getCodigoUbigeoReal());
@@ -1165,6 +1173,9 @@ public class DAOOperacion extends InstanciaAcceso{
 			
 			lstParametrosEntrada.add(eOperacionCliente.getCodigoTipoDocumentoConyugue());
 			lstParametrosEntrada.add(eOperacionCliente.getDocumentoConyugue());
+			lstParametrosEntrada.add(eOperacionCliente.getApellidoPaternoConyugue());
+			lstParametrosEntrada.add(eOperacionCliente.getApellidoMaternoConyugue());
+			lstParametrosEntrada.add(eOperacionCliente.getNombreConyugue());
 			lstParametrosEntrada.add(eOperacionCliente.getNombreLargoConyuge());
 			
 			lstParametrosEntrada.add(eOperacionCliente.getCodigoTipoPersonaJuridica());

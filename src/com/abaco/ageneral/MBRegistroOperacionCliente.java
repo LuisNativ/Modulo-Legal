@@ -84,6 +84,7 @@ import com.abaco.negocio.util.UConstante.UTipoEvaluacion;
 import com.abaco.negocio.util.UConstante.UTipoFirma;
 import com.abaco.negocio.util.UConstante.UTipoGarantia;
 import com.abaco.negocio.util.UConstante.UTipoPersonaGeneral;
+import com.abaco.negocio.util.UConstante.UTipoPersonaJuridica;
 import com.abaco.negocio.util.UConstante.UTipoSuscripcionPago;
 import com.abaco.negocio.util.UConstante.UTipoValorSuscripcion;
 import com.abaco.negocio.util.UConstante.UUbicacion;
@@ -156,6 +157,7 @@ public class MBRegistroOperacionCliente implements Serializable {
 	@Getter @Setter private List<EGeneral> lstNivel;
 	@Getter @Setter private List<EGeneral> lstMotivo;
 	@Getter @Setter private List<EGeneral> lstDOI;
+	@Getter @Setter private List<EGeneral> lstDOIContratanteFiltro;
 	@Getter @Setter private List<EGeneral> lstDOIRepresentanteFiltro;
 	@Getter @Setter private List<EGeneral> lstSexo;
 	@Getter @Setter private List<EGeneral> lstTipoPersona;
@@ -176,9 +178,11 @@ public class MBRegistroOperacionCliente implements Serializable {
 	@Getter @Setter private List<EGeneral> lstCIIU;
 	@Getter @Setter private List<EGeneral> lstTipoPersonaJuridica;
 	@Getter @Setter private List<EGeneral> lstSuscripcionPago;
+	@Getter @Setter private List<EGeneral> lstSuscripcionPagoFiltro;
 	@Getter @Setter private List<EGeneral> lstFacultadOperar;
 	@Getter @Setter private List<EGeneral> lstTipoDuracionPartida;
 	@Getter @Setter private List<EGeneral> lstCargoLaboral;
+	@Getter @Setter private List<EGeneral> lstTipoNumeracionEstatuto;
 	
 	@Getter @Setter private List<EGeneral> lstDepartamentoReal;
 	@Getter @Setter private List<EGeneral> lstProvinciaReal;
@@ -210,6 +214,7 @@ public class MBRegistroOperacionCliente implements Serializable {
 	@Getter @Setter private String descripcionDocumentoCarga;
 	@Getter @Setter private String nombreBuscar;
 	@Getter @Setter private Date fechaMaximo;
+	@Getter @Setter private int maxLgnNumeroDocumentoContratante;
 	@Getter @Setter private int maxLgnNumeroDocumentoRepresentante;
 	
 	//Datos de formulario Contratante
@@ -247,7 +252,10 @@ public class MBRegistroOperacionCliente implements Serializable {
 	@Getter @Setter private boolean visualizarObservacionAval;
 	@Getter @Setter private boolean visualizarObservacionGrabarBien;
 	@Getter @Setter private boolean visualizarFrmSuscripcion;
+	@Getter @Setter private boolean visualizarFrmPatrimonio;
 	@Getter @Setter private boolean visualizarDescripcionAporte;
+	@Getter @Setter private boolean visualizarLblAccionista;
+	@Getter @Setter private boolean visualizarLblParticipacionista;
 	
 	//Panel Representante Legal Multiple
 	@Getter @Setter private boolean visualizarTblRepresentante1;
@@ -389,6 +397,7 @@ public class MBRegistroOperacionCliente implements Serializable {
 		lstNivel = new ArrayList<EGeneral>();
 		lstMotivo = new ArrayList<EGeneral>();
 		lstDOI = new ArrayList<EGeneral>();
+		lstDOIContratanteFiltro = new ArrayList<EGeneral>();
 		lstDOIRepresentanteFiltro = new ArrayList<EGeneral>();
 		lstSexo = new ArrayList<EGeneral>();
 		lstTipoPersona = new ArrayList<EGeneral>();
@@ -409,9 +418,11 @@ public class MBRegistroOperacionCliente implements Serializable {
 		lstCIIU = new ArrayList<EGeneral>();
 		lstTipoPersonaJuridica = new ArrayList<EGeneral>();
 		lstSuscripcionPago = new ArrayList<EGeneral>();
+		lstSuscripcionPagoFiltro = new ArrayList<EGeneral>();
 		lstFacultadOperar = new ArrayList<EGeneral>();
 		lstTipoDuracionPartida = new ArrayList<EGeneral>();
 		lstCargoLaboral = new ArrayList<EGeneral>();
+		lstTipoNumeracionEstatuto = new ArrayList<EGeneral>();
 		
 		lstDepartamentoReal = new ArrayList<EGeneral>();
 		lstProvinciaReal = new ArrayList<EGeneral>();
@@ -482,9 +493,9 @@ public class MBRegistroOperacionCliente implements Serializable {
 						oEOperacionClienteData.setCodigoTipoDocumento(oEClienteData.getCodigoTipoDocumento());
 						oEOperacionClienteData.setNumeroDocumento(oEClienteData.getDocumento());
 						oEOperacionClienteData.setRuc(oEClienteData.getRuc());
-						//oEOperacionClienteData.setApellidoPaterno(oEClienteData.getApellidoPaterno());
-						//oEOperacionClienteData.setApellidoMaterno(oEClienteData.getApellidoMaterno());
-						//oEOperacionClienteData.setNombre(oEClienteData.getNombre());
+						oEOperacionClienteData.setApellidoPaterno(oEClienteData.getApellidoPaterno());
+						oEOperacionClienteData.setApellidoMaterno(oEClienteData.getApellidoMaterno());
+						oEOperacionClienteData.setNombre(oEClienteData.getNombre());
 						oEOperacionClienteData.setNombreLargo(oEClienteData.getNombreLargo());
 						oEOperacionClienteData.setNumeroDocumento(oEClienteData.getDocumento());
 						oEOperacionClienteData.setDireccionReal(oEClienteData.getDireccion());
@@ -493,9 +504,9 @@ public class MBRegistroOperacionCliente implements Serializable {
 						oEOperacionClienteData.setCodigoUbigeoContractual(oEClienteData.getCodigoUbigeo2());
 						oEOperacionClienteData.setCodigoTipoDocumentoConyugue(oEClienteData.getCodigoTipoDocumentoConyugue());
 						oEOperacionClienteData.setDocumentoConyugue(oEClienteData.getDocumentoConyugue());
-						//oEOperacionClienteData.setApellidoPaternoConyugue(oEClienteData.getApellidoPaternoConyugue());
-						//oEOperacionClienteData.setApellidoMaternoConyugue(oEClienteData.getApellidoMaternoConyugue());
-						//oEOperacionClienteData.setNombreConyugue(oEClienteData.getNombreConyugue());
+						oEOperacionClienteData.setApellidoPaternoConyugue(oEClienteData.getApellidoPaternoConyugue());
+						oEOperacionClienteData.setApellidoMaternoConyugue(oEClienteData.getApellidoMaternoConyugue());
+						oEOperacionClienteData.setNombreConyugue(oEClienteData.getNombreConyugue());
 						oEOperacionClienteData.setNombreLargoConyuge(oEClienteData.getNombreSuperLargoConyugue());
 						oEInformeLegalAdicionalData.setCodigoEstadoCivil(oEClienteData.getCodigoEstadoCivil());
 					}
@@ -506,8 +517,8 @@ public class MBRegistroOperacionCliente implements Serializable {
 						oEOperacionClienteData.setCodigoTipoDocumento(oETerceroData.getCodigoTipoDocumento());
 						oEOperacionClienteData.setNumeroDocumento(oETerceroData.getDocumento());
 						oEOperacionClienteData.setRuc(oETerceroData.getRuc());
-						//oEOperacionClienteData.setApellidoPaterno(oETerceroData.getApellidoPaterno());
-						//oEOperacionClienteData.setApellidoMaterno(oETerceroData.getApellidoMaterno());
+						oEOperacionClienteData.setApellidoPaterno(oETerceroData.getApellidoPaterno());
+						oEOperacionClienteData.setApellidoMaterno(oETerceroData.getApellidoMaterno());
 						//oEOperacionClienteData.setNombre(oETerceroData.getNombre());
 						oEOperacionClienteData.setNombreLargo(oETerceroData.getNombreLargo());
 						oEOperacionClienteData.setNumeroDocumento(oETerceroData.getDocumento());
@@ -648,6 +659,16 @@ public class MBRegistroOperacionCliente implements Serializable {
 												UFuncionesGenerales.convertirEnteroACadenaUbigeo(codigoProvinciaContractual) + 
 												UFuncionesGenerales.convertirEnteroACadenaUbigeo(codigoDistritoContractual)));
 		
+		if (oEOperacionClienteData.getCodigoTipoPersona().equals(UTipoPersona.NATURAL)){
+			oEOperacionCliente.setNombreLargo(oEOperacionClienteData.getApellidoPaterno() +" "+ 
+												oEOperacionClienteData.getApellidoMaterno() +" "+ 
+												oEOperacionClienteData.getNombre());
+			
+			oEOperacionCliente.setNombreLargoConyuge(oEOperacionClienteData.getApellidoPaternoConyugue() +" "+ 
+														oEOperacionClienteData.getApellidoMaternoConyugue() +" "+ 
+														oEOperacionClienteData.getNombreConyugue());
+		}
+		
 		oEInformeLegalAdicional = oEInformeLegalAdicionalData;
 		oEInformeLegalAdicional.setNumeroSolicitud(oEOperacionClienteData.getNumeroSolicitud());
 		oEInformeLegalAdicional.setCodigoCliente(oEOperacionClienteData.getCodigoCliente());
@@ -710,9 +731,11 @@ public class MBRegistroOperacionCliente implements Serializable {
 		lstCIIU = oUManejadorListaDesplegable.obtieneCIUU();
 		lstTipoPersonaJuridica = oUManejadorListaDesplegable.obtieneTipoPersonaJuridica();
 		lstSuscripcionPago = oUManejadorListaDesplegable.obtieneSuscripcionPago();
+		lstSuscripcionPagoFiltro = lstSuscripcionPago;
 		lstFacultadOperar = oUManejadorListaDesplegable.obtieneFacultadOperar();
 		lstTipoDuracionPartida = oUManejadorListaDesplegable.obtieneTipoDuracionPartida();
 		lstCargoLaboral = oUManejadorListaDesplegable.obtieneCargoLaboral();
+		lstTipoNumeracionEstatuto = oUManejadorListaDesplegable.obtieneTipoNumeracionEstatuto();
 	}
 	
 	//*************************************//
@@ -1776,13 +1799,45 @@ public class MBRegistroOperacionCliente implements Serializable {
 		if(oEOperacionClienteLoad.getCodigoTipoPersona().equals(UTipoPersona.NATURAL)){
 			visualizarFrmContratantePN = true;
 			visualizarFrmContratantePJ = false;
-		}else if(oEOperacionClienteLoad.getCodigoTipoPersona().equals(UTipoPersona.JURIDICA_F_LUCRO)||  
+			
+			lstDOIContratanteFiltro = lstDOI.stream()
+					.filter(x -> !x.getCodigo().equals(UTipoDocumento.RUC))
+					.collect(Collectors.toList());
+			
+			oEOperacionClienteLoad.setCodigoTipoDocumento(UTipoDocumento.DNI);
+		}else if(oEOperacionClienteLoad.getCodigoTipoPersona().equals(UTipoPersona.JURIDICA_F_LUCRO) ||  
 				oEOperacionClienteLoad.getCodigoTipoPersona().equals(UTipoPersona.JURIDICA_S_LUCRO)){
 			visualizarFrmContratantePN = false;
 			visualizarFrmContratantePJ = true;
+			
+			lstDOIContratanteFiltro = lstDOI.stream()
+					.filter(x -> x.getCodigo().equals(UTipoDocumento.RUC))
+					.collect(Collectors.toList());
+			
+			oEOperacionClienteLoad.setCodigoTipoDocumento(UTipoDocumento.RUC);
+		}
+		validarTamanioDocumentoContratante();
+	}
+	
+	public void validarTamanioDocumentoContratante(){
+		if(oEOperacionClienteData.getCodigoTipoDocumento() != null){
+			if(oEOperacionClienteData.getCodigoTipoDocumento().equals(UTipoDocumento.RUC)){
+				maxLgnNumeroDocumentoContratante = UMaximoTamanio.RUC_MAXLGN;
+			}else if(oEOperacionClienteData.getCodigoTipoDocumento().equals(UTipoDocumento.DNI) || oEOperacionClienteData.getCodigoTipoDocumento().equals(UTipoDocumento.LIBRETA_ELECTORAL)){
+				maxLgnNumeroDocumentoContratante = UMaximoTamanio.DNI_MAXLGN;
+			}else {
+				maxLgnNumeroDocumentoContratante = UMaximoTamanio.OTROS_MAXLGN;
+			}
+		}else {
+			maxLgnNumeroDocumentoContratante = UMaximoTamanio.OTROS_MAXLGN;
 		}
 	}
 	
+	public void obtenerTipoDocumentoContratante() {
+		validarTamanioDocumentoContratante();
+		oEOperacionClienteData.setNumeroDocumento("");
+	}
+
 	public void obtenerIndicadorAval() {
 		oEOperacionClienteData.setDescripcionAvalarTercero("");
 		oEOperacionClienteData.setObservacionAvalarTercero("");
@@ -1795,18 +1850,22 @@ public class MBRegistroOperacionCliente implements Serializable {
 	}
 	
 	public void visualizarObservacionAval() {
-		if (oEOperacionClienteData.getIndicadorAvalarTercero().equals(UFlagResultado.SI)){
-			visualizarObservacionAval = true;
-		}else{
-			visualizarObservacionAval = false;
+		if (oEOperacionClienteData.getIndicadorAvalarTercero() != null){
+			if (oEOperacionClienteData.getIndicadorAvalarTercero().equals(UFlagResultado.SI)){
+				visualizarObservacionAval = true;
+			}else{
+				visualizarObservacionAval = false;
+			}
 		}
 	}
 	
 	public void visualizarObservacionGrabarBien() {
-		if (oEOperacionClienteData.getIndicadorGrabarBien().equals(UFlagResultado.SI)){
-			visualizarObservacionGrabarBien = true;
-		}else{
-			visualizarObservacionGrabarBien = false;
+		if (oEOperacionClienteData.getIndicadorGrabarBien() != null){
+			if (oEOperacionClienteData.getIndicadorGrabarBien().equals(UFlagResultado.SI)){
+				visualizarObservacionGrabarBien = true;
+			}else{
+				visualizarObservacionGrabarBien = false;
+			}
 		}
 	}
 	
@@ -1869,33 +1928,141 @@ public class MBRegistroOperacionCliente implements Serializable {
 	//*************************************//
 	//Metodos para Suscripcion
 	//*************************************//
+	public void obtenerTipoPersonaJuridica(){
+		filtrarTipoSuscripcionPago();
+		obtenerTipoSuscripcionPago();
+	}
+	
+	public void iniciarTipoPersonaJuridica(){
+		filtrarTipoSuscripcionPago();
+		visualizarTipoSuscripcionPago();
+	}
+	
+	public void filtrarTipoSuscripcionPago(){
+		if(oEOperacionClienteData.getCodigoTipoPersonaJuridica() != null){
+		if(oEOperacionClienteData.getCodigoTipoPersonaJuridica().equals(UTipoPersonaJuridica.SRL)){
+			lstSuscripcionPagoFiltro = lstSuscripcionPago.stream()
+					   .filter(x -> x.getCodigo().matches("(?i).*"+ UTipoSuscripcionPago.PARTICIPACIONISTAS +".*"))
+					   .collect(Collectors.toList());
+			oEOperacionClienteData.setCodigoTipoSuscripcionPago(UTipoSuscripcionPago.PARTICIPACIONISTAS);
+		}else if (oEOperacionClienteData.getCodigoTipoPersonaJuridica().equals(UTipoPersonaJuridica.SA) ||
+				oEOperacionClienteData.getCodigoTipoPersonaJuridica().equals(UTipoPersonaJuridica.SAC) ||
+				oEOperacionClienteData.getCodigoTipoPersonaJuridica().equals(UTipoPersonaJuridica.SAA)) {
+			lstSuscripcionPagoFiltro = lstSuscripcionPago.stream()
+					   .filter(x -> x.getCodigo().matches("(?i).*"+ UTipoSuscripcionPago.ACCIONISTAS +".*"))
+					   .collect(Collectors.toList());
+			oEOperacionClienteData.setCodigoTipoSuscripcionPago(UTipoSuscripcionPago.ACCIONISTAS);
+		}else {
+			lstSuscripcionPagoFiltro = lstSuscripcionPago;
+		}
+		}else {
+			lstSuscripcionPagoFiltro = lstSuscripcionPago;
+		}
+	}
+	
+	public void listarSolicitudSuscripcion(){
+		lstSuscripcion = oBOSolicitudCredito.listarSolicitudSuscripcion(oEOperacionClienteData.getNumeroSolicitud(), oEOperacionClienteData.getCodigoCliente(), oEOperacionClienteData.getCodigoTipoCliente());
+	}
+	
 	public void listarClienteSuscripcion(){
 		lstSuscripcion = oBOSolicitudCredito.listarClienteSuscripcion(oEOperacionClienteData.getNumeroDocumento());
 	}
 	
 	public void obtenerTipoSuscripcionPago(){
-		if(oEOperacionClienteData.getCodigoTipoSuscripcionPago().equals(UTipoSuscripcionPago.TITULARGERENTE)){
+		if(oEOperacionClienteData.getCodigoTipoSuscripcionPago().equals(UTipoSuscripcionPago.ACCIONISTAS)){
+			oEInformeLegalAdicionalData.setDescripcionPatrimonio("");
+			oEInformeLegalAdicionalData.setCodigoTipoNumeracionEstatuto(0);
+			oEInformeLegalAdicionalData.setNumeracionEstatuto(0);
+			oEInformeLegalAdicionalData.setAsiento("");
+			oEInformeLegalAdicionalData.setFechaPeriodoInicio(null);
+			oEInformeLegalAdicionalData.setFechaPeriodoVencimiento(null);
+			oEInformeLegalAdicionalData.setDescripcionAporte("");
+			visualizarFrmSuscripcion = true;
+			visualizarFrmPatrimonio = false;
+			visualizarDescripcionAporte = false;
+			visualizarLblAccionista = true;
+			visualizarLblParticipacionista = false;
+		}else if(oEOperacionClienteData.getCodigoTipoSuscripcionPago().equals(UTipoSuscripcionPago.PARTICIPACIONISTAS)){
+			oEInformeLegalAdicionalData.setDescripcionPatrimonio("");
+			oEInformeLegalAdicionalData.setCodigoTipoNumeracionEstatuto(0);
+			oEInformeLegalAdicionalData.setNumeracionEstatuto(0);
+			oEInformeLegalAdicionalData.setAsiento("");
+			oEInformeLegalAdicionalData.setFechaPeriodoInicio(null);
+			oEInformeLegalAdicionalData.setFechaPeriodoVencimiento(null);
+			oEInformeLegalAdicionalData.setDescripcionAporte("");
+			visualizarFrmSuscripcion = true;
+			visualizarFrmPatrimonio = false;
+			visualizarDescripcionAporte = false;
+			visualizarLblAccionista = false;
+			visualizarLblParticipacionista = true;
+		}else if(oEOperacionClienteData.getCodigoTipoSuscripcionPago().equals(UTipoSuscripcionPago.TITULARGERENTE)){
+			
+			oEOperacionClienteData.setNumeroAcciones(0);
+			oEInformeLegalAdicionalData.setNumeroAcciones(0);
+			oEInformeLegalAdicionalData.setCodigoTipoValorSuscripcion(0);
+			oEInformeLegalAdicionalData.setMontoValorNominal(0);
+			oEInformeLegalAdicionalData.setDescripcionPatrimonio("");
+			oEInformeLegalAdicionalData.setCodigoTipoNumeracionEstatuto(0);
+			oEInformeLegalAdicionalData.setNumeracionEstatuto(0);
+			oEInformeLegalAdicionalData.setAsiento("");
+			oEInformeLegalAdicionalData.setFechaPeriodoInicio(null);
+			oEInformeLegalAdicionalData.setFechaPeriodoVencimiento(null);
+			visualizarFrmSuscripcion = false;
+			visualizarFrmPatrimonio = false;
+			visualizarDescripcionAporte = true;
+			visualizarLblAccionista = false;
+			visualizarLblParticipacionista = false;
+		}else if(oEOperacionClienteData.getCodigoTipoSuscripcionPago().equals(UTipoSuscripcionPago.CONSEJODIRECTIVO) ||
+				oEOperacionClienteData.getCodigoTipoSuscripcionPago().equals(UTipoSuscripcionPago.CONSEJOADMINISTRACION) ||
+				oEOperacionClienteData.getCodigoTipoSuscripcionPago().equals(UTipoSuscripcionPago.ASAMBLEAGENERAL) ||
+				oEOperacionClienteData.getCodigoTipoSuscripcionPago().equals(UTipoSuscripcionPago.GERENCIAGENERAL)){
+			
+			oEInformeLegalAdicionalData.setDescripcionConstitucion("");
+			oEInformeLegalAdicionalData.setFechaConstitucion(null);
+			oEInformeLegalAdicionalData.setDescripcionNotario("");
 			oEOperacionClienteData.setNumeroAcciones(0);
 			oEInformeLegalAdicionalData.setNumeroAcciones(0);
 			oEInformeLegalAdicionalData.setCodigoTipoValorSuscripcion(0);
 			oEInformeLegalAdicionalData.setMontoValorNominal(0);
 			visualizarFrmSuscripcion = false;
-			visualizarDescripcionAporte = true;
-		}else{
-			oEInformeLegalAdicionalData.setDescripcionAporte("");
-			visualizarFrmSuscripcion = true;
-			visualizarDescripcionAporte = false;
+			visualizarFrmPatrimonio = true;
+			visualizarDescripcionAporte = false;	
+			visualizarLblAccionista = false;
+			visualizarLblParticipacionista = false;
 		}
 		limpiarSuscripcion();
 	}
 	
 	public void visualizarTipoSuscripcionPago(){
-		if(oEOperacionClienteData.getCodigoTipoSuscripcionPago().equals(UTipoSuscripcionPago.TITULARGERENTE)){
-			visualizarFrmSuscripcion = false;
-			visualizarDescripcionAporte = true;
-		}else{
-			visualizarFrmSuscripcion = true;
-			visualizarDescripcionAporte = false;
+		if(oEOperacionClienteData.getCodigoTipoSuscripcionPago() != null){
+			if(oEOperacionClienteData.getCodigoTipoSuscripcionPago().equals(UTipoSuscripcionPago.ACCIONISTAS)){
+				visualizarFrmSuscripcion = true;
+				visualizarFrmPatrimonio = false;
+				visualizarDescripcionAporte = false;
+				visualizarLblAccionista = true;
+				visualizarLblParticipacionista = false;
+			}else if(oEOperacionClienteData.getCodigoTipoSuscripcionPago().equals(UTipoSuscripcionPago.PARTICIPACIONISTAS)){
+				visualizarFrmSuscripcion = true;
+				visualizarFrmPatrimonio = false;
+				visualizarDescripcionAporte = false;
+				visualizarLblAccionista = false;
+				visualizarLblParticipacionista = true;
+			}else if(oEOperacionClienteData.getCodigoTipoSuscripcionPago().equals(UTipoSuscripcionPago.TITULARGERENTE)){
+				visualizarFrmSuscripcion = false;
+				visualizarFrmPatrimonio = false;
+				visualizarDescripcionAporte = true;
+				visualizarLblAccionista = false;
+				visualizarLblParticipacionista = false;
+			}else if(oEOperacionClienteData.getCodigoTipoSuscripcionPago().equals(UTipoSuscripcionPago.CONSEJODIRECTIVO) ||
+					oEOperacionClienteData.getCodigoTipoSuscripcionPago().equals(UTipoSuscripcionPago.CONSEJOADMINISTRACION) ||
+					oEOperacionClienteData.getCodigoTipoSuscripcionPago().equals(UTipoSuscripcionPago.ASAMBLEAGENERAL) ||
+					oEOperacionClienteData.getCodigoTipoSuscripcionPago().equals(UTipoSuscripcionPago.GERENCIAGENERAL)){
+				visualizarFrmSuscripcion = false;
+				visualizarFrmPatrimonio = true;
+				visualizarDescripcionAporte = false;
+				visualizarLblAccionista = false;
+				visualizarLblParticipacionista = false;
+			}
 		}
 	}
 	
@@ -1908,6 +2075,7 @@ public class MBRegistroOperacionCliente implements Serializable {
 	
 	public void limpiarSuscripcion(){
 		lstSuscripcion = new ArrayList<ESuscripcion>();
+		calcularNumeroSuscripcion();
 	}
 	
 	public void calcularNumeroSuscripcion(){
@@ -1948,6 +2116,11 @@ public class MBRegistroOperacionCliente implements Serializable {
 				this.oESuscripcionData = new ESuscripcion();
 				accionInternaSuscripcion = UAccionInterna.EDITAR;
 				oESuscripcionData = oESuscripcionItem;
+				/*
+				oESuscripcionData.setCodigoOrden(oESuscripcionItem.getCodigoOrden());
+				oESuscripcionData.setNumeroSuscripcion(oESuscripcionItem.getNumeroSuscripcion());
+				oESuscripcionData.setNombreLargo(oESuscripcionItem.getNombreLargo());
+				*/
 				inicializarSuscripcion();
 				RequestContext.getCurrentInstance().execute("PF('dlgSuscripcion').show();");
 			}
@@ -1992,8 +2165,11 @@ public class MBRegistroOperacionCliente implements Serializable {
 	public void inicializarSuscripcion(){
 		int numeroSuscripcionTotal = 0;
 		int numeroSuscripcionRestante = 0;
-		for(int i=0;i<lstSuscripcion.size();i++){
-			numeroSuscripcionTotal = lstSuscripcion.get(i).getNumeroSuscripcion() + numeroSuscripcionTotal;
+		
+		if(lstSuscripcion != null){
+			for(int i=0;i<lstSuscripcion.size();i++){
+				numeroSuscripcionTotal = lstSuscripcion.get(i).getNumeroSuscripcion() + numeroSuscripcionTotal;
+			}
 		}
 		
 		numeroSuscripcionTotal = numeroSuscripcionTotal - oESuscripcionData.getNumeroSuscripcion();

@@ -79,9 +79,15 @@ public @Data class EOperacionCliente {
 	private String usuarioUltimaRevision;
 	
 	//Extras
+	private String apellidoPaterno;
+	private String apellidoMaterno;
+	private String nombre;
 	private String abreviacionTipoPersona;
 	private String descripcionTipoCliente;
 	private String descripcionEstadoSolicitud;
+	private String apellidoPaternoConyugue;
+	private String apellidoMaternoConyugue;
+	private String nombreConyugue;
 	
 	private EInformeLegalAdicional informeLegalAdicional;
 	private List<EDocumentoCarga> lstDocumentoCarga;

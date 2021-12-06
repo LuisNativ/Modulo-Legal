@@ -140,13 +140,13 @@ public class MBListaOperacionLevantamiento implements Serializable {
 	}
 	
 	public void listarLevantamiento() {
-		lstGarantiaPendiente = oBOOperacion.listarEvaluacionLevantamientoGarantia(0, "", oEUsuario);
+		lstGarantiaPendiente = oBOOperacion.listarEvaluacionLevantamientoGarantia(0, "", oEUsuario, 1);
 		lstGarantiaCredito = oBOGarantia.listarGarantiaPorLiberar(0, "");
 		lstGarantiaLiberada = oBOGarantia.listarGarantiaLiberada(2, "");
 	}
 	
 	public void buscarGarantia() {
-		lstGarantiaPendiente = oBOOperacion.listarEvaluacionLevantamientoGarantia(0, "", oEUsuario);
+		lstGarantiaPendiente = oBOOperacion.listarEvaluacionLevantamientoGarantia(0, "", oEUsuario, 1);
 		lstGarantiaCredito = oBOGarantia.listarGarantiaPorLiberar(0, "");
 		lstGarantiaLiberada = oBOGarantia.listarGarantiaLiberada(codigoBuscarGarantia, descripcionBuscarGarantia);
 	}
