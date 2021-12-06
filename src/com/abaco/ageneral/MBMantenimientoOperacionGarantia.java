@@ -332,11 +332,11 @@ public class MBMantenimientoOperacionGarantia implements Serializable {
 					 listarUbigeoGarantia();
 					 EGarantiaSolicitud obj = oBOGarantia.buscarSolicitudxGarantia(oEGarantiaData.getCodigoGarantia());
 					 if(obj == null){
-						 visualizarGenerarDocumento= false;
-						 visualizarGenerarDocumentoHipotecario = true; 
-					 }else{
 						 visualizarGenerarDocumento= true;
-						 visualizarGenerarDocumentoHipotecario = false;
+						 visualizarGenerarDocumentoHipotecario = false; 
+					 }else{
+						 visualizarGenerarDocumento= false;
+						 visualizarGenerarDocumentoHipotecario = true;
 					 }
 					
 					break;
