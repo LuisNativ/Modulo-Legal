@@ -127,7 +127,7 @@ public class UFuncionesGenerales {
 	public static Date revisaFecha(Date dtFecha) {
 		Date strResultado = dtFecha;
 		if (strResultado == null) {
-			strResultado = new Date();
+			strResultado = new Date(0);
 		}
 		return strResultado;
 	}

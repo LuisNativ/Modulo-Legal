@@ -401,6 +401,22 @@ ui-selectonemenu ui-widget ui-state-default ui-state-focus ui-state-hover ui-cor
 	ui-selectonemenu-trigger ui-state-default ui-state-focus ui-state-hover ui-corner-right
 		span: ui-icon ui-icon-triangle-1-s ui-c
 */
+.dsInput2.ui-selectonemenu.ui-state-default.ui-state-disabled{
+	background-color: #ff2b2b !important;
+	background: #ff2b2b !important;
+	opacity: .95 !important;
+}
+.dsInput2.ui-selectonemenu.ui-state-default{
+	color: #ffffff !important;
+	
+	border-radius: 2px !important;
+	border: 1px solid #ccc !important;
+	box-shadow: none !important;
+	
+	min-width: auto !important;
+	transition: box-shadow .3s, border .3s, -webkit-box-shadow .3s !important;
+}
+
 .ui-selectonemenu.ui-state-default.ui-state-disabled{
 	background-color: #f0f3f5 !important;
 	background: #f0f3f5 !important;
@@ -2072,6 +2088,25 @@ ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all
 				select
 					option
 */
+.dsInput2.ui-calendar .ui-inputfield.ui-state-default.ui-state-disabled{
+	background-color: #ff2b2b !important;
+	background: #ff2b2b !important;
+	opacity: .95 !important;
+}
+.dsInput2.ui-calendar .ui-inputfield.ui-state-default{
+	color: #ffffff !important;
+	
+	border-radius: 2px !important;
+	border: 1px solid #ccc !important;
+	box-shadow: none !important;
+	
+	font-size: 13px !important;
+	font-family: latoregular !important;
+	font-weight: lighter !important;	
+	text-shadow: none !important;
+	transition: box-shadow .3s, border .3s, -webkit-box-shadow .3s !important;
+}
+
 .ui-calendar .ui-inputfield.ui-state-default.ui-state-hover{
 	/*border-bottom: 1px solid blue !important;*/
 }

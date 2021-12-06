@@ -368,7 +368,7 @@
 						   </div>
 						   <div class="ui-g-12 ui-md-6 ui-lg-6">
 				           	   <p:outputLabel value="Vigencia de Asiento" styleClass="dsLabel1"/>
-								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaVigenciaAsiento}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaVigenciaAsiento}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 						   </div>
 						    <div class="ui-g-12 ui-md-12 ui-lg-12">
 				           	   <p:outputLabel value="Observacion Nro. 1" styleClass="dsLabel1"/>
@@ -391,11 +391,11 @@
 								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaInscripcion}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 						   </div>
 						   <div class="ui-g-12 ui-md-6 ui-lg-6">
-				           	   <p:outputLabel value="Ficha Inscripcion/ Partida Registral " styleClass="dsLabel1"/>
+				           	   <p:outputLabel value="Partida Electrónica" styleClass="dsLabel1"/>
 								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fichaInscripcion}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" maxlength="10"></p:inputText>
 						   </div>
 						   <div class="ui-g-12 ui-md-3 ui-lg-3">
-				           	   <p:outputLabel value="Tomo Inscripcion" styleClass="dsLabel1"/>
+				           	   <p:outputLabel value="Tomo Diario" styleClass="dsLabel1"/>
 								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.tomoInscripcion}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" maxlength="6"></p:inputText>
 						   </div>
 						   <div class="ui-g-12 ui-md-5 ui-lg-5">
@@ -423,7 +423,7 @@
 							   </div>
 							   <div class="ui-g-4">
 					           	   <p:outputLabel value="Vigencia de Asiento" styleClass="dsLabel1"/>
-									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaVigenciaAsientoB}" navigator="true" pattern="dd-MM-yyyy" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fechaVigenciaAsientoB}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 							   </div>
 							   <div class="ui-g-4">
 					           	   <p:outputLabel value="Fecha Observación" styleClass="dsLabel1"/>
@@ -452,11 +452,11 @@
 						    
 						
 						   <div class="ui-g-12 ui-md-3 ui-lg-3">
-				           	   <p:outputLabel value="Ficha Inscripcion / Partida Registral" styleClass="dsLabel1"/>
+				           	   <p:outputLabel value="Partida Electrónica" styleClass="dsLabel1"/>
 								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.fichaInscripcionB}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" maxlength="10"></p:inputText>
 						   </div>
 						   <div class="ui-g-12 ui-md-3 ui-lg-3">
-				           	   <p:outputLabel value="Tomo Inscripcion" styleClass="dsLabel1"/>
+				           	   <p:outputLabel value="Tomo Diario" styleClass="dsLabel1"/>
 								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteAsientoData.tomoInscripcionB}" disabled="#{mbregistrooperaciontramitegarantia.deshabilitarCampoAsientoTramiteGarantia}" autocomplete="off" maxlength="6"></p:inputText>
 						   </div>
 						   <div class="ui-g-12 ui-md-3 ui-lg-3">
@@ -512,15 +512,15 @@
 				        <div class="ui-g ui-fluid ui-g-nopad">
 				           <div class="ui-g-12 ui-md-6 ui-lg-6">
 				           	   <p:outputLabel value="Fecha Ini. Trámite" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaIngreso ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaIngreso}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+								<p:calendar styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaIngreso ? 'dsInput2': ''}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaIngreso}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 						   </div>
 						   	<div class="ui-g-12 ui-md-6 ui-lg-6">
 				           	   <p:outputLabel value="F. Elaboración Contrato" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaElaboracionContrato ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaElaboracionContrato}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+								<p:calendar styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaElaboracionContrato ? 'dsInput2': ''}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaElaboracionContrato}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 						    </div>
 						   <div class="ui-g-12 ui-md-6 ui-lg-6">
 								<p:outputLabel value="Eval. Doc." styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarEvaluacionDocumento ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:selectOneMenu  value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.evaluacionDocumento}" disabled="true">
+								<p:selectOneMenu  styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarEvaluacionDocumento ? 'dsInput2': ''}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.evaluacionDocumento}" disabled="true">
 									<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
 									<f:selectItems value="#{mbregistrooperaciontramitegarantia.lstValorSiNo}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>					
 							    </p:selectOneMenu>
@@ -528,32 +528,32 @@
 						   
 						    <div class="ui-g-12 ui-md-6 ui-lg-6">
 				           	   <p:outputLabel value="F. Firma Contrato" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaFirmaContrato ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaFirmaContrato}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+								<p:calendar styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaFirmaContrato ? 'dsInput2': ''}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaFirmaContrato}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 						    </div>
 						    <div class="ui-g-12 ui-md-6 ui-lg-6">
 				           	   <p:outputLabel value="F. Ingreso Notaria" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaIngresoNotaria ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaIngresoNotaria}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+								<p:calendar styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaIngresoNotaria ? 'dsInput2': ''}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaIngresoNotaria}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 						    </div>
 						    <div class="ui-g-12 ui-md-6 ui-lg-6">
 				           	   <p:outputLabel value="Hoja de Ingreso" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarNumeroHojaIngresoLegal ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:inputNumber  styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.numeroHojaIngresoLegal}" disabled="true" autocomplete="off" thousandSeparator="" minValue="0" maxValue="999999999"></p:inputNumber>
+								<p:inputNumber  styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarNumeroHojaIngresoLegal ? 'dsInput2': 'dsInput1'}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.numeroHojaIngresoLegal}" disabled="true" autocomplete="off" thousandSeparator="" minValue="0" maxValue="999999999"></p:inputNumber>
 						    </div>
 						    <div class="ui-g-12 ui-md-12 ui-lg-12">
 				           	   <p:outputLabel value="Responsable" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarUsuarioElaboracionContrato ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.usuarioElaboracionContrato}" disabled="true" autocomplete="off" maxlength="10"></p:inputText>
+								<p:inputText type="text" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarUsuarioElaboracionContrato ? 'dsInput2': 'dsInput1'}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.usuarioElaboracionContrato}" disabled="true" autocomplete="off" maxlength="10"></p:inputText>
 						    </div>
 						    <div class="ui-g-12 ui-md-12 ui-lg-12">	
 								<p:outputLabel value="Notario" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarCodigoNotario ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.descripcionNotario}" disabled="true" autocomplete="off"></p:inputText>
+								<p:inputText type="text" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarCodigoNotario ? 'dsInput2': 'dsInput1'}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.descripcionNotario}" disabled="true" autocomplete="off"></p:inputText>
 					
 						    </div>			
 						    <div class="ui-g-12 ui-md-6 ui-lg-6" style="#{mbregistrooperaciontramitegarantia.indicadorLegalFirma ? 'display:block;' : 'display:none;'}">
 				           	   <p:outputLabel value="F. Legalización Firma" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaLegalizacionFirma ? 'dsLabel6': 'dsLabel1'}" />
-								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaLegalizacionFirma}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+								<p:calendar styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaLegalizacionFirma ? 'dsInput2': ''}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaLegalizacionFirma}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 						    </div>
 						     <div class="ui-g-12 ui-md-6 ui-lg-6">
 				           	   <p:outputLabel value="Kardex:" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarNumeroKardex ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:inputNumber type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.numeroKardex}" disabled="true" autocomplete="off" thousandSeparator="" minValue="0" maxValue="999999"></p:inputNumber>
+								<p:inputNumber type="text" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarNumeroKardex ? 'dsInput2': 'dsInput1'}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.numeroKardex}" disabled="true" autocomplete="off" thousandSeparator="" minValue="0" maxValue="999999"></p:inputNumber>
 						    </div>		 		
 			           </div>      
 			           </h:form>    
@@ -569,11 +569,11 @@
 				        <div class="ui-g ui-fluid ui-g-nopad">
 				           <div class="ui-g-12 ui-md-6 ui-lg-6">
 				           	   <p:outputLabel value="Fecha Ing. Registro" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaIngresoRegistro ? 'dsLabel6': 'dsLabel1'}" />
-								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaIngresoRegistro}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+								<p:calendar styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaIngresoRegistro ? 'dsInput2': ''}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaIngresoRegistro}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 						   </div>
 						   <div class="ui-g-12 ui-md-6 ui-lg-6">
 				           	   <p:outputLabel value="Vigencia de Asiento" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaVigenciaAsiento ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaVigenciaAsiento}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+								<p:calendar styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaVigenciaAsiento ? 'dsInput2': ''}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaVigenciaAsiento}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 						   </div>
 						    <div class="ui-g-12 ui-md-12 ui-lg-12">
 				           	   <p:outputLabel value="Observacion Nro. 1" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarObservacion1 ? 'dsLabel6': 'dsLabel1'}"/>
@@ -585,31 +585,31 @@
 						   </div>
 						    <div class="ui-g-12 ui-md-6 ui-lg-6">
 				           	   <p:outputLabel value="Fecha Observación" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaObservacion ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaObservacion}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+								<p:calendar styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaObservacion ? 'dsInput2': ''}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaObservacion}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 						   </div>
 						   <div class="ui-g-12 ui-md-6 ui-lg-6">
 				           	   <p:outputLabel value="Fecha de Tacha" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaTacha ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaTacha}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+								<p:calendar styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaTacha ? 'dsInput2': ''}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaTacha}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 						   </div>			  
 						    <div class="ui-g-12 ui-md-6 ui-lg-6">
 				           	   <p:outputLabel value="F. Inscripción" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaInscripcion ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaInscripcion}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+								<p:calendar styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaInscripcion ? 'dsInput2': ''}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaInscripcion}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 						   </div>
 						   <div class="ui-g-12 ui-md-6 ui-lg-6">
 				           	   <p:outputLabel value="Partida Electrónica" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFichaInscripcion ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fichaInscripcion}" disabled="true" autocomplete="off" maxlength="10"></p:inputText>
+								<p:inputText type="text" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFichaInscripcion ? 'dsInput2': 'dsInput1'}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fichaInscripcion}" disabled="true" autocomplete="off" maxlength="10"></p:inputText>
 						   </div>
 						   <div class="ui-g-12 ui-md-3 ui-lg-3">
 				           	   <p:outputLabel value="Tomo Diario" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarTomoInscripcion ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.tomoInscripcion}" disabled="true" autocomplete="off" maxlength="6"></p:inputText>
+								<p:inputText type="text" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarTomoInscripcion ? 'dsInput2': 'dsInput1'}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.tomoInscripcion}" disabled="true" autocomplete="off" maxlength="6"></p:inputText>
 						   </div>
 						     <div class="ui-g-12 ui-md-5 ui-lg-5">
 				           	   <p:outputLabel value="Título" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarTituloA ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.tituloA}" disabled="true" autocomplete="off" maxlength="20"></p:inputText>
+								<p:inputText type="text" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarTituloA ? 'dsInput2': 'dsInput1'}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.tituloA}" disabled="true" autocomplete="off" maxlength="20"></p:inputText>
 						   </div>
 						   <div class="ui-g-12 ui-md-4 ui-lg-4">
 				           	   <p:outputLabel value="Asiento" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarCiudadInscripcion ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.ciudadInscripcion}" disabled="true" autocomplete="off" maxlength="30"></p:inputText>
+								<p:inputText type="text" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarCiudadInscripcion ? 'dsInput2': 'dsInput1'}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.ciudadInscripcion}" disabled="true" autocomplete="off" maxlength="30"></p:inputText>
 						   </div>	  	 		  	 		
 			           </div>   
 			           </h:form>       
@@ -626,50 +626,50 @@
 				        	<div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad">
 				        		<div class="ui-g-4">
 					           	   <p:outputLabel value="Fecha Ing. Registro" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaIngresoRegistroB ? 'dsLabel6': 'dsLabel1'}"/>
-									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaIngresoRegistroB}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+									<p:calendar styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaIngresoRegistroB ? 'dsInput2': ''}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaIngresoRegistroB}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 						   		</div>
 							   <div class="ui-g-4">
 					           	   <p:outputLabel value="Vigencia de Asiento" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaVigenciaAsientoB ? 'dsLabel6': 'dsLabel1'}"/>
-									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaVigenciaAsientoB}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+									<p:calendar styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaVigenciaAsientoB ? 'dsInput2': ''}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaVigenciaAsientoB}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 							   </div>
 							    <div class="ui-g-4">
 					           	   <p:outputLabel value="Fecha Observación" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaObservacionB ? 'dsLabel6': 'dsLabel1'}"/>
-								   <p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaObservacionB}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+								   <p:calendar styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaObservacionB ? 'dsInput2': ''}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaObservacionB}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 							   </div>
 				        	</div>
 				        	<div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad">
 				        		<div class="ui-g-6">
 					           	   <p:outputLabel value="Fecha de Tacha" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaTachaB ? 'dsLabel6': 'dsLabel1'}"/>
-									<p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaTachaB}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+									<p:calendar styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaTachaB ? 'dsInput2': ''}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaTachaB}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 						   		</div>			  
 							    <div class="ui-g-6">
 					           	   <p:outputLabel value="Fecha Inscripción" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaInscripcionB ? 'dsLabel6': 'dsLabel1'}"/>
-								   <p:calendar value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaInscripcionB}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
+								   <p:calendar styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFechaInscripcionB ? 'dsInput2': ''}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fechaInscripcionB}" navigator="true" pattern="dd-MM-yyyy" disabled="true" autocomplete="off" placeholder="dd-mm-yyyy"></p:calendar>
 							   </div>
 				        	</div>
 						   <div class="ui-g-12 ui-md-6 ui-lg-6">
 				           	   <p:outputLabel value="Observacion Nro. 1" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarDescripcionObservacionBloqueo1 ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.descripcionObservacionBloqueo1}" disabled="true" autocomplete="off" maxlength="78"></p:inputText>
+								<p:inputText type="text" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarDescripcionObservacionBloqueo1 ? 'dsInput2': 'dsInput1'}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.descripcionObservacionBloqueo1}" disabled="true" autocomplete="off" maxlength="78"></p:inputText>
 						   </div>
 						    <div class="ui-g-12 ui-md-6 ui-lg-6">
 				           	   <p:outputLabel value="Observacion Nro. 2" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarDescripcionObservacionBloqueo2 ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.descripcionObservacionBloqueo2}" disabled="true" autocomplete="off" maxlength="78"></p:inputText>
+								<p:inputText type="text" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarDescripcionObservacionBloqueo2 ? 'dsInput2': 'dsInput1'}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.descripcionObservacionBloqueo2}" disabled="true" autocomplete="off" maxlength="78"></p:inputText>
 						   </div>		  
 						   <div class="ui-g-12 ui-md-4 ui-lg-3">
 				           	   <p:outputLabel value="Partida Electrónica" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFichaInscripcionB ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fichaInscripcionB}" disabled="true" autocomplete="off" maxlength="10"></p:inputText>
+								<p:inputText type="text" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarFichaInscripcionB ? 'dsInput2': 'dsInput1'}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.fichaInscripcionB}" disabled="true" autocomplete="off" maxlength="10"></p:inputText>
 						   </div>
 						   <div class="ui-g-12 ui-md-4 ui-lg-3">
 				           	   <p:outputLabel value="Tomo Diario" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarTomoInscripcionB ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.tomoInscripcionB}" disabled="true" autocomplete="off" maxlength="6"></p:inputText>
+								<p:inputText type="text" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarTomoInscripcionB ? 'dsInput2': 'dsInput1'}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.tomoInscripcionB}" disabled="true" autocomplete="off" maxlength="6"></p:inputText>
 						   </div>
 						    <div class="ui-g-12 ui-md-4 ui-lg-3">
 				           	   <p:outputLabel value="Título" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarTituloB ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.tituloB}" disabled="true" autocomplete="off" maxlength="20"></p:inputText>
+								<p:inputText type="text" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarTituloB ? 'dsInput2': 'dsInput1'}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.tituloB}" disabled="true" autocomplete="off" maxlength="20"></p:inputText>
 						   </div>
 						   <div class="ui-g-12 ui-md-4 ui-lg-3">
 				           	   <p:outputLabel value="Asiento" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarCiudadInscripcionB ? 'dsLabel6': 'dsLabel1'}"/>
-								<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.ciudadInscripcionB}" disabled="true" autocomplete="off" maxlength="30"></p:inputText>
+								<p:inputText type="text" styleClass="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.validarCiudadInscripcionB ? 'dsInput2': 'dsInput1'}" value="#{mbregistrooperaciontramitegarantia.oEGarantiaTramiteHistoricoData.ciudadInscripcionB}" disabled="true" autocomplete="off" maxlength="30"></p:inputText>
 						   </div>	  	 		
 			           </div>    
 			           </h:form>      

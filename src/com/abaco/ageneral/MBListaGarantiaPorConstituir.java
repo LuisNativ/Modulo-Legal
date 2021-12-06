@@ -171,7 +171,7 @@ public class MBListaGarantiaPorConstituir implements Serializable {
 		if(lstGarantiaSol != null){
 			for(EGarantiaSolicitud obj: lstGarantiaSol){
 				if(obj.getCodigoEstadoGarantiaSolicitud() != UEstado.PENDIENTEGARANTIAREGISTRO &&
-						obj.getCodigoTipoGarantia() == UClaseGarantia.REALNUEVAS ){
+						obj.getCodigoTipoGarantia() == UClaseGarantia.REALNUEVAS && obj.getCodigoEstadoEvaluacionLegal() == 6){
 					lstGarantiaSolicitudNueva.add(obj);
 				}
 			}
@@ -185,7 +185,7 @@ public class MBListaGarantiaPorConstituir implements Serializable {
 			for(EGarantiaSolicitud obj: lstGarantiaSol){
 				if(obj.getCodigoEstadoGarantiaSolicitud() != UEstado.PENDIENTEGARANTIAREGISTRO && 
 				   obj.getCodigoEstadoGarantiaSolicitud() != UEstado.REGISTRADOGARANTIAPENDIENTE &&
-				   obj.getCodigoTipoGarantia() == UClaseGarantia.REALEXISTENTES){
+				   obj.getCodigoTipoGarantia() == UClaseGarantia.REALEXISTENTES && obj.getCodigoEstadoEvaluacionLegal() == 6){
 					lstGarantiaSolicitudExistente.add(obj);
 				}
 			}
