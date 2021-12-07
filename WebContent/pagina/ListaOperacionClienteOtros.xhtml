@@ -43,51 +43,99 @@
 		<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-3">
 			<p:commandButton styleClass="dsBoton1 tamanio1 principal" value="Buscar" onclick="PF('dlgPreload').show();" 
 			oncomplete="PF('dlgPreload').hide();" action="#{mblistaoperacionclienteotros.buscarOperacionCliente()}" 
-			update=":form:tblOperacionCliente"></p:commandButton>
+			update=":form:tabView1"></p:commandButton>
 		</div>
 		</div>
-		<p:dataTable id="tblOperacionCliente" value="#{mblistaoperacionclienteotros.lstOperacionCliente}" var="item" styleClass="dsTabla3" paginator="true" rows="12" paginatorPosition="bottom"
-					 rowKey="#{item.codigoCliente}" reflow="true" tableStyle="table-layout:auto">
-			<p:column headerText="Código" style="width: 100px">
-				<h:outputText value="#{item.codigoCliente}"/>
-			</p:column>
-			<p:column headerText="N°Sol" style="width: 70px">
-				<h:outputText value="#{item.numeroSolicitud}"/>
-			</p:column>
-			<p:column headerText="Nombre">
-				<div class="dsTextoCorto">
-					<h:outputText value="#{item.nombreLargo}"/>
-				</div>
-			</p:column>
-			<p:column headerText="T.Per" style="width: 20px" priority="6">
-				<h:outputText value="#{item.codigoTipoPersona}"/>
-			</p:column>
-			<p:column headerText="Estado">
-				<h:outputText value="#{item.descripcionEstadoSolicitud}"/>
-			</p:column>
-			<p:column headerText="Registro de Inicio Evaluación">
-				<h:outputText value="#{item.usuarioRegistroLegal}  #{item.fechaRegistroLegal}  #{item.horaRegistroLegal eq '00:00:00' ? '' : item.horaRegistroLegal}"/>
-			</p:column>
-			<p:column headerText="Registro Quién Solicito Eval.">
-				<h:outputText value="#{item.usuarioPrimeraEvaluacion}  #{item.fechaPrimeraEvaluacion}  #{item.horaPrimeraEvaluacion eq '00:00:00' ? '' : item.horaRegistroLegal}"/>
-			</p:column>
-			<p:column headerText="Registro Ultima Modificación">
-				<h:outputText value="#{item.usuarioUltimaRevision}  #{item.fechaUltimaRevision}  #{item.horaUltimaRevision eq '00:00:00' ? '' : item.horaRegistroLegal}"/>
-			</p:column>
-			<p:column headerText="" styleClass="dsTextoCentro">
-				<p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Editar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
-				action="#{mblistaoperacionclienteotros.modificar(item)}"
-				rendered="#{item.codigoEstadoSolicitud eq '2' ? true : false}">
-				</p:commandButton>
-				<p:commandButton styleClass="dsBoton5 green" icon="fa fa-eye" title="Visualizar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
-				action="#{mblistaoperacionclienteotros.visualizar(item)}"
-				rendered="#{item.codigoEstadoSolicitud eq '1' ? true 
-							:item.codigoEstadoSolicitud eq '3' ? true 
-							:item.codigoEstadoSolicitud eq '9' ? true 
-							:false}">
-				</p:commandButton>
-	     	</p:column>
-		</p:dataTable>
+		<p:tabView id="tabView1" dynamic="true" widgetVar="tabs" activeIndex="0">
+	    <p:tab id="tab1-1" title="Pendiente">
+			<p:dataTable id="tblOperacionClientePendiente" value="#{mblistaoperacionclienteotros.lstOperacionClientePendiente}" var="item" styleClass="dsTabla3" paginator="true" rows="12" paginatorPosition="bottom"
+						 rowKey="#{item.codigoCliente}" reflow="true" tableStyle="table-layout:auto">
+				<p:column headerText="Código" style="width: 100px">
+					<h:outputText value="#{item.codigoCliente}"/>
+				</p:column>
+				<p:column headerText="N°Sol" style="width: 70px">
+					<h:outputText value="#{item.numeroSolicitud}"/>
+				</p:column>
+				<p:column headerText="Nombre">
+					<div class="dsTextoCorto">
+						<h:outputText value="#{item.nombreLargo}"/>
+					</div>
+				</p:column>
+				<p:column headerText="T.Per" style="width: 20px" priority="6">
+					<h:outputText value="#{item.codigoTipoPersona}"/>
+				</p:column>
+				<p:column headerText="Estado">
+					<h:outputText value="#{item.descripcionEstadoSolicitud}"/>
+				</p:column>
+				<p:column headerText="Registro de Inicio Evaluación">
+					<h:outputText value="#{item.usuarioRegistroLegal}  #{item.fechaRegistroLegal}  #{item.horaRegistroLegal eq '00:00:00' ? '' : item.horaRegistroLegal}"/>
+				</p:column>
+				<p:column headerText="Registro Quién Solicito Eval.">
+					<h:outputText value="#{item.usuarioPrimeraEvaluacion}  #{item.fechaPrimeraEvaluacion}  #{item.horaPrimeraEvaluacion eq '00:00:00' ? '' : item.horaRegistroLegal}"/>
+				</p:column>
+				<p:column headerText="Registro Ultima Modificación">
+					<h:outputText value="#{item.usuarioUltimaRevision}  #{item.fechaUltimaRevision}  #{item.horaUltimaRevision eq '00:00:00' ? '' : item.horaRegistroLegal}"/>
+				</p:column>
+				<p:column headerText="" styleClass="dsTextoCentro">
+					<p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Editar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+					action="#{mblistaoperacionclienteotros.modificar(item)}"
+					rendered="#{item.codigoEstadoSolicitud eq '2' ? true : false}">
+					</p:commandButton>
+					<p:commandButton styleClass="dsBoton5 green" icon="fa fa-eye" title="Visualizar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+					action="#{mblistaoperacionclienteotros.visualizar(item)}"
+					rendered="#{item.codigoEstadoSolicitud eq '1' ? true 
+								:item.codigoEstadoSolicitud eq '3' ? true 
+								:item.codigoEstadoSolicitud eq '9' ? true 
+								:false}">
+					</p:commandButton>
+		     	</p:column>
+			</p:dataTable>
+		</p:tab>
+		<p:tab id="tab1-3" title="Histórico">
+			<p:dataTable id="tblOperacionClienteHistorico" value="#{mblistaoperacionclienteotros.lstOperacionClienteHistorico}" var="item" styleClass="dsTabla3" paginator="true" rows="12" paginatorPosition="bottom"
+						 rowKey="#{item.codigoCliente}" reflow="true" tableStyle="table-layout:auto">
+				<p:column headerText="Código" style="width: 100px">
+					<h:outputText value="#{item.codigoCliente}"/>
+				</p:column>
+				<p:column headerText="N°Sol" style="width: 70px">
+					<h:outputText value="#{item.numeroSolicitud}"/>
+				</p:column>
+				<p:column headerText="Nombre">
+					<div class="dsTextoCorto">
+						<h:outputText value="#{item.nombreLargo}"/>
+					</div>
+				</p:column>
+				<p:column headerText="T.Per" style="width: 20px" priority="6">
+					<h:outputText value="#{item.codigoTipoPersona}"/>
+				</p:column>
+				<p:column headerText="Estado">
+					<h:outputText value="#{item.descripcionEstadoSolicitud}"/>
+				</p:column>
+				<p:column headerText="Registro de Inicio Evaluación">
+					<h:outputText value="#{item.usuarioRegistroLegal}  #{item.fechaRegistroLegal}  #{item.horaRegistroLegal eq '00:00:00' ? '' : item.horaRegistroLegal}"/>
+				</p:column>
+				<p:column headerText="Registro Quién Solicito Eval.">
+					<h:outputText value="#{item.usuarioPrimeraEvaluacion}  #{item.fechaPrimeraEvaluacion}  #{item.horaPrimeraEvaluacion eq '00:00:00' ? '' : item.horaRegistroLegal}"/>
+				</p:column>
+				<p:column headerText="Registro Ultima Modificación">
+					<h:outputText value="#{item.usuarioUltimaRevision}  #{item.fechaUltimaRevision}  #{item.horaUltimaRevision eq '00:00:00' ? '' : item.horaRegistroLegal}"/>
+				</p:column>
+				<p:column headerText="" styleClass="dsTextoCentro">
+					<p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Editar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+					action="#{mblistaoperacionclienteotros.modificar(item)}"
+					rendered="#{item.codigoEstadoSolicitud eq '2' ? true : false}">
+					</p:commandButton>
+					<p:commandButton styleClass="dsBoton5 green" icon="fa fa-eye" title="Visualizar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
+					action="#{mblistaoperacionclienteotros.visualizar(item)}"
+					rendered="#{item.codigoEstadoSolicitud eq '1' ? true 
+								:item.codigoEstadoSolicitud eq '3' ? true 
+								:item.codigoEstadoSolicitud eq '9' ? true 
+								:false}">
+					</p:commandButton>
+		     	</p:column>
+			</p:dataTable>
+		</p:tab>
+		</p:tabView>
 	</p:panel>
 	</h:form>
 
@@ -129,7 +177,7 @@
 				</p:commandButton>
 				<p:commandButton styleClass="dsBoton1 principal" value="Aceptar" process="@form" 
 				onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
-				action="#{mblistaoperacionclienteotros.guardarOperacionCliente()}" update=":frmDlgAgregarInforme, :frmDlgMensajeOperacion, :form:tblOperacionCliente"></p:commandButton>
+				action="#{mblistaoperacionclienteotros.guardarOperacionCliente()}" update=":frmDlgAgregarInforme, :frmDlgMensajeOperacion, :form:tabView1"></p:commandButton>
 			</div>
 		</div>
 	</h:form>

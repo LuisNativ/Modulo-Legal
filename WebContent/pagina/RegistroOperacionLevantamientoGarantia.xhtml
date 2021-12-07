@@ -28,15 +28,15 @@
 		action="#{mbregistrooperacionlevantamientogarantia.imprimirDocumento1()}"
 		rendered="#{mbregistrooperacionlevantamientogarantia.visualizarBtnGenerarDocumento1}" ajax="false"/>
 
-		<p:commandButton styleClass="dsBoton1 tamanio4 principal" value="Generar Documento Base"
+		<p:commandButton styleClass="dsBoton1 tamanio4 principal" value="Generar Doc.Base"
 		action="#{mbregistrooperacionlevantamientogarantia.imprimirDocumento2(1)}"
 		rendered="#{mbregistrooperacionlevantamientogarantia.visualizarBtnGenerarDocumento2}" ajax="false"/>
 
-		<p:commandButton styleClass="dsBoton1 tamanio4 principal" value="Generar Documento Acumulado"
+		<p:commandButton styleClass="dsBoton1 tamanio4 principal" value="Generar Doc.Acumulado"
 		action="#{mbregistrooperacionlevantamientogarantia.imprimirDocumento2(2)}"
 		rendered="#{mbregistrooperacionlevantamientogarantia.visualizarBtnGenerarDocumento3}" ajax="false"/>
 
-		<p:commandButton styleClass="dsBoton1 tamanio4 principal" value="Generar Documento Condicional"
+		<p:commandButton styleClass="dsBoton1 tamanio4 principal" value="Generar Doc.Condicional"
 		action="#{mbregistrooperacionlevantamientogarantia.imprimirDocumento2(3)}"
 		rendered="#{mbregistrooperacionlevantamientogarantia.visualizarBtnGenerarDocumento4}" ajax="false"/>
 
@@ -533,6 +533,14 @@
 				   	</div>
 				</div>
 			</h:panelGroup>
+
+			<div class="ui-g-12 ui-md-12 ui-lg-12">
+				<p:outputLabel value="Comentarios" styleClass="dsLabel1"/>
+				<p:inputTextarea type="text" styleClass="dsInput1" 
+				value="#{mbregistrooperacionlevantamientogarantia.descripcionMensaje}"
+				autocomplete="off" maxlength="250">
+				</p:inputTextarea>
+			</div>
 		</div>
 	</p:panel>
 	</div>
@@ -710,7 +718,38 @@
 			</p:dataTable>
 		</p:panel>
 	</div>
-	
+
+	<div class="ui-g-12">
+	<p:panel styleClass="dsPanel2" widgetVar="pnl5" toggleable="true" toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+        <f:facet name="header" >
+            <i class="fa fa-table"></i> Lista de Revisiones
+        </f:facet>
+		<p:dataTable value="#{mbregistrooperacionlevantamientogarantia.lstOperacionLevantamientoGarantiaMensaje}" var="item" styleClass="dsTabla1" paginator="true" rows="5" paginatorPosition="bottom"
+					 rowKey="#{item.codigoMensaje}" reflow="false">
+			<p:column headerText="N° Revisión" styleClass="dsTextoCentro">
+				<h:outputText value="#{item.codigoMensaje}"/>
+			</p:column>
+			<p:column headerText="Descripción">
+				<div class="dsTextoCorto">
+					<h:outputText value="#{item.descripcionMensaje}"/>
+				</div>
+			</p:column>
+			<p:column headerText="Usuario" styleClass="dsTextoCentro" >
+				<h:outputText value="#{item.nombreUsuarioEnvio}"/>
+			</p:column>
+			<p:column headerText="Fecha" styleClass="dsTextoCentro" >
+				<h:outputText value="#{item.fechaEnvio}"/>
+			</p:column>
+			<p:column headerText="Hora" styleClass="dsTextoCentro" >
+				<h:outputText value="#{item.horaEnvio}"/>
+			</p:column>
+			<p:column headerText="" styleClass="dsTextoCentro">
+				<p:commandButton styleClass="dsBoton5 green" icon="fa fa-envelope" title="Ver" action="#{mbregistrooperacionlevantamientogarantia.visualizarMensaje(item.descripcionMensaje)}" update=":frmDlgDetalleMensaje">
+	     		</p:commandButton>
+	     	</p:column>
+		</p:dataTable>
+	</p:panel>
+	</div>
 
 	</h:form>
 	

@@ -32,6 +32,8 @@ public @Data class EOperacionSolicitud extends ESolicitud{
 	
 	//Extras
 	//private int indicadorConfirmar;
+	private String abreviacionTipoCliente;
+	private String descripcionTipoCliente;
 	private String descripcionTipoEvaluacion;
 	private String nombreUsuarioAutorizacion;
 	private String abreviacionTipoProducto;

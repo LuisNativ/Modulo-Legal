@@ -483,8 +483,10 @@ public class MBRegistroOperacionSolicitudCredito implements Serializable {
 	/* Variables de carga File */
 	@Getter @Setter private StreamedContent fileDownload;
 	@Getter @Setter private List<UploadedFile> files;
+	@Getter @Setter private List<UploadedFile> filesDocumentoRevision;
 	
 	private String rutaBaseFormato;
+	private String rutaBaseFormatoPdf;
 	private String rutaBasePlantilla;
 	
 	
@@ -624,6 +626,7 @@ public class MBRegistroOperacionSolicitudCredito implements Serializable {
 		lstDistritoPostalDeudor = new ArrayList<EGeneral>();
 		
 		files = new ArrayList<UploadedFile>();
+		filesDocumentoRevision = new ArrayList<UploadedFile>();
 		
 		oEUsuario = (EUsuario) UManejadorSesionWeb.obtieneVariableSesion(UVariablesSesion.USUARIO);
 		inicializar();
@@ -3041,13 +3044,13 @@ public class MBRegistroOperacionSolicitudCredito implements Serializable {
 	//*************************************//
 	public void agregarDocumentoRevision(FileUploadEvent objUploadEvent) {
 		UploadedFile oUploadedFile = objUploadEvent.getFile();
-		files.add(oUploadedFile);
+		filesDocumentoRevision.add(oUploadedFile);
 	}
 	
 	public void listarDocumentoRevisionSimple() {
-		for(int i=0;i<files.size();i++){
-			oEOperacionDocumentoRevisionData.setNombreDocumentoOriginal(files.get(i).getFileName());
-			oEOperacionDocumentoRevisionData.setDataDocumento(files.get(i).getContents());
+		for(int i=0;i<filesDocumentoRevision.size();i++){
+			oEOperacionDocumentoRevisionData.setNombreDocumentoOriginal(filesDocumentoRevision.get(i).getFileName());
+			oEOperacionDocumentoRevisionData.setDataDocumento(filesDocumentoRevision.get(i).getContents());
 		}
 	}
 	
@@ -3279,6 +3282,7 @@ public class MBRegistroOperacionSolicitudCredito implements Serializable {
 			rutaBaseFormato = URutaCarpetaCompartida.rutaBaseLinux;
 		}
 		
+		rutaBaseFormatoPdf = URutaCarpetaCompartida.rutaBaseWindows2;
 		rutaBasePlantilla = rutaBaseFormato + "Legal";
 		
 		String plantilla = "";
@@ -3460,11 +3464,11 @@ public class MBRegistroOperacionSolicitudCredito implements Serializable {
 		String nombreArchivoPdf = nombreArchivo + UFuncionesGenerales.revisaCadena(codigoCliente).concat("_").concat(sufijo).concat(".pdf");
 		
 		String rutaWordGenerado = UtilPoi.generarArchivoWord(documeWord, rutaBaseFormato + nombreArchivoWord);
-		String rutaPdfGenerado = rutaBaseFormato + nombreArchivoPdf;
-		UManejadorArchivo.conviertirArchivoAPDF(rutaWordGenerado);
-		UFuncionesGenerales.descargaArchivo(rutaPdfGenerado);
+		String rutaPdfGenerado = rutaBaseFormatoPdf + nombreArchivoPdf;
+		//UManejadorArchivo.conviertirArchivoAPDF(rutaWordGenerado);
+		UFuncionesGenerales.descargaArchivo(rutaWordGenerado);
 		UFuncionesGenerales.borrarArchivo(rutaWordGenerado);
-		UFuncionesGenerales.borrarArchivo(rutaPdfGenerado);
+		//UFuncionesGenerales.borrarArchivo(rutaPdfGenerado);
 		
 		/*
 		String rutaLinuxArchivoWord = rutaBaseFormato + nombreArchivoWord;

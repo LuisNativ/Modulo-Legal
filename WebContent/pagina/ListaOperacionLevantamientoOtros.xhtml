@@ -32,13 +32,17 @@
 	            	<f:selectItem itemLabel="Código Socio" itemValue="1" />
 	            	<f:selectItem itemLabel="Nombre Socio" itemValue="2" />
 	            	<f:selectItem itemLabel="Código de Garantía" itemValue="3" />
-	            	<f:selectItem itemLabel="Partida Registral" itemValue="4" />
 	            </p:selectOneMenu>
 			</div>
 			<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-3">
 				<p:outputLabel value="Descripción" styleClass="dsLabel1"/>
 				<p:inputText type="text" styleClass="dsInput1" value="#{mblistaoperacionlevantamientootros.descripcionBuscarGarantia}" autocomplete="off" maxlength="50" onkeypress="if (event.keyCode == 13) { return false;}">
 				</p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-3">
+				<p:commandButton styleClass="dsBoton1 tamanio1 principal" value="Buscar" onclick="PF('dlgPreload').show();" 
+				oncomplete="PF('dlgPreload').hide();" action="#{mblistaoperacionlevantamientootros.buscarGarantia()}" 
+				update=":form:tabView1"></p:commandButton>
 			</div>
 		</div>
 
@@ -64,7 +68,7 @@
 					<h:outputText value="#{item.descripcionEstadoDocumento}"/>
 				</p:column>
 				<p:column headerText="Monto de Garantìa" style="width: 120px">
-					<h:outputText value="#{item.montoGarantia}">
+					<h:outputText value="#{item.abreviacionMonedaGarantia} #{item.montoGarantia}">
 						<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 					</h:outputText>
 				</p:column>
@@ -98,7 +102,7 @@
 					<h:outputText value="#{item.descripcionEstadoLevantamiento}"/>
 				</p:column>
 				<p:column headerText="Monto de Garantìa" style="width: 120px">
-					<h:outputText value="#{item.montoGarantia}">
+					<h:outputText value="#{item.abreviacionMonedaGarantia} #{item.montoGarantia}">
 						<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 					</h:outputText>
 				</p:column>
@@ -112,13 +116,7 @@
 				<p:column headerText="" styleClass="dsTextoCentro">
 					<p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Solicitar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" 
 					action="#{mblistaoperacionlevantamientootros.agregar(item)}"
-					update=":frmDlgMensajeOperacion"
-					rendered="#{item.codigoEstadoLevantamiento eq 30 ? false 
-					:item.codigoEstadoLevantamiento eq 31 ? false
-					:item.codigoEstadoLevantamiento eq 32 ? false
-					:item.codigoEstadoLevantamiento eq 33 ? false
-					:item.codigoEstadoLevantamiento eq 34 ? false
-					:true}">
+					update=":frmDlgMensajeOperacion">
 					</p:commandButton>
 		     	</p:column>
 			</p:dataTable>
@@ -144,7 +142,7 @@
 					<h:outputText value="#{item.descripcionEstadoDocumento}"/>
 				</p:column>
 				<p:column headerText="Monto de Garantìa" style="width: 120px">
-					<h:outputText value="#{item.montoGarantia}">
+					<h:outputText value="#{item.abreviacionMonedaGarantia} #{item.montoGarantia}">
 						<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 					</h:outputText>
 				</p:column>

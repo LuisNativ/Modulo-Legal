@@ -135,12 +135,14 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 	private BOCliente oBOCliente;
 	private UManejadorListaDesplegable oUManejadorListaDesplegable;
 	
+	@Getter @Setter private List<EOperacionLevantamientoGarantiaMensaje> lstOperacionLevantamientoGarantiaMensaje;
 	@Getter @Setter private List<EOperacionMensaje> lstOperacionMensaje;
 	@Getter @Setter private List<EOperacionDocumento> lstOperacionDocumento;
 	@Getter @Setter private List<EOperacionDocumento> lstOperacionDocumentoFiltro;
 	@Getter @Setter private List<EDocumentoCarga> lstDocumentoCarga;
-	@Getter @Setter private List<EGarantiaCreditoRelacionado> lstCreditoRelacionado;
+	//@Getter @Setter private List<EGarantiaCreditoRelacionado> lstCreditoRelacionado;
 	@Getter @Setter private List<EGarantiaCreditoRelacionado> lstCreditoVigenteRelacionado;
+	@Getter @Setter private List<EGarantiaCreditoRelacionado> lstCreditoCanceladoRelacionado;
 	@Getter @Setter private List<EGeneral> lstNivel;
 	@Getter @Setter private List<EGeneral> lstMotivo;
 	@Getter @Setter private List<EGeneral> lstEnvio;
@@ -161,6 +163,7 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 	//Datos de formulario General
 	@Getter @Setter private String mensajeValidacion;
 	@Getter @Setter private String mensajeConfirmacion;
+	@Getter @Setter private String descripcionMensaje;
 	@Getter @Setter private String descripcionMensajeSeleccion;
 	@Getter @Setter private String descripcionDocumentoCarga;
 	
@@ -193,7 +196,6 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 	
 	@Getter @Setter private boolean visualizar;
 	@Getter @Setter private boolean visualizarTblMensaje;
-	@Getter @Setter private boolean visualizarTblDocumento;
 	@Getter @Setter private boolean visualizarPnlInforme;
 	@Getter @Setter private boolean visualizarPnlDocumentoLevantamiento;
 	@Getter @Setter private boolean visualizarPnlCreditoRelacionado;
@@ -262,12 +264,14 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 		oBOCliente = new BOCliente();
 		oUManejadorListaDesplegable = new UManejadorListaDesplegable();
 		
+		lstOperacionLevantamientoGarantiaMensaje = new ArrayList<EOperacionLevantamientoGarantiaMensaje>();
 		lstOperacionMensaje = new ArrayList<EOperacionMensaje>();
 		lstOperacionDocumento = new ArrayList<EOperacionDocumento>();
 		lstOperacionDocumentoFiltro = new ArrayList<EOperacionDocumento>();
 		lstDocumentoCarga = new ArrayList<EDocumentoCarga>();
-		lstCreditoRelacionado = new ArrayList<EGarantiaCreditoRelacionado>();
+		//lstCreditoRelacionado = new ArrayList<EGarantiaCreditoRelacionado>();
 		lstCreditoVigenteRelacionado = new ArrayList<EGarantiaCreditoRelacionado>();
+		lstCreditoCanceladoRelacionado = new ArrayList<EGarantiaCreditoRelacionado>();
 		lstNivel = new ArrayList<EGeneral>();
 		lstMotivo = new ArrayList<EGeneral>();
 		lstEnvio = new ArrayList<EGeneral>();
@@ -311,16 +315,8 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 					oEClienteData = oBOCliente.buscarSocio(oEGarantiaSolicitudLoad.getCodigoCliente());
 					oEGarantiaData = oBOGarantia.buscarGarantia(oEGarantiaSolicitudLoad.getCodigoGarantia());
 					
-					/*
-					Date hoy = new Date();
-					oEOpcionLoad.setIndicadorEnviar(1);
-					oEOperacionSolicitudData.setFechaInicio(hoy);
-					oEOperacionSolicitudData.setDescripcionAsunto("Liberación de garantía");
-					oEOperacionSolicitudData.setCodigoNivel(UNivel.BAJO);
-					*/
-					
 					deshabilitarFrmGarantia = true;
-					
+					visualizarPnlCreditoRelacionado = true;
 					visualizarBtnSalir = true;
 					visualizarBtnEnviar = true;
 
@@ -328,10 +324,6 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 			}else if(UAccionExterna.EDITAR == accionExterna){
 				if (UManejadorSesionWeb.obtieneVariableSesion(UVariablesSesion.FICHA_PARAMETRO) != null) {
 					oEGarantiaSolicitudLoad = (EGarantiaSolicitud) UManejadorSesionWeb.obtieneVariableSesion(UVariablesSesion.FICHA_PARAMETRO);
-					//oEOperacionLevantamientoGarantiaLoad = (EOperacionLevantamientoGarantia) UManejadorSesionWeb.obtieneVariableSesion(UVariablesSesion.FICHA_PARAMETRO); 
-					//oEOperacionSolicitudLoad = (EOperacionSolicitud) UManejadorSesionWeb.obtieneVariableSesion(UVariablesSesion.FICHA_PARAMETRO);
-					//oEOperacionSolicitudData = oBOOperacion.buscarSolicitud(oEOperacionSolicitudLoad.getCodigoSolicitud());
-					//oEOpcionLoad = oBOOperacion.buscarOpcionPorSolicitud(oEOperacionSolicitudLoad.getCodigoSolicitud(), oEOperacionSolicitudLoad.getCodigoTipoEvaluacion(), oEUsuario);
 					oEClienteData = oBOCliente.buscarSocio(oEGarantiaSolicitudLoad.getCodigoCliente());
 					oEGarantiaData = oBOGarantia.buscarGarantia(oEGarantiaSolicitudLoad.getCodigoGarantia());
 					oEGarantiaTramiteData = oBOGarantia.buscarGarantiaTramite(oEGarantiaSolicitudLoad.getCodigoGarantia());
@@ -343,9 +335,8 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 					}else if(oEGarantiaSolicitudLoad.getCodigoEstadoLevantamiento() == UEstadoOperacionLevantamiento.CONFIRMADO){
 						visualizarPnlInforme = true;
 						visualizarPnlDocumentoLevantamiento = true;
-						visualizarPnlCreditoRelacionado = true;
 						visualizarBtnLiberar = true;
-						//visualizarBtnEnProcesoLevantamiento = true;
+						visualizarBtnEnProcesoLevantamiento = true;
 						
 						if(oEGarantiaData.getCodigoTipoGarantia() == UTipoGarantia.VEHICULAR){
 							visualizarBtnGenerarDocumento1 = true;
@@ -353,7 +344,6 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 							visualizarBtnGenerarDocumento2 = true;
 						}else if(oEGarantiaData.getCodigoTipoGarantia() == UTipoGarantia.PREDIO){							
 							if(lstCreditoVigenteRelacionado.size() > 0){
-								visualizarBtnEnProcesoLevantamiento = true;
 								visualizarBtnGenerarDocumento4 = true;
 							}else{
 								visualizarBtnGenerarDocumento2 = true;
@@ -364,40 +354,29 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 					}else if(oEGarantiaSolicitudLoad.getCodigoEstadoLevantamiento() == UEstadoOperacionLevantamiento.OBSERVADO){
 						visualizarPnlInforme = true;
 						visualizarPnlDocumentoLevantamiento = true;
-						visualizarPnlCreditoRelacionado = true;
-						visualizarTblDocumento = true;
 						visualizarBtnEntregar = true;
 						visualizarBtnArchivar = true;
 						indicadorValidarBtnEnviar = 1;
 					}else if(oEGarantiaSolicitudLoad.getCodigoEstadoLevantamiento() == UEstadoOperacionLevantamiento.ENEVALUACION){
 						visualizarPnlDocumentoLevantamiento = true;
-						visualizarPnlCreditoRelacionado = true;
 						visualizarBtnEnProcesoLevantamiento = true;
 						visualizarBtnLiberar = true;
 						indicadorValidarBtnEnviar = 0;
 					}else if(oEGarantiaSolicitudLoad.getCodigoEstadoLevantamiento() == UEstadoOperacionLevantamiento.LIBERADO){
 						visualizarPnlDocumentoLevantamiento = true;
-						visualizarPnlCreditoRelacionado = true;
 						visualizarBtnGrabar = true;
 					}
 					
-					//indicadorValidarBtnEnviar = 1;
-					
 					deshabilitarFrmGarantia = true;
 					
-					deshabilitarBtnGrabar = true;
+					//deshabilitarBtnGrabar = true;
 					visualizarTblMensaje = true;
+					visualizarPnlCreditoRelacionado = true;
 					visualizarBtnSalir = true;
 					visualizarBtnAdjuntar = true;
-					
-					//correlativoSesion = oBOGeneral.generarCorrelativo(UTipoCorrelativo.OPERACIONSESION, oEOperacionSolicitudLoad.getCodigoSolicitud()+"", "", "");
-					//enviarSesion();
-
 				}
 			}else if(UAccionExterna.VER == accionExterna){
 				if (UManejadorSesionWeb.obtieneVariableSesion(UVariablesSesion.FICHA_PARAMETRO) != null) {
-					//oEOperacionSolicitudLoad = (EOperacionSolicitud) UManejadorSesionWeb.obtieneVariableSesion(UVariablesSesion.FICHA_PARAMETRO);
-					//oEOperacionSolicitudData = oBOOperacion.buscarSolicitud(oEOperacionSolicitudLoad.getCodigoSolicitud());
 					oEGarantiaSolicitudLoad = (EGarantiaSolicitud) UManejadorSesionWeb.obtieneVariableSesion(UVariablesSesion.FICHA_PARAMETRO);
 					oEClienteData = oBOCliente.buscarSocio(oEGarantiaSolicitudLoad.getCodigoCliente());
 					oEGarantiaData = oBOGarantia.buscarGarantia(oEGarantiaSolicitudLoad.getCodigoGarantia());
@@ -405,13 +384,9 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 					deshabilitarFrmGarantia = true;
 						
 					visualizarTblMensaje = true;
-					visualizarTblDocumento = true;
 					visualizarPnlDocumentoLevantamiento = true;
 					visualizarPnlCreditoRelacionado = true;
 					visualizarBtnSalir = true;
-					
-					//correlativoSesion = oBOGeneral.generarCorrelativo(UTipoCorrelativo.OPERACIONSESION, oEOperacionSolicitudLoad.getCodigoSolicitud()+"", "", "");
-					//enviarSesion();
 				}
 			}
 			
@@ -451,24 +426,13 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 			}else if(ind == 3){
 				codigoEstado = UEstadoOperacionLevantamiento.CONFIRMADO;
 				indicadorLiberarGarantia = false;
-				//mensajeConfirmacion = UMensajeConfirmacion.MSJ_3;
-				//RequestContext.getCurrentInstance().execute("PF('dlgMensajeConfirmacion').show();");
-				
-				if(validarLiberarGarantiaCreditoRelacionado()){
+				if(validarLiberarGarantiaCreditoCancelado()){
 					mensajeConfirmacion = UMensajeConfirmacion.MSJ_3;
 					RequestContext.getCurrentInstance().execute("PF('dlgMensajeConfirmacion').show();");
 				}else{
 					RequestContext.getCurrentInstance().execute("PF('dlgMensajeValidacion').show();");
 				}
 			}else if(ind == 4){
-				/*
-				if(oEGarantiaSolicitudLoad.getCodigoEstadoLevantamiento() == UEstado.ENTREGADO && 
-						oEGarantiaData.getCodigoSituacion() == USituacionGarantia.VIGENTE){
-					codigoEstado = oEGarantiaSolicitudLoad.getCodigoEstadoLevantamiento();
-				}else {
-					codigoEstado = UEstadoOperacionLevantamiento.SOLICITADO;
-				}
-				*/
 				codigoEstado = UEstadoOperacionLevantamiento.LIBERADO;
 				indicadorLiberarGarantia = true;
 				if(validarLiberarGarantiaCreditoVigente()){
@@ -481,8 +445,6 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 				codigoEstado = UEstadoOperacionLevantamiento.ENEVALUACION;
 				indicadorLiberarGarantia = false;
 				guardar();
-				//mensajeConfirmacion = UMensajeConfirmacion.MSJ_5;
-				//RequestContext.getCurrentInstance().execute("PF('dlgMensajeConfirmacion').show();");
 			}else if(ind == 6){
 				codigoEstado = UEstadoOperacionLevantamiento.OBSERVADO;
 				indicadorLiberarGarantia = false;
@@ -503,8 +465,6 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 	
 	public void guardar() {
 		obtenerEstadoDocumentoLevantamiento();
-		EOperacionSolicitud oEOperacionSolicitud = new EOperacionSolicitud();
-		EOperacionSesion oEOperacionSesion = new EOperacionSesion();
 		EOperacionLevantamientoGarantia oEOperacionLevantamientoGarantia = new EOperacionLevantamientoGarantia();
 		EGarantia oEGarantia = new EGarantia();
 		
@@ -516,6 +476,7 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 		oEOperacionLevantamientoGarantia.setCodigoMoneda(oEGarantiaData.getCodigoMoneda());
 		oEOperacionLevantamientoGarantia.setCodigoEstadoSolicitud(codigoEstado);
 		oEOperacionLevantamientoGarantia.setCodigoEstadoDocumento(codigoEstadoDocumento);
+		oEOperacionLevantamientoGarantia.setDescripcionMensaje(descripcionMensaje);
 		oEOperacionLevantamientoGarantia.setFechaRegistro(new Date());
 		oEOperacionLevantamientoGarantia.setUsuarioRegistro(oEUsuario);
 		
@@ -556,6 +517,25 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
         return ind;
 	}
 	
+	public boolean validarLiberarGarantiaCreditoCancelado() {
+		boolean ind=true;
+		mensajeValidacion = "";
+		
+		lstCreditoCanceladoRelacionado = oBOGarantia.listarCreditoCanceladoRelacionado(1);
+		
+		if(lstCreditoCanceladoRelacionado !=null){
+			if(lstCreditoCanceladoRelacionado.size() > 0){
+				mensajeValidacion = UMensajeValidacion.MSJ_12;
+				
+				for(int i=0;i<lstCreditoCanceladoRelacionado.size();i++){
+					mensajeValidacion = mensajeValidacion + "\n" +lstCreditoCanceladoRelacionado.get(i).getCodigoCliente()+"-"+lstCreditoCanceladoRelacionado.get(i).getCodigoServicio()+"-"+lstCreditoCanceladoRelacionado.get(i).getNumeroOperacion();
+				}
+				ind = false;
+			}
+		}
+        return ind;
+	}
+	
 	public boolean validarLiberarGarantiaCreditoVigente() {
 		boolean ind=true;
 		mensajeValidacion = "";
@@ -575,6 +555,7 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
         return ind;
 	}
 	
+	/*
 	public boolean validarLiberarGarantiaCreditoRelacionado() {
 		boolean ind=true;
 		mensajeValidacion = "";
@@ -593,7 +574,7 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 		}
         return ind;
 	}
-	
+	*/
 	
 	public void controlarSesion() {
 		//enviarSesion();
@@ -655,6 +636,7 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 	}
 	
 	public void listarMensaje() {
+		lstOperacionLevantamientoGarantiaMensaje = oBOOperacion.listarMensajeLevantamientoGarantia(oEGarantiaData.getCodigoServicio(), oEGarantiaData.getCodigoGarantia(), oEGarantiaData.getCodigoMoneda());
 		//lstOperacionMensaje = oBOOperacion.listarMensaje(oEOperacionSolicitudLoad.getCodigoSolicitud());
 	}
 	
@@ -1105,7 +1087,6 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 		
 		visualizar = false;
 		visualizarTblMensaje = false;
-		visualizarTblDocumento = false;
 		visualizarPnlInforme = false;
 		visualizarPnlDocumentoLevantamiento = false;
 		visualizarPnlCreditoRelacionado = false;

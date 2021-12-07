@@ -65,31 +65,37 @@
 	        <p:tab id="tab1-1" title="Pendiente">
 				<p:dataTable id="tblSolicitudPendiente" value="#{mbbandejaoperacionlegal.lstOperacionSolicitudPendiente}" var="item" styleClass="dsTabla1" paginator="true" rows="12" paginatorPosition="bottom"
 							 rowKey="#{item.codigoSolicitud}" reflow="false">
-					<p:column headerText="Nombre">
+					<p:column headerText="Nombre" style="width: 150px">
 						<div class="dsTextoCorto">
 							<h:outputText value="#{item.nombrePersona}"/>
 						</div>
 					</p:column>
-					<p:column headerText="N°Sol" style="width: 70px">
+					<p:column headerText="N°Sol" style="width: 45px">
 						<h:outputText value="#{item.codigoSolicitudCredito}"/>
 					</p:column>
-					<p:column headerText="T.Per" style="width: 20px" priority="6">
+					<p:column headerText="T.Per" style="width: 15px" priority="6">
 						<h:outputText value="#{item.codigoTipoPersona}"/>
 					</p:column>
-					<p:column headerText="Producto" style="width: 180px">
+					<p:column headerText="Cod.Cli" style="width: 45px" priority="6">
+						<h:outputText value="#{item.codigoClientePersona}"/>
+					</p:column>
+					<p:column headerText="T.Cli" style="width: 20px" priority="6">
+						<h:outputText value="#{item.abreviacionTipoCliente}"/>
+					</p:column>
+					<p:column headerText="Producto" style="width: 110px">
 						<div class="dsTextoCorto">
 							<h:outputText value="#{item.abreviacionTipoProducto}"/>
 						</div>
 					</p:column>
-					<p:column headerText="Estado" style="width: 100px">
+					<p:column headerText="Estado" style="width: 35px">
 						<div class="dsTextoCorto">
 							<h:outputText value="#{item.descripcionEstado}"/>
 						</div>
 					</p:column>
-					<p:column headerText="Autorización" style="width: 80px" priority="6">
+					<p:column headerText="Aut." style="width: 45px" priority="6">
 						<h:outputText value="#{item.descripcionEstadoAutorizacion}"/>
 					</p:column>
-					<p:column headerText="Fecha Aut." style="width: 70px" priority="6">
+					<p:column headerText="Fec.Aut." style="width: 50px" priority="6">
 						<h:outputText value="#{item.fechaAutorizacion}"/>
 					</p:column>
 					<p:column headerText="Tiempo Aut." style="width: 70px" priority="6">
@@ -106,8 +112,10 @@
 					<p:column headerText="Usuario" style="width: 80px" priority="6">
 						<h:outputText value="#{item.descripcionAbreviacionEmisor}"/>
 					</p:column>
-					<p:column headerText="Evaluado por:" style="width: 80px" priority="6">
-						<h:outputText value="#{item.descripcionUsuarioEvaluacion}"/>
+					<p:column headerText="Eval.por:" style="width: 60px" priority="6">
+						<div class="dsTextoCorto">
+							<h:outputText value="#{item.descripcionUsuarioEvaluacion}"/>
+						</div>
 					</p:column>
 					<p:column headerText="" style="width: 80px">
 						<p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Revisar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbbandejaoperacionlegal.modificar(item)}" rendered="#{item.indicadorEditar eq '1' ? true : false}" update=":frmDlgMensajeOperacion"></p:commandButton>
@@ -127,6 +135,12 @@
 					</p:column>
 					<p:column headerText="T.Per" style="width: 20px" priority="6">
 						<h:outputText value="#{item.codigoTipoPersona}"/>
+					</p:column>
+					<p:column headerText="Cod.Cli" style="width: 50px" priority="6">
+						<h:outputText value="#{item.codigoClientePersona}"/>
+					</p:column>
+					<p:column headerText="T.Cli" style="width: 20px" priority="6">
+						<h:outputText value="#{item.abreviacionTipoCliente}"/>
 					</p:column>
 					<p:column headerText="Producto" style="width: 180px">
 						<div class="dsTextoCorto">
@@ -163,7 +177,7 @@
 					</p:column>
 					<p:column headerText="" style="width: 80px">
 	
-			     		<p:commandButton styleClass="dsBoton5 green" icon="fa fa-eye" title="Visualizar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbbandejaoperacionlegal.visualizar(item)}" rendered="#{item.indicadorVisualizar eq '1' ? true : false}" update=":frmDlgMensajeOperacion"></p:commandButton>
+			     		<p:commandButton styleClass="dsBoton5 green" icon="fa fa-eye" title="Visualizar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbbandejaoperacionlegal.visualizar(item)}" update=":frmDlgMensajeOperacion"></p:commandButton>
 			     	</p:column>
 				</p:dataTable>
 			</p:tab>

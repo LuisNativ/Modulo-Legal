@@ -54,8 +54,9 @@ public class DAOOperacion extends InstanciaAcceso{
 	private static final String SP_ABACOINLEGAL_BUS_OPERACION_OPCIONPORSOLICITUD = "{ CALL GESTIONDOC.SP_ABACOINLEGAL_BUS_OPERACION_OPCIONPORSOLICITUD("+parametrosSP(4)+") }";
 	
 	//EVALUACION LEVANTAMIENTO GARANTIA
-	private static final String SP_ABACOINLEGAL_INS_OPERACION_LEVANTAMIENTOGARANTIA = "{ CALL GESTIONDOC.SP_ABACOINLEGAL_INS_OPERACION_LEVANTAMIENTOGARANTIA("+parametrosSP(10)+") }";
-	private static final String SP_ABACOINLEGAL_UPD_OPERACION_LEVANTAMIENTOGARANTIA = "{ CALL GESTIONDOC.SP_ABACOINLEGAL_UPD_OPERACION_LEVANTAMIENTOGARANTIA("+parametrosSP(11)+") }";
+	private static final String SP_ABACOINLEGAL_INS_OPERACION_LEVANTAMIENTOGARANTIA = "{ CALL GESTIONDOC.SP_ABACOINLEGAL_INS_OPERACION_LEVANTAMIENTOGARANTIA("+parametrosSP(11)+") }";
+	private static final String SP_ABACOINLEGAL_UPD_OPERACION_LEVANTAMIENTOGARANTIA = "{ CALL GESTIONDOC.SP_ABACOINLEGAL_UPD_OPERACION_LEVANTAMIENTOGARANTIA("+parametrosSP(12)+") }";
+	private static final String SP_ABACOINLEGAL_SEL_OPERACION_LEVANTAMIENTOGARANTIA_MENSAJE = "{ CALL GESTIONDOC.SP_ABACOINLEGAL_SEL_OPERACION_LEVANTAMIENTOGARANTIA_MENSAJE("+parametrosSP(3)+") }";
 	private static final String SP_ABACOINLEGAL_SEL_OPERACION_LEVANTAMIENTOGARANTIA_LEGAL = "{ CALL GESTIONDOC.SP_ABACOINLEGAL_SEL_OPERACION_LEVANTAMIENTOGARANTIA_LEGAL("+parametrosSP(3)+") }";
 	private static final String SP_ABACOINLEGAL_SEL_OPERACION_LEVANTAMIENTOGARANTIA_OTROS = "{ CALL GESTIONDOC.SP_ABACOINLEGAL_SEL_OPERACION_LEVANTAMIENTOGARANTIA_OTROS("+parametrosSP(3)+") }";
 	
@@ -572,6 +573,8 @@ public class DAOOperacion extends InstanciaAcceso{
 					oEOperacionSolicitud.setCodigoReceptor(oResultSet.getInt("CODRECEPTOR"));
 					oEOperacionSolicitud.setDescripcionReceptor(oResultSet.getString("DESCRECEPTOR"));
 					
+					oEOperacionSolicitud.setAbreviacionTipoCliente(oResultSet.getString("ABRVTIPCLI"));
+					oEOperacionSolicitud.setDescripcionTipoCliente(oResultSet.getString("DESCTIPCLI"));
 					oEOperacionSolicitud.setDescripcionNivel(oResultSet.getString("DESCNVL"));
 					oEOperacionSolicitud.setDescripcionEstado(oResultSet.getString("DESCEST"));
 					oEOperacionSolicitud.setDescripcionTipoEvaluacion(oResultSet.getString("DESCTEVAL"));
@@ -1002,7 +1005,7 @@ public class DAOOperacion extends InstanciaAcceso{
 			lstParametrosEntrada.add(eOperacionLevantamientoGarantia.getCodigoMoneda());
 			
 			lstParametrosEntrada.add(eOperacionLevantamientoGarantia.getCodigoEstadoSolicitud());
-			
+			lstParametrosEntrada.add(eOperacionLevantamientoGarantia.getDescripcionMensaje());
 			//lstParametrosEntrada.add(eEvaluacionSolicitudCreditoLegal.getUsuarioRegistro().getCodigoArea());
 			lstParametrosEntrada.add(eOperacionLevantamientoGarantia.getUsuarioRegistro().getNombreUsuario());
 			lstParametrosEntrada.add(eOperacionLevantamientoGarantia.getFechaRegistro());
@@ -1031,7 +1034,7 @@ public class DAOOperacion extends InstanciaAcceso{
 			
 			lstParametrosEntrada.add(eOperacionLevantamientoGarantia.getCodigoEstadoSolicitud());
 			lstParametrosEntrada.add(eOperacionLevantamientoGarantia.getCodigoEstadoDocumento());
-			
+			lstParametrosEntrada.add(eOperacionLevantamientoGarantia.getDescripcionMensaje());
 			//lstParametrosEntrada.add(eEvaluacionSolicitudCreditoLegal.getUsuarioRegistro().getCodigoArea());
 			lstParametrosEntrada.add(eOperacionLevantamientoGarantia.getUsuarioRegistro().getNombreUsuario());
 			lstParametrosEntrada.add(eOperacionLevantamientoGarantia.getFechaRegistro());
@@ -1044,6 +1047,44 @@ public class DAOOperacion extends InstanciaAcceso{
 			UManejadorLog.error("Acceso: Problemas al agregar.", objEx);
 		}
 		return mensaje;
+	}
+	
+	public List<EOperacionLevantamientoGarantiaMensaje> listarMensajeLevantamientoGarantia(int codigoServicio, long codigoGarantia, int codigoMoneda) {
+		List<Object> lstParametrosEntrada;
+		ResultSet oResultSet = null;
+		EOperacionLevantamientoGarantiaMensaje oEOperacionLevantamientoGarantiaMensaje= null;
+		List<EOperacionLevantamientoGarantiaMensaje> lstResultado = null;
+		
+		try {
+			lstParametrosEntrada = new ArrayList<Object>();
+			lstParametrosEntrada.add(codigoServicio);
+			lstParametrosEntrada.add(codigoGarantia);
+			lstParametrosEntrada.add(codigoMoneda);
+			
+			oResultSet = objConexion.ejecutaConsulta(SP_ABACOINLEGAL_SEL_OPERACION_LEVANTAMIENTOGARANTIA_MENSAJE, lstParametrosEntrada, null);
+				
+			if (oResultSet != null) {
+				lstResultado = new ArrayList<EOperacionLevantamientoGarantiaMensaje>();
+				while (oResultSet.next()) {
+					oEOperacionLevantamientoGarantiaMensaje = new EOperacionLevantamientoGarantiaMensaje();
+					oEOperacionLevantamientoGarantiaMensaje.setCodigoCliente(oResultSet.getInt("CODCLI"));
+					oEOperacionLevantamientoGarantiaMensaje.setCodigoServicio(oResultSet.getInt("SERVIC"));
+					oEOperacionLevantamientoGarantiaMensaje.setCodigoGarantia(oResultSet.getInt("GARANT"));
+					oEOperacionLevantamientoGarantiaMensaje.setCodigoMoneda(oResultSet.getInt("MONEDA"));
+					oEOperacionLevantamientoGarantiaMensaje.setCodigoMensaje(oResultSet.getInt("CODMSJ"));
+					oEOperacionLevantamientoGarantiaMensaje.setDescripcionMensaje(oResultSet.getString("DESCMSJ"));
+					oEOperacionLevantamientoGarantiaMensaje.setNombreUsuarioEnvio(oResultSet.getString("USUENV"));
+					oEOperacionLevantamientoGarantiaMensaje.setFechaEnvio(oResultSet.getDate("FECENV"));
+					oEOperacionLevantamientoGarantiaMensaje.setHoraEnvio(oResultSet.getString("HORENV"));
+					
+					lstResultado.add(oEOperacionLevantamientoGarantiaMensaje);
+				}								
+			}						
+			
+		} catch(Exception objEx) {
+			UManejadorLog.error("Acceso: Problemas al obtener.", objEx);
+		}
+		return lstResultado;
 	}
 	
 	public List<EGarantiaSolicitud> listarEvaluacionLevantamientoGarantia(int codigo, String descripcion, EUsuario eUsuario, int indicadorConsulta) {
@@ -1071,13 +1112,14 @@ public class DAOOperacion extends InstanciaAcceso{
 					oEGarantia.setNombreLargo(oResultSet.getString("NOMBCL"));
 					//oEGarantia.setCodigoServicioGarantia(oResultSet.getInt("SERVIC"));
 					oEGarantia.setCodigoGarantia(oResultSet.getInt("GARANT"));
-					//oEGarantia.setMontoGarantia(oResultSet.getDouble("MTOGAR"));
+					oEGarantia.setMontoGarantia(oResultSet.getDouble("MTOGAR"));
 					oEGarantia.setDescripcionTipoGarantiaReal(oResultSet.getString("DESGAR"));
 					//oEGarantia.setDescripcionCreditoRelacionado(oResultSet.getString("DESCOPE"));
 					oEGarantia.setCodigoEstadoLevantamiento(oResultSet.getInt("CODESTSOL"));
 					oEGarantia.setDescripcionEstadoLevantamiento(oResultSet.getString("DESCESTSOL"));
 					oEGarantia.setCodigoEstadoDocumento(oResultSet.getInt("CODESTDOC"));
 					oEGarantia.setDescripcionEstadoDocumento(oResultSet.getString("DESCESTDOC"));
+					oEGarantia.setAbreviacionMonedaGarantia(UFuncionesGenerales.revisaCadena(oResultSet.getString("ABRVMON")));
 					oEGarantia.setIndicadorRevisar(oResultSet.getInt("INDREV"));
 					
 					lstGarantia.add(oEGarantia);

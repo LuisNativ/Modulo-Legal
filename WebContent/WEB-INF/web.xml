@@ -15,8 +15,8 @@
 <context-param>
 	<param-name>MENU_PRINCIPAL</param-name>
 	<!-- <param-value>http://localhost:8080/AbacoInLegal/esquema/login.xhtml</param-value> -->
-	<!--      <param-value>http://192.168.1.130:8080/abacoweb/esquema/principal.xhtml</param-value> -->
-	     <param-value>http://localhost:8080/abacoweb/esquema/principal.xhtml</param-value>  
+	<param-value>http://192.168.1.130:8080/abacoweb/esquema/principal.xhtml</param-value>
+	<!-- <param-value>http://localhost:8080/abacoweb/esquema/principal.xhtml</param-value> -->
 	<!-- <param-value>http://abacoin.abaco.com.pe:8080/abacoweb/esquema/principal.xhtml</param-value> -->
 </context-param>
  

@@ -83,7 +83,7 @@ public class UConstante {
 	
 	public static interface URutaCarpetaCompartida{
 		//Local
-		
+		/*
 		String rutaBaseLinux =  File.separator + File.separator + "192.168.1.60" + 
 					              File.separator +  "Documentos" + 
 						          File.separator +  "Analistas" +
@@ -100,8 +100,9 @@ public class UConstante {
 						          File.separator +  "Socio" +
 						          File.separator +  "FichaSocio" +
 						          File.separator ;
-						          
-		/*Desarrollo .130
+		*/         
+		//Desarrollo .130
+        
 		String rutaBaseLinux =  File.separator + "media" + 
 				                File.separator + "unidad" +
 				              //  File.separator +  "Documentos" + 
@@ -121,7 +122,7 @@ public class UConstante {
 					                File.separator +  "FichaSocio" +
 					                File.separator ;
         
-        */
+        
         String rutaBaseWindows2 = "\\\\192.168.1.60\\Documentos\\Analistas\\Analistas\\ModelosAbacoTesting\\Socio\\FichaSocio\\";
 	}
 	

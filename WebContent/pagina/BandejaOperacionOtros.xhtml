@@ -38,6 +38,12 @@
 				<p:column headerText="T.Per" style="width: 20px" priority="6">
 					<h:outputText value="#{item.codigoTipoPersona}"/>
 				</p:column>
+				<p:column headerText="Cod.Cli" style="width: 50px" priority="6">
+					<h:outputText value="#{item.codigoClientePersona}"/>
+				</p:column>
+				<p:column headerText="T.Cli" style="width: 20px" priority="6">
+					<h:outputText value="#{item.abreviacionTipoCliente}"/>
+				</p:column>
 				<p:column headerText="Producto" style="width: 180px">
 					<div class="dsTextoCorto">
 						<h:outputText value="#{item.abreviacionTipoProducto}"/>
@@ -91,6 +97,12 @@
 				<p:column headerText="T.Per" style="width: 20px" priority="6">
 					<h:outputText value="#{item.codigoTipoPersona}"/>
 				</p:column>
+				<p:column headerText="Cod.Cli" style="width: 50px" priority="6">
+					<h:outputText value="#{item.codigoClientePersona}"/>
+				</p:column>
+				<p:column headerText="T.Cli" style="width: 20px" priority="6">
+					<h:outputText value="#{item.abreviacionTipoCliente}"/>
+				</p:column>
 				<p:column headerText="Producto" style="width: 180px">
 					<div class="dsTextoCorto">
 						<h:outputText value="#{item.abreviacionTipoProducto}"/>
@@ -126,7 +138,7 @@
 				</p:column>
 				<p:column headerText="" styleClass="dsTextoCentro">
 					
-		     		<p:commandButton styleClass="dsBoton5 green" icon="fa fa-eye" title="Visualizar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbbandejaoperacionotros.visualizar(item)}" rendered="#{item.indicadorVisualizar eq '1' ? true : false}" update=":frmDlgMensajeOperacion"></p:commandButton>
+		     		<p:commandButton styleClass="dsBoton5 green" icon="fa fa-eye" title="Visualizar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbbandejaoperacionotros.visualizar(item)}" update=":frmDlgMensajeOperacion"></p:commandButton>
 		     	</p:column>
 			</p:dataTable>
 		</p:tab>

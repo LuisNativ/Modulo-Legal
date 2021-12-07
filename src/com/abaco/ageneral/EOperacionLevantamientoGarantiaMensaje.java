@@ -12,28 +12,18 @@ import com.abaco.ageneral.ERepresentanteLegal;
 import com.abaco.entidad.EUsuario;
 
 
-public @Data class EOperacionLevantamientoGarantia {
+public @Data class EOperacionLevantamientoGarantiaMensaje {
 	private int codigoCliente;
 	private int codigoServicio;
 	private long codigoGarantia;
 	private int codigoMoneda;
-	
-	private int codigoEstadoSolicitud;
-	private int codigoEstadoDocumento;
-	
-	private int codigoUbicacionOrigen;
-	private String nombreUsuarioOrigen;
-	private int codigoUbicacionInicio;
-	private String nombreUsuarioInicio;
-	private int codigoUbicacionEvaluacion;
-	private String nombreUsuarioEvaluacion;
-	private int codigoUbicacionRevision;
-	private String nombreUsuarioRevision;
+	private int codigoMensaje;
+	private String descripcionMensaje;
+	private String nombreUsuarioEnvio;
+	private Date fechaEnvio;
+	private String horaEnvio;
 	
 	private Date fechaRegistro;
 	private Date horaRegistro;
 	private EUsuario usuarioRegistro;
-	
-	//Extra
-	private String descripcionMensaje;
 }

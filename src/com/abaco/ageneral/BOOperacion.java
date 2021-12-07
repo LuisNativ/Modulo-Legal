@@ -107,6 +107,10 @@ public class BOOperacion {
 		EMensaje mensaje = oCOperacion.modificarEvaluacionLevantamientoGarantia(eOperacionLevantamientoGarantia, indicadorLiberarGarantia);
 		return mensaje;
 	}
+	public List<EOperacionLevantamientoGarantiaMensaje> listarMensajeLevantamientoGarantia(int codigoServicio, long codigoGarantia, int codigoMoneda){					
+		List<EOperacionLevantamientoGarantiaMensaje> lista=oCOperacion.listarMensajeLevantamientoGarantia(codigoServicio, codigoGarantia, codigoMoneda);
+		return lista;
+	}
 	public List<EGarantiaSolicitud> listarEvaluacionLevantamientoGarantia(int codigo, String descripcion, EUsuario eUsuario, int indicadorConsulta){					
 		List<EGarantiaSolicitud> lista=oCOperacion.listarEvaluacionLevantamientoGarantia(codigo, descripcion, eUsuario, indicadorConsulta);
 		return lista;

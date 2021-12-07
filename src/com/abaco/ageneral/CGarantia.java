@@ -1170,6 +1170,24 @@ public class CGarantia {
 		return resultado;
 	}
 	
+	public List<EGarantiaCreditoRelacionado> listarCreditoCanceladoRelacionado(int codigo){
+		IConexion oIConexion = null;
+		List<EGarantiaCreditoRelacionado> resultado = null;
+		DAOGarantia oDAOGarantia= null;
+		try {
+			oIConexion = FabricaConexion.creaConexion();			
+			oDAOGarantia = new DAOGarantia(oIConexion);
+			resultado = oDAOGarantia.listarCreditoVigenteRelacionado(codigo);			
+		} catch (Exception e) {
+			UManejadorLog.error("Control: Error al listar credito relacionado " + e.getMessage());
+		} finally {
+			if (oIConexion != null) {
+				oIConexion.cierraConexion();
+			}
+		}
+		return resultado;
+	}
+	
 	public EGarantia buscarGarantia(long codigoGarantia){
 		IConexion oIConexion = null;
 		EGarantia resultado = null;

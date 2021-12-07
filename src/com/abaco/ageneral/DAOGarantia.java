@@ -70,7 +70,10 @@ public class DAOGarantia extends InstanciaAcceso{
 	private static final String SP_ABACOINLEGAL_SEL_GARANTIADETALLE="{ CALL GESTIONDOC.SP_ABACOINLEGAL_SEL_GARANTIADETALLE("+parametrosSP(1)+") }";
 	private static final String SP_ABACOINLEGAL_SEL_CREDITORELACIONADOGARANTIA="{ CALL GESTIONDOC.SP_ABACOINLEGAL_SEL_CREDITORELACIONADOGARANTIA("+parametrosSP(1)+") }";
 	private static final String SP_ABACOINLEGAL_SEL_CREDITOVIGENTERELACIONADOGARANTIA="{ CALL GESTIONDOC.SP_ABACOINLEGAL_SEL_CREDITOVIGENTERELACIONADOGARANTIA("+parametrosSP(1)+") }";
+	private static final String SP_ABACOINLEGAL_SEL_CREDITOCANCELADORELACIONADOGARANTIA="{ CALL GESTIONDOC.SP_ABACOINLEGAL_SEL_CREDITOCANCELADORELACIONADOGARANTIA("+parametrosSP(1)+") }";
+	//
 	private static final String SP_ABACOINLEGAL_SEL_GARANTIACONCREDITOVIGENTE="{ CALL GESTIONDOC.SP_ABACOINLEGAL_SEL_GARANTIACONCREDITOVIGENTE("+parametrosSP(2)+") }";
+	//
 	private static final String SP_ABACOINLEGAL_SEL_CREDITOSASOCIADOGARANTIA="{ CALL GESTIONDOC.SP_ABACOINLEGAL_SEL_CREDITOSASOCIADOGARANTIA("+parametrosSP(1)+") }";
 	private static final String SP_ABACOINLEGAL_DEL_POLIZA="{ CALL GESTIONDOC.SP_ABACOINLEGAL_DEL_POLIZA("+parametrosSP(5)+") }";
 	private static final String SP_ABACOINLEGAL_SEL_GARANTIALIBERADA="{ CALL GESTIONDOC.SP_ABACOINLEGAL_SEL_GARANTIALIBERADA("+parametrosSP(2)+") }";
@@ -922,6 +925,7 @@ public class DAOGarantia extends InstanciaAcceso{
 					oEGarantia.setDescripcionCreditoRelacionado(oResultSet.getString("DESCOPE"));
 					oEGarantia.setCodigoEstadoLevantamiento(oResultSet.getInt("CODESTSOL"));
 					oEGarantia.setDescripcionEstadoLevantamiento(oResultSet.getString("DESCESTSOL"));
+					oEGarantia.setAbreviacionMonedaGarantia(UFuncionesGenerales.revisaCadena(oResultSet.getString("ABRVMON")));
 					
 					lstGarantia.add(oEGarantia);
 				}								
@@ -959,6 +963,7 @@ public class DAOGarantia extends InstanciaAcceso{
 					oEGarantia.setDescripcionEstadoLevantamiento(oResultSet.getString("DESCESTSOL"));
 					oEGarantia.setCodigoEstadoDocumento(oResultSet.getInt("CODESTDOC"));
 					oEGarantia.setDescripcionEstadoDocumento(oResultSet.getString("DESCESTDOC"));
+					oEGarantia.setAbreviacionMonedaGarantia(UFuncionesGenerales.revisaCadena(oResultSet.getString("ABRVMON")));
 					
 					lstGarantia.add(oEGarantia);
 				}								
@@ -2164,6 +2169,34 @@ public class DAOGarantia extends InstanciaAcceso{
 			lstParametrosEntrada.add(codigo);
 			 
 			oResultSet = objConexion.ejecutaConsulta(SP_ABACOINLEGAL_SEL_CREDITOVIGENTERELACIONADOGARANTIA, lstParametrosEntrada, null);
+			if (oResultSet != null) {
+				lstGarantiaCreditoRelacionado = new ArrayList<EGarantiaCreditoRelacionado>();
+				while (oResultSet.next()) {
+					oEGarantiaCreditoRelacionado = new EGarantiaCreditoRelacionado();
+					oEGarantiaCreditoRelacionado.setCodigoCliente(oResultSet.getInt("CODCLI"));
+					oEGarantiaCreditoRelacionado.setCodigoServicio(oResultSet.getInt("SERVIC"));
+					oEGarantiaCreditoRelacionado.setNumeroOperacion(oResultSet.getInt("NUMOPE"));
+					lstGarantiaCreditoRelacionado.add(oEGarantiaCreditoRelacionado);
+				}								
+			}						
+			
+		} catch(Exception objEx) {
+			UManejadorLog.error("Acceso: Problemas al obtener.", objEx);
+		}
+		return lstGarantiaCreditoRelacionado;
+	}
+	
+	public List<EGarantiaCreditoRelacionado> listarCreditoCanceladoRelacionado(int codigo) {
+		List<Object> lstParametrosEntrada;
+		ResultSet oResultSet = null;
+		EGarantiaCreditoRelacionado oEGarantiaCreditoRelacionado= null;
+		List<EGarantiaCreditoRelacionado> lstGarantiaCreditoRelacionado = null;
+		
+		try {
+			lstParametrosEntrada = new ArrayList<Object>();
+			lstParametrosEntrada.add(codigo);
+			 
+			oResultSet = objConexion.ejecutaConsulta(SP_ABACOINLEGAL_SEL_CREDITOCANCELADORELACIONADOGARANTIA, lstParametrosEntrada, null);
 			if (oResultSet != null) {
 				lstGarantiaCreditoRelacionado = new ArrayList<EGarantiaCreditoRelacionado>();
 				while (oResultSet.next()) {

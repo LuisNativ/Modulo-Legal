@@ -32,7 +32,6 @@
 	            	<f:selectItem itemLabel="Código Socio" itemValue="1" />
 	            	<f:selectItem itemLabel="Nombre Socio" itemValue="2" />
 	            	<f:selectItem itemLabel="Código de Garantía" itemValue="3" />
-	            	<f:selectItem itemLabel="Partida Registral" itemValue="4" />
 	            </p:selectOneMenu>
 			</div>
 			<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-3">
@@ -43,7 +42,7 @@
 			<div class="ui-g-12 ui-md-6 ui-lg-3 ui-xl-3">
 				<p:commandButton styleClass="dsBoton1 tamanio1 principal" value="Buscar" onclick="PF('dlgPreload').show();" 
 				oncomplete="PF('dlgPreload').hide();" action="#{mblistaoperacionlevantamiento.buscarGarantia()}" 
-				update=":form:tabView1:tblGarantia, :form:tabView1:tblGarantiaCreditoVigente, :form:tabView1:tblGarantiaLiberada,"></p:commandButton>
+				update=":form:tabView1"></p:commandButton>
 			</div>
 		</div>
 
@@ -69,7 +68,7 @@
 					<h:outputText value="#{item.descripcionEstadoDocumento}"/>
 				</p:column>
 				<p:column headerText="Monto de Garantìa" style="width: 120px">
-					<h:outputText value="#{item.montoGarantia}">
+					<h:outputText value="#{item.abreviacionMonedaGarantia} #{item.montoGarantia}">
 						<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 					</h:outputText>
 				</p:column>
@@ -103,7 +102,7 @@
 					<h:outputText value="#{item.descripcionEstadoLevantamiento}"/>
 				</p:column>
 				<p:column headerText="Monto de Garantìa" style="width: 120px">
-					<h:outputText value="#{item.montoGarantia}">
+					<h:outputText value="#{item.abreviacionMonedaGarantia} #{item.montoGarantia}">
 						<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 					</h:outputText>
 				</p:column>
@@ -136,7 +135,7 @@
 					<h:outputText value="#{item.descripcionEstadoDocumento}"/>
 				</p:column>
 				<p:column headerText="Monto de Garantìa" style="width: 120px">
-					<h:outputText value="#{item.montoGarantia}">
+					<h:outputText value="#{item.abreviacionMonedaGarantia} #{item.montoGarantia}">
 						<f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 					</h:outputText>
 				</p:column>

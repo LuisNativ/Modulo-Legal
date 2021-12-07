@@ -968,6 +968,24 @@ public class COperacion {
 		return mensaje;
 	}
 	
+	public List<EOperacionLevantamientoGarantiaMensaje> listarMensajeLevantamientoGarantia(int codigoServicio, long codigoGarantia, int codigoMoneda){
+		IConexion oIConexion = null;
+		List<EOperacionLevantamientoGarantiaMensaje> resultado = null;
+		DAOOperacion oDAOOperacion= null;
+		try {
+			oIConexion = FabricaConexion.creaConexion();			
+			oDAOOperacion = new DAOOperacion(oIConexion);
+			resultado = oDAOOperacion.listarMensajeLevantamientoGarantia(codigoServicio, codigoGarantia, codigoMoneda);			
+		} catch (Exception e) {
+			UManejadorLog.error("Control: Error al listar Garantia por revisar " + e.getMessage());
+		} finally {
+			if (oIConexion != null) {
+				oIConexion.cierraConexion();
+			}
+		}
+		return resultado;
+	}
+	
 	public List<EGarantiaSolicitud> listarEvaluacionLevantamientoGarantia(int codigo, String descripcion, EUsuario eUsuario, int indicadorConsulta){
 		IConexion oIConexion = null;
 		List<EGarantiaSolicitud> resultado = null;

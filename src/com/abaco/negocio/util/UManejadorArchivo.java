@@ -126,11 +126,9 @@ public class UManejadorArchivo {
 			
 			documento.setClasificacion(clasificacion);
 			documento.setTipoCliente(tipocliente);
-			documento.setTipoCliente(4);
 			documento.setCodigoSocio(eOperacionSolicitud.getCodigoClientePersona()+"");
 			documento.setNumeroDocumento(eOperacionSolicitud.getNumeroDocumentoPersona());
 			documento.setNumeroOperacion(eOperacionSolicitud.getCodigoSolicitudCredito()+"");
-			//documento.setNumeroOperacion("Operacion Nº "+eOperacionSolicitud.getCodigoSolicitud());
 			documento.setNombreArchivo(eDocumentoCarga.getNombreLaserFiche());
 			documento.setArchivoBinario(eDocumentoCarga.getData());
 			mensaje =  oBOLaserFiche.guardarDocumento(documento);

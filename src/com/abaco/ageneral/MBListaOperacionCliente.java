@@ -28,7 +28,9 @@ import com.abaco.entidad.EMensaje;
 import com.abaco.negocio.util.UConstante.UAccionExterna;
 import com.abaco.negocio.util.UConstante.UAccionInterna;
 import com.abaco.negocio.util.UConstante.UArea;
+import com.abaco.negocio.util.UConstante.UEstado;
 import com.abaco.negocio.util.UConstante.UEstadoAutorizacionJefe;
+import com.abaco.negocio.util.UConstante.UEstadoOperacionCliente;
 import com.abaco.negocio.util.UConstante.UIndicadorSesion;
 import com.abaco.negocio.util.UConstante.UProcesoMantePostulante;
 import com.abaco.negocio.util.UConstante.UTipoBusquedaTercero;
@@ -59,6 +61,8 @@ public class MBListaOperacionCliente implements Serializable {
 	private BOOperacion oBOOperacion;
 	
 	@Getter @Setter private List<EOperacionCliente> lstOperacionCliente;
+	@Getter @Setter private List<EOperacionCliente> lstOperacionClientePendiente;
+	@Getter @Setter private List<EOperacionCliente> lstOperacionClienteHistorico;
 	@Getter @Setter private List<EPersona> lstPersona;
 	
 	/* Variables Interfaz */
@@ -83,6 +87,8 @@ public class MBListaOperacionCliente implements Serializable {
 		oBOOperacion = new BOOperacion();
 		
 		lstOperacionCliente = new ArrayList<EOperacionCliente>();
+		lstOperacionClientePendiente = new ArrayList<EOperacionCliente>();
+		lstOperacionClienteHistorico = new ArrayList<EOperacionCliente>();
 		
 		oEUsuario = (EUsuario) UManejadorSesionWeb.obtieneVariableSesion(UVariablesSesion.USUARIO);
 		
@@ -170,10 +176,48 @@ public class MBListaOperacionCliente implements Serializable {
 	
 	public void listarOperacionCliente() {
 		lstOperacionCliente = oBOOperacion.listarEvaluacionCliente(2, "", oEUsuario);
+		
+		if (lstOperacionCliente != null){
+			lstOperacionClientePendiente = new ArrayList<EOperacionCliente>();
+	        for (EOperacionCliente obj: lstOperacionCliente) {
+	            if (obj.getCodigoEstadoSolicitud() == UEstadoOperacionCliente.ENEVALUACION ) {
+	            	lstOperacionClientePendiente.add(obj);
+	            }
+	        }
+	        
+	        lstOperacionClienteHistorico = new ArrayList<EOperacionCliente>();
+	        for (EOperacionCliente obj: lstOperacionCliente) {
+	            if (obj.getCodigoEstadoSolicitud() == UEstadoOperacionCliente.OBSERVADO ||
+	            	obj.getCodigoEstadoSolicitud() == UEstadoOperacionCliente.EVALUADO ||
+	            	obj.getCodigoEstadoSolicitud() == UEstadoOperacionCliente.DESAPROBADO ||
+	            	obj.getCodigoEstadoSolicitud() == UEstadoOperacionCliente.APROBADO) {
+	            	lstOperacionClienteHistorico.add(obj);
+	            }
+	        }
+		}
 	}
 	
 	public void buscarOperacionCliente(){
 		lstOperacionCliente = oBOOperacion.listarEvaluacionCliente(codigoBuscar, descripcionBuscar, oEUsuario);
+		
+		if (lstOperacionCliente != null){
+			lstOperacionClientePendiente = new ArrayList<EOperacionCliente>();
+	        for (EOperacionCliente obj: lstOperacionCliente) {
+	            if (obj.getCodigoEstadoSolicitud() == UEstadoOperacionCliente.ENEVALUACION ) {
+	            	lstOperacionClientePendiente.add(obj);
+	            }
+	        }
+	        
+	        lstOperacionClienteHistorico = new ArrayList<EOperacionCliente>();
+	        for (EOperacionCliente obj: lstOperacionCliente) {
+	            if (obj.getCodigoEstadoSolicitud() == UEstadoOperacionCliente.OBSERVADO ||
+	            	obj.getCodigoEstadoSolicitud() == UEstadoOperacionCliente.EVALUADO ||
+	            	obj.getCodigoEstadoSolicitud() == UEstadoOperacionCliente.DESAPROBADO ||
+	            	obj.getCodigoEstadoSolicitud() == UEstadoOperacionCliente.APROBADO) {
+	            	lstOperacionClienteHistorico.add(obj);
+	            }
+	        }
+		}
 	}
 	
 	public void inicializar() {
