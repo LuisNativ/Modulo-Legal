@@ -472,6 +472,7 @@ public class MBRegistroOperacionSolicitudCredito implements Serializable {
 	private long correlativoSesion;
 	@Getter @Setter private int codigoEstado;
 	@Getter @Setter private int codigoAutorizaJefe;
+	@Getter @Setter private int codigoTipoCliente;
 	
 	private int accionExterna;
 	@Getter @Setter private int accionInternaRepresenanteLegal;
@@ -688,6 +689,12 @@ public class MBRegistroOperacionSolicitudCredito implements Serializable {
 					if(oESolicitudCreditoLoad == null){ this.oESolicitudCreditoLoad = new ESolicitudCredito(); }
 					if(oEInformeLegalAdicionalData == null){ this.oEInformeLegalAdicionalData = new EInformeLegalAdicional(); }
 					
+					if(oEEvaluacionSolicitudCreditoLegalData.getCodigoTipoCliente() == UTipoClienteSolicitudCredito.COD_SOCIO){
+						codigoTipoCliente = UTipoCliente.COD_SOCIO;
+					}else if(oEEvaluacionSolicitudCreditoLegalData.getCodigoTipoCliente() == UTipoClienteSolicitudCredito.COD_POSTULANTE){
+						codigoTipoCliente = UTipoCliente.COD_POSTULANTE;
+					}
+					
 					if(oEClienteData != null){
 						oEEvaluacionSolicitudCreditoLegalData.setCodigoTipoDocumento(oEClienteData.getCodigoTipoDocumento());
 						oEEvaluacionSolicitudCreditoLegalData.setNumeroDocumento(oEClienteData.getDocumento());
@@ -815,6 +822,12 @@ public class MBRegistroOperacionSolicitudCredito implements Serializable {
 					
 					if(oEInformeLegalAdicionalData == null){ this.oEInformeLegalAdicionalData = new EInformeLegalAdicional(); }
 					
+					if(oEEvaluacionSolicitudCreditoLegalData.getCodigoTipoCliente() == UTipoClienteSolicitudCredito.COD_SOCIO){
+						codigoTipoCliente = UTipoCliente.COD_SOCIO;
+					}else if(oEEvaluacionSolicitudCreditoLegalData.getCodigoTipoCliente() == UTipoClienteSolicitudCredito.COD_POSTULANTE){
+						codigoTipoCliente = UTipoCliente.COD_POSTULANTE;
+					}
+					
 					deshabilitarObservacionSolicitud = true;
 					deshabilitarObservacionLegal = true;
 					deshabilitarEstado = true;
@@ -920,6 +933,7 @@ public class MBRegistroOperacionSolicitudCredito implements Serializable {
 	public void guardar() {
 		generarCorrelativoDocumentoCarga();
 		generarLogMovimiento();
+		modificarDocumentoRelacionRepresentanteLegal();
 		EOperacionSolicitud oEOperacionSolicitud = new EOperacionSolicitud();
 		//EOperacionSesion oEOperacionSesion = new EOperacionSesion();
 		EEvaluacionSolicitudCreditoLegal oEEvaluacionSolicitudCreditoLegal = new EEvaluacionSolicitudCreditoLegal();
@@ -990,9 +1004,9 @@ public class MBRegistroOperacionSolicitudCredito implements Serializable {
 		oEEvaluacionSolicitudCreditoLegal.setUsuarioRegistro(oEUsuario);
 		
 		if(UAccionExterna.NUEVO == accionExterna){
-			oEMensaje = oBOOperacion.modificarEvaluacionSolicitudCredito(oEOperacionSolicitud, oEEvaluacionSolicitudCreditoLegal);
+			oEMensaje = oBOOperacion.modificarEvaluacionSolicitudCredito(oEOperacionSolicitud, oEEvaluacionSolicitudCreditoLegal, codigoTipoCliente);
 		}else if(UAccionExterna.EDITAR == accionExterna){
-			oEMensaje = oBOOperacion.modificarEvaluacionSolicitudCredito(oEOperacionSolicitud, oEEvaluacionSolicitudCreditoLegal);
+			oEMensaje = oBOOperacion.modificarEvaluacionSolicitudCredito(oEOperacionSolicitud, oEEvaluacionSolicitudCreditoLegal, codigoTipoCliente);
 		}
 		
 		UManejadorLog.log(" Guardar: " + oEMensaje.getDescMensaje());
@@ -1282,13 +1296,13 @@ public class MBRegistroOperacionSolicitudCredito implements Serializable {
 	//*************************************//
 	
 	public void listarRepresentanteLegal() {
-		lstRepresentanteLegal = oBORepresentanteLegal.listarRepresentanteLegal(oEOperacionSolicitudLoad.getCodigoTipoClientePersona(), oEOperacionSolicitudLoad.getCodigoClientePersona());
+		lstRepresentanteLegal = oBORepresentanteLegal.listarRepresentanteLegal(codigoTipoCliente, oEEvaluacionSolicitudCreditoLegalData.getCodigoCliente());
 		List<EFacultadPoder> lstFacultadPoder = null;
 		int correlativo = 0;
 		for(int i=0;i<lstRepresentanteLegal.size();i++){
 			correlativo = correlativo + 1;
 			lstFacultadPoder = new ArrayList<EFacultadPoder>();
-			lstFacultadPoder = oBORepresentanteLegal.listarFacultadPoder(oEOperacionSolicitudLoad.getCodigoTipoClientePersona(), oEOperacionSolicitudLoad.getCodigoClientePersona(), lstRepresentanteLegal.get(i).getCodigoRepresentante());
+			lstFacultadPoder = oBORepresentanteLegal.listarFacultadPoder(codigoTipoCliente, oEEvaluacionSolicitudCreditoLegalData.getCodigoCliente(), lstRepresentanteLegal.get(i).getCodigoRepresentante());
 			
 			lstRepresentanteLegal.get(i).setCodigoOrden(correlativo);
 			lstRepresentanteLegal.get(i).setLstFacultadPoder(lstFacultadPoder);
@@ -1300,27 +1314,27 @@ public class MBRegistroOperacionSolicitudCredito implements Serializable {
 		if(indicadorTabla == 1){
 			lstRL1 = lstRepresentanteLegal.stream()
 					   .filter(x -> x.getCodigoAccion() != UAccionTabla.ELIMINAR)
-					   .filter(x -> x.getDocumentoRelacion().matches("(?i).*"+ oEOperacionSolicitudLoad.getNumeroDocumentoPersona() +".*"))
+					   .filter(x -> x.getDocumentoRelacion().equals(oEEvaluacionSolicitudCreditoLegalData.getNumeroDocumento()))
 					   .collect(Collectors.toList());
 		}else if(indicadorTabla == 2){
 			lstRL2 = lstRepresentanteLegal.stream()
 					   .filter(x -> x.getCodigoAccion() != UAccionTabla.ELIMINAR)
-					   .filter(x -> x.getDocumentoRelacion().matches("(?i).*"+ oERL1Selected.getDocumento() +".*"))
+					   .filter(x -> x.getDocumentoRelacion().equals(oERL1Selected.getDocumento()))
 					   .collect(Collectors.toList());
 		}else if(indicadorTabla == 3){
 			lstRL3 = lstRepresentanteLegal.stream()
 					   .filter(x -> x.getCodigoAccion() != UAccionTabla.ELIMINAR)
-					   .filter(x -> x.getDocumentoRelacion().matches("(?i).*"+ oERL2Selected.getDocumento() +".*"))
+					   .filter(x -> x.getDocumentoRelacion().equals(oERL2Selected.getDocumento()))
 					   .collect(Collectors.toList());
 		}else if(indicadorTabla == 4){
 			lstRL4 = lstRepresentanteLegal.stream()
 					   .filter(x -> x.getCodigoAccion() != UAccionTabla.ELIMINAR)
-					   .filter(x -> x.getDocumentoRelacion().matches("(?i).*"+ oERL3Selected.getDocumento() +".*"))
+					   .filter(x -> x.getDocumentoRelacion().equals(oERL3Selected.getDocumento()))
 					   .collect(Collectors.toList());
 		}else if(indicadorTabla == 5){
 			lstRL5 = lstRepresentanteLegal.stream()
 					   .filter(x -> x.getCodigoAccion() != UAccionTabla.ELIMINAR)
-					   .filter(x -> x.getDocumentoRelacion().matches("(?i).*"+ oERL4Selected.getDocumento() +".*"))
+					   .filter(x -> x.getDocumentoRelacion().equals(oERL4Selected.getDocumento()))
 					   .collect(Collectors.toList());
 		}
 		
@@ -1331,31 +1345,31 @@ public class MBRegistroOperacionSolicitudCredito implements Serializable {
 		if(indicadorTabla == 1){
 			lstRL1 = lstRepresentanteLegal.stream()
 					   .filter(x -> x.getCodigoAccion() != UAccionTabla.ELIMINAR)
-					   .filter(x -> x.getDocumentoRelacion().matches("(?i).*"+ oEOperacionSolicitudLoad.getNumeroDocumentoPersona() +".*"))
+					   .filter(x -> x.getDocumentoRelacion().equals(oEEvaluacionSolicitudCreditoLegalData.getNumeroDocumento()))
 					   .collect(Collectors.toList());
 		}else if(indicadorTabla == 2){
 			oERL1Selected = oERepresentanteLegalItem;
 			lstRL2 = lstRepresentanteLegal.stream()
 					   .filter(x -> x.getCodigoAccion() != UAccionTabla.ELIMINAR)
-					   .filter(x -> x.getDocumentoRelacion().matches("(?i).*"+ oERepresentanteLegalItem.getDocumento() +".*"))
+					   .filter(x -> x.getDocumentoRelacion().equals(oERepresentanteLegalItem.getDocumento()))
 					   .collect(Collectors.toList());
 		}else if(indicadorTabla == 3){
 			oERL2Selected = oERepresentanteLegalItem;
 			lstRL3 = lstRepresentanteLegal.stream()
 					   .filter(x -> x.getCodigoAccion() != UAccionTabla.ELIMINAR)
-					   .filter(x -> x.getDocumentoRelacion().matches("(?i).*"+ oERepresentanteLegalItem.getDocumento() +".*"))
+					   .filter(x -> x.getDocumentoRelacion().equals(oERepresentanteLegalItem.getDocumento()))
 					   .collect(Collectors.toList());
 		}else if(indicadorTabla == 4){
 			oERL3Selected = oERepresentanteLegalItem;
 			lstRL4 = lstRepresentanteLegal.stream()
 					   .filter(x -> x.getCodigoAccion() != UAccionTabla.ELIMINAR)
-					   .filter(x -> x.getDocumentoRelacion().matches("(?i).*"+ oERepresentanteLegalItem.getDocumento() +".*"))
+					   .filter(x -> x.getDocumentoRelacion().equals(oERepresentanteLegalItem.getDocumento()))
 					   .collect(Collectors.toList());
 		}else if(indicadorTabla == 5){
 			oERL4Selected = oERepresentanteLegalItem;
 			lstRL5 = lstRepresentanteLegal.stream()
 					   .filter(x -> x.getCodigoAccion() != UAccionTabla.ELIMINAR)
-					   .filter(x -> x.getDocumentoRelacion().matches("(?i).*"+ oERepresentanteLegalItem.getDocumento() +".*"))
+					   .filter(x -> x.getDocumentoRelacion().equals(oERepresentanteLegalItem.getDocumento()))
 					   .collect(Collectors.toList());
 		}
 		
@@ -1403,7 +1417,7 @@ public class MBRegistroOperacionSolicitudCredito implements Serializable {
 	public String obtenerDocumentoRelacionRepresentante(int indicadorTabla){
 		String documento = "";
 		if(indicadorTabla == 1){
-			documento = oEOperacionSolicitudLoad.getNumeroDocumentoPersona();
+			documento = oEEvaluacionSolicitudCreditoLegalData.getNumeroDocumento();
 		}else if (indicadorTabla == 2){
 			if(oERL1Selected != null){
 				documento = oERL1Selected.getDocumento();
@@ -1474,6 +1488,7 @@ public class MBRegistroOperacionSolicitudCredito implements Serializable {
 			accionInternaRepresenanteLegal = UAccionInterna.EDITAR;
 			inicializarRepresentanteLegal();
 			oERepresentanteLegalData = oERepresentanteLegalItem;
+			oERepresentanteLegalData.setDocumentoHistorico(oERepresentanteLegalItem.getDocumento());
 			listarUbigeoRepresentante();
 			validarTamanioDocumentoRepresenanteLegal();
 			RequestContext.getCurrentInstance().execute("PF('dlgRepresentanteLegal').show();");
@@ -1571,95 +1586,128 @@ public class MBRegistroOperacionSolicitudCredito implements Serializable {
 	
 	public void guardarRepresentanteLegal(){
 		if (oERepresentanteLegalData != null) {
-			//if (validarRepresentante()){
-				if (accionInternaRepresenanteLegal == UAccionInterna.NUEVO){
-					int correlativo = 0;
-					ERepresentanteLegal oERepresentanteLegal = new ERepresentanteLegal();
-					for(int i=0;i<lstRepresentanteLegal.size();i++){
-						correlativo = lstRepresentanteLegal.get(i).getCodigoOrden();
-					}
-					oERepresentanteLegal = oERepresentanteLegalData;
-					oERepresentanteLegal.setCodigoOrden(correlativo+1);
-					oERepresentanteLegal.setCodigoAccion(UAccionTabla.INSERTAR);
-					
-					oERepresentanteLegal.setCodigoUbigeoComercial(UFuncionesGenerales.convierteCadenaAEntero(
-																  UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDepartamentoComercial()) +
-																  UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoProvinciaComercial()) +
-																  UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDistritoComercial())));
-					oERepresentanteLegal.setCodigoUbigeoDomiciliaria(UFuncionesGenerales.convierteCadenaAEntero(
-																	 UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDepartamentoDomiciliaria()) +
-																	 UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoProvinciaDomiciliaria()) +
-																	 UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDistritoDomiciliaria())));
-					oERepresentanteLegal.setCodigoUbigeoCorrespondencia(UFuncionesGenerales.convierteCadenaAEntero(
-																		UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDepartamentoCorrespondencia()) +
-																		UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoProvinciaCorrespondencia()) +
-																		UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDistritoCorrespondencia())));
-					
-					oERepresentanteLegal.setDescripcionIndicadorFirma(UFuncionesGenerales.obtieneDescripcionDeValorIndicador(oERepresentanteLegalData.getIndicadorFirma()));
-					
-					if (indicadorTipoPersonaRepresentante == UTipoPersonaGeneral.NATURAL){
-						oERepresentanteLegal.setRazonSocialRepresentante(oERepresentanteLegalData.getApellidoPaternoRepresentante() +" "+ 
-																			oERepresentanteLegalData.getApellidoMaternoRepresentante() +" "+ 
-																			oERepresentanteLegalData.getNombreRepresentante());
-					}
-					
-					oERepresentanteLegal.setNombreLargo(UFuncionesGenerales.recortarCadena(oERepresentanteLegal.getRazonSocialRepresentante(), 0, 40));
-					
-					String documentoRelacion = obtenerDocumentoRelacionRepresentante(indicadorTblSeleccionRepresentante);
-					if(!documentoRelacion.equals("")){
-						oERepresentanteLegal.setDocumentoRelacion(documentoRelacion);
-						lstRepresentanteLegal.add(oERepresentanteLegal);
-						listarRepresentanteLegalFiltro(indicadorTblSeleccionRepresentante);
-					}
-					
-				}else if(accionInternaRepresenanteLegal == UAccionInterna.EDITAR){
-					ERepresentanteLegal oERepresentanteLegal = new ERepresentanteLegal();
-					oERepresentanteLegal = oERepresentanteLegalData;
-					
-					if(oERepresentanteLegal.getCodigoRepresentante() != 0){
-						oERepresentanteLegal.setCodigoAccion(UAccionTabla.EDITAR);
-					}
-					
-					//oERepresentanteLegal.setCodigoAccion(UAccionTabla.EDITAR);
-					
-					oERepresentanteLegal.setCodigoUbigeoComercial(UFuncionesGenerales.convierteCadenaAEntero(
-																  UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDepartamentoComercial()) +
-																  UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoProvinciaComercial()) +
-																  UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDistritoComercial())));
-					oERepresentanteLegal.setCodigoUbigeoDomiciliaria(UFuncionesGenerales.convierteCadenaAEntero(
-																	 UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDepartamentoDomiciliaria()) +
-																	 UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoProvinciaDomiciliaria()) +
-																	 UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDistritoDomiciliaria())));
-					oERepresentanteLegal.setCodigoUbigeoCorrespondencia(UFuncionesGenerales.convierteCadenaAEntero(
-																		UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDepartamentoCorrespondencia()) +
-																		UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoProvinciaCorrespondencia()) +
-																		UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDistritoCorrespondencia())));
-					 
-					oERepresentanteLegal.setDescripcionIndicadorFirma(UFuncionesGenerales.obtieneDescripcionDeValorIndicador(oERepresentanteLegalData.getIndicadorFirma()));
-					
-					if (indicadorTipoPersonaRepresentante == UTipoPersonaGeneral.NATURAL){
-						oERepresentanteLegal.setRazonSocialRepresentante(oERepresentanteLegalData.getApellidoPaternoRepresentante() +" "+ 
-																			oERepresentanteLegalData.getApellidoMaternoRepresentante() +" "+ 
-																			oERepresentanteLegalData.getNombreRepresentante());
-					}
-					
-					oERepresentanteLegal.setNombreLargo(UFuncionesGenerales.recortarCadena(oERepresentanteLegal.getRazonSocialRepresentante(), 0, 40));
-					
-					for (ERepresentanteLegal obj : lstRepresentanteLegal) {
-						if(obj.getCodigoOrden() == oERepresentanteLegalData.getCodigoOrden()) {
-							lstRepresentanteLegal.set(obj.getCodigoOrden()-1, oERepresentanteLegal);
-							//oERepresentanteLegalData = oERepresentanteLegal;
-							//obj = oERepresentanteLegal;
-						}
-					}
-					//lstRepresentanteLegal.set(oERepresentanteLegalData.getCodigoOrden(), oERepresentanteLegal);
+			if (accionInternaRepresenanteLegal == UAccionInterna.NUEVO){
+				int correlativo = 0;
+				ERepresentanteLegal oERepresentanteLegal = new ERepresentanteLegal();
+				for(int i=0;i<lstRepresentanteLegal.size();i++){
+					correlativo = lstRepresentanteLegal.get(i).getCodigoOrden();
 				}
+				oERepresentanteLegal = oERepresentanteLegalData;
+				oERepresentanteLegal.setCodigoOrden(correlativo+1);
+				oERepresentanteLegal.setCodigoAccion(UAccionTabla.INSERTAR);
+				
+				oERepresentanteLegal.setCodigoUbigeoComercial(UFuncionesGenerales.convierteCadenaAEntero(
+															  UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDepartamentoComercial()) +
+															  UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoProvinciaComercial()) +
+															  UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDistritoComercial())));
+				oERepresentanteLegal.setCodigoUbigeoDomiciliaria(UFuncionesGenerales.convierteCadenaAEntero(
+																 UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDepartamentoDomiciliaria()) +
+																 UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoProvinciaDomiciliaria()) +
+																 UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDistritoDomiciliaria())));
+				oERepresentanteLegal.setCodigoUbigeoCorrespondencia(UFuncionesGenerales.convierteCadenaAEntero(
+																	UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDepartamentoCorrespondencia()) +
+																	UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoProvinciaCorrespondencia()) +
+																	UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDistritoCorrespondencia())));
+				
+				oERepresentanteLegal.setDescripcionIndicadorFirma(UFuncionesGenerales.obtieneDescripcionDeValorIndicador(oERepresentanteLegalData.getIndicadorFirma()));
+				
+				if (indicadorTipoPersonaRepresentante == UTipoPersonaGeneral.NATURAL){
+					oERepresentanteLegal.setRazonSocialRepresentante(oERepresentanteLegalData.getApellidoPaternoRepresentante() +" "+ 
+																		oERepresentanteLegalData.getApellidoMaternoRepresentante() +" "+ 
+																		oERepresentanteLegalData.getNombreRepresentante());
+				}
+				
+				oERepresentanteLegal.setNombreLargo(UFuncionesGenerales.recortarCadena(oERepresentanteLegal.getRazonSocialRepresentante(), 0, 40));
+				
+				String documentoRelacion = obtenerDocumentoRelacionRepresentante(indicadorTblSeleccionRepresentante);
+				if(!documentoRelacion.equals("")){
+					oERepresentanteLegal.setDocumentoRelacion(documentoRelacion);
+				}
+				/*
+				}else{
+					mensajeValidacion = "No se puede registrar porque no se encontro documento relacionado a ese Representante.";
+					RequestContext.getCurrentInstance().execute("PF('dlgMensajeValidacion').show();");
+				}
+				*/
+				lstRepresentanteLegal.add(oERepresentanteLegal);
+				listarRepresentanteLegalFiltro(indicadorTblSeleccionRepresentante);
 				RequestContext.getCurrentInstance().execute("PF('dlgRepresentanteLegal').hide();");
-		/*	
-		}else{
-				RequestContext.getCurrentInstance().execute("PF('dlgMensajeValidacion').show();");
+				
+			}else if(accionInternaRepresenanteLegal == UAccionInterna.EDITAR){
+				ERepresentanteLegal oERepresentanteLegal = new ERepresentanteLegal();
+				oERepresentanteLegal = oERepresentanteLegalData;
+				
+				if(oERepresentanteLegal.getCodigoRepresentante() != 0){
+					oERepresentanteLegal.setCodigoAccion(UAccionTabla.EDITAR);
+				}
+				
+				//oERepresentanteLegal.setCodigoAccion(UAccionTabla.EDITAR);
+				
+				oERepresentanteLegal.setCodigoUbigeoComercial(UFuncionesGenerales.convierteCadenaAEntero(
+															  UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDepartamentoComercial()) +
+															  UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoProvinciaComercial()) +
+															  UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDistritoComercial())));
+				oERepresentanteLegal.setCodigoUbigeoDomiciliaria(UFuncionesGenerales.convierteCadenaAEntero(
+																 UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDepartamentoDomiciliaria()) +
+																 UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoProvinciaDomiciliaria()) +
+																 UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDistritoDomiciliaria())));
+				oERepresentanteLegal.setCodigoUbigeoCorrespondencia(UFuncionesGenerales.convierteCadenaAEntero(
+																	UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDepartamentoCorrespondencia()) +
+																	UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoProvinciaCorrespondencia()) +
+																	UFuncionesGenerales.convertirEnteroACadenaUbigeo(oERepresentanteLegalData.getCodigoDistritoCorrespondencia())));
+				 
+				oERepresentanteLegal.setDescripcionIndicadorFirma(UFuncionesGenerales.obtieneDescripcionDeValorIndicador(oERepresentanteLegalData.getIndicadorFirma()));
+				
+				if (indicadorTipoPersonaRepresentante == UTipoPersonaGeneral.NATURAL){
+					oERepresentanteLegal.setRazonSocialRepresentante(oERepresentanteLegalData.getApellidoPaternoRepresentante() +" "+ 
+																		oERepresentanteLegalData.getApellidoMaternoRepresentante() +" "+ 
+																		oERepresentanteLegalData.getNombreRepresentante());
+				}
+				
+				oERepresentanteLegal.setNombreLargo(UFuncionesGenerales.recortarCadena(oERepresentanteLegal.getRazonSocialRepresentante(), 0, 40));
+				
+				String documento = oERepresentanteLegal.getDocumento();
+				String documentoHistorico = oERepresentanteLegal.getDocumentoHistorico();
+				if (!documento.equals(documentoHistorico)){
+					List<ERepresentanteLegal> lista = new ArrayList<ERepresentanteLegal>();
+					lista = lstRepresentanteLegal.stream()
+							.filter(x -> x.getDocumentoRelacion().equals(documentoHistorico))
+							.collect(Collectors.toList());
+					for (ERepresentanteLegal obj : lista) {
+						obj.setDocumentoRelacion(documento);
+						lstRepresentanteLegal.set(obj.getCodigoOrden()-1, obj);
+					}
+				}
+				
+				for (ERepresentanteLegal obj : lstRepresentanteLegal) {
+					if(obj.getCodigoOrden() == oERepresentanteLegalData.getCodigoOrden()) {
+						lstRepresentanteLegal.set(obj.getCodigoOrden()-1, oERepresentanteLegal);
+						//oERepresentanteLegalData = oERepresentanteLegal;
+						//obj = oERepresentanteLegal;
+					}
+				}
+				//lstRepresentanteLegal.set(oERepresentanteLegalData.getCodigoOrden(), oERepresentanteLegal);
+				RequestContext.getCurrentInstance().execute("PF('dlgRepresentanteLegal').hide();");
+			}
 		}
-		*/
+	}
+	
+	public void modificarDocumentoRelacionRepresentanteLegal() {
+		String documento = oEEvaluacionSolicitudCreditoLegalData.getNumeroDocumento();
+		for (ERepresentanteLegal obj : lstRL1) {
+			if(obj.getCodigoAccion() != UAccionTabla.ELIMINAR){
+				if(obj.getCodigoAccion() == UAccionTabla.INSERTAR){
+					obj.setDocumentoRelacion(documento);
+					lstRepresentanteLegal.set(obj.getCodigoOrden()-1, obj);
+				}else if(obj.getCodigoAccion() == UAccionTabla.EDITAR){
+					obj.setDocumentoRelacion(documento);
+					lstRepresentanteLegal.set(obj.getCodigoOrden()-1, obj);
+				}else{
+					obj.setCodigoAccion(UAccionTabla.EDITAR);
+					obj.setDocumentoRelacion(documento);
+					lstRepresentanteLegal.set(obj.getCodigoOrden()-1, obj);
+				}
+			}
 		}
 	}
 	

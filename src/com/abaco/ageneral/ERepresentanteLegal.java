@@ -141,6 +141,7 @@ public @Data class ERepresentanteLegal{
 	*/
 	
 	private String documentoRelacion;
+	private String documentoHistorico;
 	
 	//Extras
 	private String descripcionIndicadorFirma;

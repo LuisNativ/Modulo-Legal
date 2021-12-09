@@ -138,7 +138,7 @@ public class MBListaOperacionClienteOtros implements Serializable {
 		oEMensaje = oBOOperacion.agregarModificarEvaluacionCliente(oEOperacionCliente);
 		
 		UManejadorLog.log(" Guardar: " + oEMensaje.getDescMensaje());
-		buscarOperacionCliente();
+		listarOperacionCliente();
 		
 		RequestContext.getCurrentInstance().execute("PF('dlgAgregarInforme').hide();");
 		RequestContext.getCurrentInstance().execute("PF('dlgMensajeOperacion').show();");

@@ -31,8 +31,8 @@ public class BOOperacion {
 		EMensaje mensaje = oCOperacion.agregarEvaluacionSolicitudCredito(eOperacionSolicitud);
 		return mensaje;
 	}
-	public EMensaje modificarEvaluacionSolicitudCredito(EOperacionSolicitud eOperacionSolicitud, EEvaluacionSolicitudCreditoLegal eEvaluacionSolicitudCreditoLegal){
-		EMensaje mensaje = oCOperacion.modificarEvaluacionSolicitudCredito(eOperacionSolicitud, eEvaluacionSolicitudCreditoLegal);
+	public EMensaje modificarEvaluacionSolicitudCredito(EOperacionSolicitud eOperacionSolicitud, EEvaluacionSolicitudCreditoLegal eEvaluacionSolicitudCreditoLegal, int codigoTipoCliente){
+		EMensaje mensaje = oCOperacion.modificarEvaluacionSolicitudCredito(eOperacionSolicitud, eEvaluacionSolicitudCreditoLegal, codigoTipoCliente);
 		return mensaje;
 	}
 	public EMensaje agregarSesion(EOperacionSesion eOperacionSesion){

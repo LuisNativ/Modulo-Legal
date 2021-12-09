@@ -2158,7 +2158,7 @@ public class DAOGarantia extends InstanciaAcceso{
 		return lstGarantiaCreditoRelacionado;
 	}
 	
-	public List<EGarantiaCreditoRelacionado> listarCreditoVigenteRelacionado(int codigo) {
+	public List<EGarantiaCreditoRelacionado> listarCreditoVigenteRelacionado(long codigo) {
 		List<Object> lstParametrosEntrada;
 		ResultSet oResultSet = null;
 		EGarantiaCreditoRelacionado oEGarantiaCreditoRelacionado= null;
@@ -2186,7 +2186,7 @@ public class DAOGarantia extends InstanciaAcceso{
 		return lstGarantiaCreditoRelacionado;
 	}
 	
-	public List<EGarantiaCreditoRelacionado> listarCreditoCanceladoRelacionado(int codigo) {
+	public List<EGarantiaCreditoRelacionado> listarCreditoCanceladoRelacionado(long codigo) {
 		List<Object> lstParametrosEntrada;
 		ResultSet oResultSet = null;
 		EGarantiaCreditoRelacionado oEGarantiaCreditoRelacionado= null;

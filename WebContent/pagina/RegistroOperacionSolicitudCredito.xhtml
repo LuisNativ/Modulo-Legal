@@ -1665,16 +1665,16 @@
 		    	<div class="ui-g ui-fluid contenido">
 					<div class="ui-g-12 ui-md-12 ui-lg-6">
 						<p:outputLabel for="idDirComercialR" value="Dirección Comercial" styleClass="dsLabel1"/>
-						<p:inputText id="idDirComercialR" type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.direccionComercial}" required="true" requiredMessage="Campo Obligatorio"></p:inputText>
+						<p:inputText id="idDirComercialR" type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.direccionComercial}" autocomplete="off" maxlength="40" required="false" requiredMessage="Campo Obligatorio"></p:inputText>
 						<h:message for="idDirComercialR" styleClass="dsMessage1"/>
 					</div>
 					
 					<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
 						<div class="ui-g-4">
 							<p:outputLabel for="idDepartamentoR" value="Departamento" styleClass="dsLabel1"/>
-							<p:selectOneMenu id="idDepartamentoR" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoDepartamentoComercial}" required="true" requiredMessage="Campo Obligatorio">
+							<p:selectOneMenu id="idDepartamentoR" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoDepartamentoComercial}" required="false" requiredMessage="Campo Obligatorio">
 								<p:ajax event="change" listener="#{mbregistrooperacionsolicitudcredito.obtenerDepartamentoComercial()}" update="tabView2:cbProvinciaComercialRepresentante"/>
-								<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+								<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
 								<f:selectItems value="#{mbregistrooperacionsolicitudcredito.lstDepartamentoComercial}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
 				            </p:selectOneMenu>
 				            <h:message for="idDepartamentoR" styleClass="dsMessage1"/>
@@ -1682,9 +1682,9 @@
 						
 						<div class="ui-g-4">
 							<p:outputLabel for="cbProvinciaComercialRepresentante" value="Provincia" styleClass="dsLabel1"/>
-							<p:selectOneMenu id="cbProvinciaComercialRepresentante" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoProvinciaComercial}" required="true" requiredMessage="Campo Obligatorio">
+							<p:selectOneMenu id="cbProvinciaComercialRepresentante" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoProvinciaComercial}" required="false" requiredMessage="Campo Obligatorio">
 								<p:ajax event="change" listener="#{mbregistrooperacionsolicitudcredito.obtenerProvinciaComercial()}" update="tabView2:cbDistritoComercialRepresentante"/>
-								<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+								<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
 								<f:selectItems value="#{mbregistrooperacionsolicitudcredito.lstProvinciaComercial}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
 				            </p:selectOneMenu>
 				            <h:message for="cbProvinciaComercialRepresentante" styleClass="dsMessage1"/>
@@ -1692,8 +1692,8 @@
 						
 						<div class="ui-g-4">
 							<p:outputLabel for="cbDistritoComercialRepresentante" value="Distrito" styleClass="dsLabel1"/>
-							<p:selectOneMenu id="cbDistritoComercialRepresentante" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoDistritoComercial}" required="true" requiredMessage="Campo Obligatorio">
-								<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+							<p:selectOneMenu id="cbDistritoComercialRepresentante" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoDistritoComercial}" required="false" requiredMessage="Campo Obligatorio">
+								<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
 								<f:selectItems value="#{mbregistrooperacionsolicitudcredito.lstDistritoComercial}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
 				            </p:selectOneMenu>
 				            <h:message for="cbDistritoComercialRepresentante" styleClass="dsMessage1"/>
@@ -1702,43 +1702,43 @@
 					
 					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel value="Ciudad" styleClass="dsLabel1"/>
-						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.ciudadComercial}" autocomplete="off"></p:inputText>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.ciudadComercial}" autocomplete="off" maxlength="20"></p:inputText>
 					</div>
 					
 					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel value="Provincia/Estado" styleClass="dsLabel1"/>
-						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.estadoProvinciaComercial}" autocomplete="off"></p:inputText>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.estadoProvinciaComercial}" autocomplete="off" maxlength="20"></p:inputText>
 					</div>
 					
 					<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
 						<div class="ui-g-4">
 							<p:outputLabel value="Código Postal" styleClass="dsLabel1"/>
-							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoPostalComercial}" autocomplete="off"></p:inputText>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoPostalComercial}" autocomplete="off" maxlength="6"></p:inputText>
 						</div>
 						
 						<div class="ui-g-4">
 							<p:outputLabel value="Telefono" styleClass="dsLabel1"/>
-							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.telefonoComercial}" autocomplete="off"></p:inputText>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.telefonoComercial}" autocomplete="off" maxlength="13"></p:inputText>
 						</div>
 						
 						<div class="ui-g-4">
 							<p:outputLabel value="Fax" styleClass="dsLabel1"/>
-							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.faxComercial}" autocomplete="off"></p:inputText>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.faxComercial}" autocomplete="off" maxlength="13"></p:inputText>
 						</div>
 					</div>
 					
 					<div class="ui-g-12 ui-md-12 ui-lg-6">
 						<p:outputLabel for="idDirDomiciliariaR" value="Dirección Domiciliaria" styleClass="dsLabel1"/>
-						<p:inputText id="idDirDomiciliariaR" type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.direccionDomiciliaria}" required="true" requiredMessage="Campo Obligatorio"></p:inputText>
+						<p:inputText id="idDirDomiciliariaR" type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.direccionDomiciliaria}" autocomplete="off" maxlength="40" required="false" requiredMessage="Campo Obligatorio"></p:inputText>
 						<h:message for="idDirDomiciliariaR" styleClass="dsMessage1"/>
 					</div>
 					
 					<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
 						<div class="ui-g-4">
 							<p:outputLabel for="idDepartamentoDomR" value="Departamento" styleClass="dsLabel1"/>
-							<p:selectOneMenu id="idDepartamentoDomR" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoDepartamentoDomiciliaria}" required="true" requiredMessage="Campo Obligatorio">
+							<p:selectOneMenu id="idDepartamentoDomR" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoDepartamentoDomiciliaria}" required="false" requiredMessage="Campo Obligatorio">
 								<p:ajax event="change" listener="#{mbregistrooperacionsolicitudcredito.obtenerDepartamentoDomiciliaria()}" update="tabView2:cbProvinciaDomiciliariaRepresentante" />
-								<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+								<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
 								<f:selectItems value="#{mbregistrooperacionsolicitudcredito.lstDepartamentoDomiciliaria}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
 				            </p:selectOneMenu>
 				            <h:message for="idDepartamentoDomR" styleClass="dsMessage1"/>
@@ -1746,9 +1746,9 @@
 						
 						<div class="ui-g-4">
 							<p:outputLabel for="cbProvinciaDomiciliariaRepresentante" value="Provincia" styleClass="dsLabel1"/>
-							<p:selectOneMenu id="cbProvinciaDomiciliariaRepresentante" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoProvinciaDomiciliaria}" required="true" requiredMessage="Campo Obligatorio">
+							<p:selectOneMenu id="cbProvinciaDomiciliariaRepresentante" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoProvinciaDomiciliaria}" required="false" requiredMessage="Campo Obligatorio">
 								<p:ajax event="change" listener="#{mbregistrooperacionsolicitudcredito.obtenerProvinciaDomiciliaria()}" update="tabView2:cbDistritoDomiciliariaRepresentante"/>
-								<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+								<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
 								<f:selectItems value="#{mbregistrooperacionsolicitudcredito.lstProvinciaDomiciliaria}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
 				            </p:selectOneMenu>
 				            <h:message for="cbProvinciaDomiciliariaRepresentante" styleClass="dsMessage1"/>
@@ -1756,8 +1756,8 @@
 						
 						<div class="ui-g-4">
 							<p:outputLabel for="cbDistritoDomiciliariaRepresentante" value="Distrito" styleClass="dsLabel1"/>
-							<p:selectOneMenu id="cbDistritoDomiciliariaRepresentante" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoDistritoDomiciliaria}" required="true" requiredMessage="Campo Obligatorio">
-								<f:selectItem itemLabel="-Seleccione-" itemValue="" />
+							<p:selectOneMenu id="cbDistritoDomiciliariaRepresentante" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoDistritoDomiciliaria}" required="false" requiredMessage="Campo Obligatorio">
+								<f:selectItem itemLabel="-Seleccione-" itemValue="0" />
 								<f:selectItems value="#{mbregistrooperacionsolicitudcredito.lstDistritoDomiciliaria}" var="lst" itemLabel="#{lst.descripcion}" itemValue="#{lst.codigo2}"/>
 				            </p:selectOneMenu>
 				            <h:message for="cbDistritoDomiciliariaRepresentante" styleClass="dsMessage1"/>
@@ -1766,34 +1766,34 @@
 					
 					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel value="Ciudad" styleClass="dsLabel1"/>
-						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.ciudadDomiciliaria}" autocomplete="off"></p:inputText>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.ciudadDomiciliaria}" autocomplete="off" maxlength="20"></p:inputText>
 					</div>
 					
 					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel value="Provincia/Estado" styleClass="dsLabel1"/>
-						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.estadoProvinciaDomiciliaria}" autocomplete="off"></p:inputText>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.estadoProvinciaDomiciliaria}" autocomplete="off" maxlength="20"></p:inputText>
 					</div>
 					
 					<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
 						<div class="ui-g-4">
 							<p:outputLabel value="Código Postal" styleClass="dsLabel1"/>
-							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoPostalDomiciliaria}" autocomplete="off"></p:inputText>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoPostalDomiciliaria}" autocomplete="off" maxlength="6"></p:inputText>
 						</div>
 						
 						<div class="ui-g-4">
 							<p:outputLabel value="Telefono" styleClass="dsLabel1"/>
-							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.telefonoDomiciliaria}" autocomplete="off"></p:inputText>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.telefonoDomiciliaria}" autocomplete="off" maxlength="13"></p:inputText>
 						</div>
 						
 						<div class="ui-g-4">
 							<p:outputLabel value="Fax" styleClass="dsLabel1"/>
-							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.faxDomiciliaria}" autocomplete="off"></p:inputText>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.faxDomiciliaria}" autocomplete="off" maxlength="13"></p:inputText>
 						</div>
 					</div>
 					
 					<div class="ui-g-12 ui-md-12 ui-lg-6">
 						<p:outputLabel value="Dirección Correspondencia" styleClass="dsLabel1"/>
-						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.direccionCorrespondencia}"></p:inputText>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.direccionCorrespondencia}" autocomplete="off" maxlength="40"></p:inputText>
 					</div>
 					
 					<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
@@ -1826,28 +1826,28 @@
 					
 					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel value="Ciudad" styleClass="dsLabel1"/>
-						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.ciudadCorrespondencia}" autocomplete="off"></p:inputText>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.ciudadCorrespondencia}" autocomplete="off" maxlength="20"></p:inputText>
 					</div>
 					
 					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel value="Provincia/Estado" styleClass="dsLabel1"/>
-						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.estadoProvinciaCorrespondencia}" autocomplete="off"></p:inputText>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.estadoProvinciaCorrespondencia}" autocomplete="off" maxlength="20"></p:inputText>
 					</div>
 					
 					<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
 						<div class="ui-g-4">
 							<p:outputLabel value="Código Postal" styleClass="dsLabel1"/>
-							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoPostalCorrespondencia}" autocomplete="off"></p:inputText>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.codigoPostalCorrespondencia}" autocomplete="off" maxlength="6"></p:inputText>
 						</div>
 						
 						<div class="ui-g-4">
 							<p:outputLabel value="Telefono" styleClass="dsLabel1"/>
-							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.telefonoCorrespondencia}" autocomplete="off"></p:inputText>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.telefonoCorrespondencia}" autocomplete="off" maxlength="13"></p:inputText>
 						</div>
 						
 						<div class="ui-g-4">
 							<p:outputLabel value="Fax" styleClass="dsLabel1"/>
-							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.faxCorrespondencia}" autocomplete="off"></p:inputText>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.faxCorrespondencia}" autocomplete="off" maxlength="13"></p:inputText>
 						</div>
 					</div>
 				</div>
@@ -1857,7 +1857,7 @@
 		    	<div class="ui-g ui-fluid contenido">
 					<div class="ui-g-12 ui-md-6 ui-lg-6">
 						<p:outputLabel value="Nombre y Apellidos" styleClass="dsLabel1"/>
-						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.nombreConyugue}" autocomplete="off"></p:inputText>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.nombreConyugue}" autocomplete="off" maxlength="40"></p:inputText>
 					</div>
 					
 					<div class="ui-g-12 ui-md-3 ui-lg-3">
@@ -1870,29 +1870,29 @@
 					
 					<div class="ui-g-12 ui-md-3 ui-lg-3">
 						<p:outputLabel value="N° Documento" styleClass="dsLabel1"/>
-						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.documentoConyugue}" autocomplete="off"></p:inputText>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.documentoConyugue}" autocomplete="off" maxlength="11"></p:inputText>
 					</div>
 					
 					<div class="ui-g-12 ui-md-12 ui-lg-6 ui-g-nopad">
 						<div class="ui-g-4">
 							<p:outputLabel value="Telefono" styleClass="dsLabel1"/>
-							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.telefonoDirecto}" autocomplete="off"></p:inputText>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.telefonoDirecto}" autocomplete="off" maxlength="12"></p:inputText>
 						</div>
 						
 						<div class="ui-g-4">
 							<p:outputLabel value="Central" styleClass="dsLabel1"/>
-							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.telefonoCentral}" autocomplete="off"></p:inputText>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.telefonoCentral}" autocomplete="off" maxlength="12"></p:inputText>
 						</div>
 						
 						<div class="ui-g-4">
 							<p:outputLabel value="Anexo" styleClass="dsLabel1"/>
-							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.anexo}" autocomplete="off"></p:inputText>
+							<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.anexo}" autocomplete="off" maxlength="4"></p:inputText>
 						</div>
 					</div>
 					
 					<div class="ui-g-12 ui-md-3 ui-lg-3">
 						<p:outputLabel value="Fax" styleClass="dsLabel1"/>
-						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.fax}" autocomplete="off"></p:inputText>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.fax}" autocomplete="off" maxlength="12"></p:inputText>
 					</div>
 				</div>
 			</p:tab>
@@ -1900,11 +1900,11 @@
 				<div class="ui-g ui-fluid contenido">
 					<div class="ui-g-12 ui-md-3 ui-lg-3">
 						<p:outputLabel value="Nro Poderes" styleClass="dsLabel1"/>
-						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.numeroFichaPoder}" autocomplete="off"></p:inputText>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.numeroFichaPoder}" autocomplete="off" maxlength="20"></p:inputText>
 					</div>
 					<div class="ui-g-12 ui-md-3 ui-lg-3">
 						<p:outputLabel value="Registro Poderes" styleClass="dsLabel1"/>
-						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.registroPoder}" autocomplete="off"></p:inputText>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.registroPoder}" autocomplete="off" maxlength="50"></p:inputText>
 					</div>
 					<div class="ui-g-12 ui-md-3 ui-lg-3">
 						<p:outputLabel value="Fecha Ingreso" styleClass="dsLabel1"/>
@@ -1924,7 +1924,7 @@
 					</div>
 					<div class="ui-g-12">
 						<p:outputLabel value="Poderes Pie pagina" styleClass="dsLabel1"/>
-						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.inscripcionPoder2}" autocomplete="off" maxlength="60"></p:inputText>
+						<p:inputText type="text" styleClass="dsInput1" value="#{mbregistrooperacionsolicitudcredito.oERepresentanteLegalData.inscripcionPoder2}" autocomplete="off" maxlength="50"></p:inputText>
 					</div>
 					<div class="ui-g-12">
 						<p:outputLabel value="Observaciónes" styleClass="dsLabel1"/>
@@ -3181,13 +3181,15 @@
 					<p:dataTable id="tblServicio" value="#{mbregistrooperacionsolicitudcredito.lstServicio}" var="item" styleClass="dsTabla1" paginator="true" rows="10" paginatorPosition="bottom" selectionMode="single"
 								 selection="#{mbregistrooperacionsolicitudcredito.oEServicioSelected}" rowKey="#{item.codigoServicio}" reflow="false">
 						<p:ajax event="rowDblselect" listener="#{mbregistrooperacionsolicitudcredito.asignarServicio()}" update=":frmDlgFacultadPoder" oncomplete="PF('dlgBuscarServicio').hide()"/>
-						<p:column headerText="Código" styleClass="dsTextoCentro">
+						<p:column headerText="Código" style="width: 40px" styleClass="dsTextoCentro">
 							<h:outputText value="#{item.codigoServicio}"/>
 						</p:column>
 						<p:column headerText="Descripción">
-							<h:outputText value="#{item.descripcion}"/>
+							<div class="dsTextoCorto">
+								<h:outputText value="#{item.descripcion}"/>
+							</div>
 						</p:column>
-						<p:column headerText="Moneda" styleClass="dsTextoCentro">
+						<p:column headerText="Moneda" style="width: 50px">
 							<h:outputText value="#{item.descripcionMoneda}"/>
 						</p:column>
 					</p:dataTable>

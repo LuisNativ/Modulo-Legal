@@ -156,7 +156,7 @@ public class COperacion {
 		return mensaje;
 	}
 	
-	public EMensaje modificarEvaluacionSolicitudCredito(EOperacionSolicitud eOperacionSolicitud, EEvaluacionSolicitudCreditoLegal eEvaluacionSolicitudCreditoLegal){
+	public EMensaje modificarEvaluacionSolicitudCredito(EOperacionSolicitud eOperacionSolicitud, EEvaluacionSolicitudCreditoLegal eEvaluacionSolicitudCreditoLegal, int codigoTipoCliente){
 		IConexion oIConexion = null;
 		EMensaje mensaje = new EMensaje();
 		Mensaje mensajeLaserFiche = new Mensaje();
@@ -276,7 +276,7 @@ public class COperacion {
 						//Generar codigo representante
 						oERepresentanteLegal.setCodigoRepresentante(oBOGeneral.generarCorrelativo(UTipoCorrelativo.REPRESENTATELEGAL, "", "", ""));
 						//Setear codigo cliente
-						oERepresentanteLegal.setCodigoTipoCliente(eOperacionSolicitud.getCodigoTipoClientePersona());
+						oERepresentanteLegal.setCodigoTipoCliente(codigoTipoCliente);
 						oERepresentanteLegal.setCodigoCliente(eOperacionSolicitud.getCodigoClientePersona());
 						
 						mensaje = oDAORepresentanteLegal.agregarRepresentanteLegal(oERepresentanteLegal);

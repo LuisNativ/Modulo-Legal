@@ -63,8 +63,7 @@
 	        
 	        <p:tabView id="tabView1" dynamic="true" widgetVar="tabs" activeIndex="0">
 	        <p:tab id="tab1-1" title="Pendiente">
-				<p:dataTable id="tblSolicitudPendiente" value="#{mbbandejaoperacionlegal.lstOperacionSolicitudPendiente}" var="item" styleClass="dsTabla1" paginator="true" rows="12" paginatorPosition="bottom"
-							 rowKey="#{item.codigoSolicitud}" reflow="false">
+				<p:dataTable id="tblSolicitudPendiente" value="#{mbbandejaoperacionlegal.lstOperacionSolicitudPendiente}" var="item" styleClass="dsTabla1" paginator="true" rows="12" paginatorPosition="bottom" rowKey="#{item.codigoSolicitud}" reflow="false">
 					<p:column headerText="Nombre" style="width: 150px">
 						<div class="dsTextoCorto">
 							<h:outputText value="#{item.nombrePersona}"/>
@@ -79,7 +78,7 @@
 					<p:column headerText="Cod.Cli" style="width: 45px" priority="6">
 						<h:outputText value="#{item.codigoClientePersona}"/>
 					</p:column>
-					<p:column headerText="T.Cli" style="width: 20px" priority="6">
+					<p:column headerText="T.Cli" style="width: 15px" priority="6">
 						<h:outputText value="#{item.abreviacionTipoCliente}"/>
 					</p:column>
 					<p:column headerText="Producto" style="width: 110px">
@@ -87,7 +86,7 @@
 							<h:outputText value="#{item.abreviacionTipoProducto}"/>
 						</div>
 					</p:column>
-					<p:column headerText="Estado" style="width: 35px">
+					<p:column headerText="Estado" style="width: 40px">
 						<div class="dsTextoCorto">
 							<h:outputText value="#{item.descripcionEstado}"/>
 						</div>
@@ -101,7 +100,7 @@
 					<p:column headerText="Tiempo Aut." style="width: 70px" priority="6">
 						<h:outputText value="#{item.tiempoTranscurridoAJF}"/>
 					</p:column>
-					<p:column headerText="Fecha Inicio" style="width: 70px" priority="6">
+					<p:column headerText="Fec.Inicio" style="width: 50px" priority="6">
 						<h:outputText value="#{item.fechaInicio}"/>
 					</p:column>
 					<p:column headerText="Tiempo" style="width: 80px" priority="6">
@@ -110,14 +109,16 @@
 						</div>
 					</p:column>
 					<p:column headerText="Usuario" style="width: 80px" priority="6">
-						<h:outputText value="#{item.descripcionAbreviacionEmisor}"/>
+						<div class="dsTextoCorto">
+							<h:outputText value="#{item.descripcionAbreviacionEmisor}"/>
+						</div>
 					</p:column>
 					<p:column headerText="Eval.por:" style="width: 60px" priority="6">
 						<div class="dsTextoCorto">
 							<h:outputText value="#{item.descripcionUsuarioEvaluacion}"/>
 						</div>
 					</p:column>
-					<p:column headerText="" style="width: 80px">
+					<p:column headerText="" style="width: 30px">
 						<p:commandButton styleClass="dsBoton5 green" icon="fa fa-pencil" title="Revisar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbbandejaoperacionlegal.modificar(item)}" rendered="#{item.indicadorEditar eq '1' ? true : false}" update=":frmDlgMensajeOperacion"></p:commandButton>
 			     	</p:column>
 				</p:dataTable>
@@ -175,7 +176,7 @@
 					<p:column headerText="Evaluado por:" style="width: 80px" priority="6">
 						<h:outputText value="#{item.descripcionUsuarioEvaluacion}"/>
 					</p:column>
-					<p:column headerText="" style="width: 80px">
+					<p:column headerText="" style="width: 30px">
 	
 			     		<p:commandButton styleClass="dsBoton5 green" icon="fa fa-eye" title="Visualizar" onclick="PF('dlgPreload').show();" oncomplete="PF('dlgPreload').hide();" action="#{mbbandejaoperacionlegal.visualizar(item)}" update=":frmDlgMensajeOperacion"></p:commandButton>
 			     	</p:column>

@@ -206,12 +206,12 @@ public class BOGarantia {
 		List<EGarantiaCreditoRelacionado> lista=oCGarantia.listarCreditoRelacionado(codigo);
 		return lista;
 	}
-	public List<EGarantiaCreditoRelacionado> listarCreditoVigenteRelacionado(int codigo){
+	public List<EGarantiaCreditoRelacionado> listarCreditoVigenteRelacionado(long codigo){
 		List<EGarantiaCreditoRelacionado> lista=oCGarantia.listarCreditoVigenteRelacionado(codigo);
 		return lista;
 	}
-	public List<EGarantiaCreditoRelacionado> listarCreditoCanceladoRelacionado(int codigo){
-		List<EGarantiaCreditoRelacionado> lista=oCGarantia.listarCreditoVigenteRelacionado(codigo);
+	public List<EGarantiaCreditoRelacionado> listarCreditoCanceladoRelacionado(long codigo){
+		List<EGarantiaCreditoRelacionado> lista=oCGarantia.listarCreditoCanceladoRelacionado(codigo);
 		return lista;
 	}
 	public EGarantia buscarGarantia(long codigoGarantia){

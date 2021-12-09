@@ -30,8 +30,8 @@ public class DAORepresentanteLegal extends InstanciaAcceso{
 	private static final String SP_ABACOINLEGAL_DEL_FACULTADPODER="{ CALL GESTIONDOC.SP_ABACOINLEGAL_DEL_FACULTADPODER("+parametrosSP(5)+") }";
 	private static final String SP_ABACOINLEGAL_SEL_REPRESENTANTELEGAL="{ CALL GESTIONDOC.SP_ABACOINLEGAL_SEL_REPRESENTANTELEGAL("+parametrosSP(2)+") }";
 	private static final String SP_ABACOINLEGAL_SEL_FACULTADPODER="{ CALL GESTIONDOC.SP_ABACOINLEGAL_SEL_FACULTADPODER("+parametrosSP(3)+") }";
-	private static final String SP_ABACOINLEGAL_INS_REPRESENTANTELEGALSOLICITUDCREDITO="{ CALL GESTIONDOC.SP_ABACOINLEGAL_INS_REPRESENTANTELEGALSOLICITUDCREDITO("+parametrosSP(58)+") }";
-	private static final String SP_ABACOINLEGAL_UPD_REPRESENTANTELEGALSOLICITUDCREDITO="{ CALL GESTIONDOC.SP_ABACOINLEGAL_UPD_REPRESENTANTELEGALSOLICITUDCREDITO("+parametrosSP(58)+") }";
+	private static final String SP_ABACOINLEGAL_INS_REPRESENTANTELEGALSOLICITUDCREDITO="{ CALL GESTIONDOC.SP_ABACOINLEGAL_INS_REPRESENTANTELEGALSOLICITUDCREDITO("+parametrosSP(59)+") }";
+	private static final String SP_ABACOINLEGAL_UPD_REPRESENTANTELEGALSOLICITUDCREDITO="{ CALL GESTIONDOC.SP_ABACOINLEGAL_UPD_REPRESENTANTELEGALSOLICITUDCREDITO("+parametrosSP(59)+") }";
 	private static final String SP_ABACOINLEGAL_DEL_REPRESENTANTELEGALSOLICITUDCREDITO="{ CALL GESTIONDOC.SP_ABACOINLEGAL_DEL_REPRESENTANTELEGALSOLICITUDCREDITO("+parametrosSP(6)+") }";
 	
 	private static String parametrosSP(int numeroDeParametros) {
@@ -118,7 +118,6 @@ public class DAORepresentanteLegal extends InstanciaAcceso{
 			lstParametrosEntrada.add(eRepresentanteLegal.getInscripcionPoder2());
 			lstParametrosEntrada.add(UFuncionesGenerales.obtieneDescripcionPorSaltoLinea(eRepresentanteLegal.getObservacion(),0));
 			lstParametrosEntrada.add(UFuncionesGenerales.obtieneDescripcionPorSaltoLinea(eRepresentanteLegal.getObservacion(),1));
-			//lstParametrosEntrada.add(eRepresentanteLegal.getObservacion().replaceAll("\n", ""));
 			
 			lstParametrosEntrada.add(eRepresentanteLegal.getApellidoPaternoRepresentante());
 			lstParametrosEntrada.add(eRepresentanteLegal.getApellidoMaternoRepresentante());
@@ -204,7 +203,8 @@ public class DAORepresentanteLegal extends InstanciaAcceso{
 			lstParametrosEntrada.add(UFuncionesGenerales.obtieneDescripcionPorSaltoLinea(eRepresentanteLegal.getInscripcionPoder1(),0));
 			lstParametrosEntrada.add(UFuncionesGenerales.obtieneDescripcionPorSaltoLinea(eRepresentanteLegal.getInscripcionPoder1(),1));
 			lstParametrosEntrada.add(eRepresentanteLegal.getInscripcionPoder2());
-			lstParametrosEntrada.add(eRepresentanteLegal.getObservacion().replaceAll("\n", ""));
+			lstParametrosEntrada.add(UFuncionesGenerales.obtieneDescripcionPorSaltoLinea(eRepresentanteLegal.getObservacion(),0));
+			lstParametrosEntrada.add(UFuncionesGenerales.obtieneDescripcionPorSaltoLinea(eRepresentanteLegal.getObservacion(),1));
 			
 			lstParametrosEntrada.add(eRepresentanteLegal.getUsuarioRegistro().getNombreUsuario());
 			lstParametrosEntrada.add(eRepresentanteLegal.getFechaRegistro());
@@ -316,7 +316,6 @@ public class DAORepresentanteLegal extends InstanciaAcceso{
 			lstParametrosEntrada.add(eRepresentanteLegal.getInscripcionPoder2());
 			lstParametrosEntrada.add(UFuncionesGenerales.obtieneDescripcionPorSaltoLinea(eRepresentanteLegal.getObservacion(),0));
 			lstParametrosEntrada.add(UFuncionesGenerales.obtieneDescripcionPorSaltoLinea(eRepresentanteLegal.getObservacion(),1));
-			//lstParametrosEntrada.add(eRepresentanteLegal.getObservacion().replaceAll("\n", ""));
 			
 			lstParametrosEntrada.add(eRepresentanteLegal.getApellidoPaternoRepresentante());
 			lstParametrosEntrada.add(eRepresentanteLegal.getApellidoMaternoRepresentante());
@@ -402,7 +401,8 @@ public class DAORepresentanteLegal extends InstanciaAcceso{
 			lstParametrosEntrada.add(UFuncionesGenerales.obtieneDescripcionPorSaltoLinea(eRepresentanteLegal.getInscripcionPoder1(),0));
 			lstParametrosEntrada.add(UFuncionesGenerales.obtieneDescripcionPorSaltoLinea(eRepresentanteLegal.getInscripcionPoder1(),1));
 			lstParametrosEntrada.add(eRepresentanteLegal.getInscripcionPoder2());
-			lstParametrosEntrada.add(eRepresentanteLegal.getObservacion().replaceAll("\n", ""));
+			lstParametrosEntrada.add(UFuncionesGenerales.obtieneDescripcionPorSaltoLinea(eRepresentanteLegal.getObservacion(),0));
+			lstParametrosEntrada.add(UFuncionesGenerales.obtieneDescripcionPorSaltoLinea(eRepresentanteLegal.getObservacion(),1));
 			
 			lstParametrosEntrada.add(eRepresentanteLegal.getUsuarioRegistro().getNombreUsuario());
 			lstParametrosEntrada.add(eRepresentanteLegal.getFechaRegistro());

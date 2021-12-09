@@ -339,12 +339,14 @@ public class UFuncionesGenerales {
 	public static String obtieneDescripcionPorSaltoLinea(final String valor, final int linea) {
 		String strResultado = "";
 		
-        List<String> lista = new ArrayList<String>(Arrays.asList(valor.split("\n")));
-        try {
-        	strResultado = lista.get(linea);
-        }catch (Exception objEx){
-        	strResultado = "";
-        }
+		if(valor != null){
+	        List<String> lista = new ArrayList<String>(Arrays.asList(valor.split("\n")));
+	        try {
+	        	strResultado = lista.get(linea);
+	        }catch (Exception objEx){
+	        	strResultado = "";
+	        }
+		}
 		
 		return strResultado;
 	}

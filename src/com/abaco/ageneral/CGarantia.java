@@ -1152,7 +1152,7 @@ public class CGarantia {
 		return resultado;
 	}
 	
-	public List<EGarantiaCreditoRelacionado> listarCreditoVigenteRelacionado(int codigo){
+	public List<EGarantiaCreditoRelacionado> listarCreditoVigenteRelacionado(long codigo){
 		IConexion oIConexion = null;
 		List<EGarantiaCreditoRelacionado> resultado = null;
 		DAOGarantia oDAOGarantia= null;
@@ -1170,14 +1170,14 @@ public class CGarantia {
 		return resultado;
 	}
 	
-	public List<EGarantiaCreditoRelacionado> listarCreditoCanceladoRelacionado(int codigo){
+	public List<EGarantiaCreditoRelacionado> listarCreditoCanceladoRelacionado(long codigo){
 		IConexion oIConexion = null;
 		List<EGarantiaCreditoRelacionado> resultado = null;
 		DAOGarantia oDAOGarantia= null;
 		try {
 			oIConexion = FabricaConexion.creaConexion();			
 			oDAOGarantia = new DAOGarantia(oIConexion);
-			resultado = oDAOGarantia.listarCreditoVigenteRelacionado(codigo);			
+			resultado = oDAOGarantia.listarCreditoCanceladoRelacionado(codigo);			
 		} catch (Exception e) {
 			UManejadorLog.error("Control: Error al listar credito relacionado " + e.getMessage());
 		} finally {

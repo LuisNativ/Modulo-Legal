@@ -327,7 +327,7 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 					oEClienteData = oBOCliente.buscarSocio(oEGarantiaSolicitudLoad.getCodigoCliente());
 					oEGarantiaData = oBOGarantia.buscarGarantia(oEGarantiaSolicitudLoad.getCodigoGarantia());
 					oEGarantiaTramiteData = oBOGarantia.buscarGarantiaTramite(oEGarantiaSolicitudLoad.getCodigoGarantia());
-					lstCreditoVigenteRelacionado = oBOGarantia.listarCreditoVigenteRelacionado(1);
+					lstCreditoVigenteRelacionado = oBOGarantia.listarCreditoVigenteRelacionado(oEGarantiaSolicitudLoad.getCodigoGarantia());
 					
 					if(oEGarantiaSolicitudLoad.getCodigoEstadoLevantamiento() == UEstadoOperacionLevantamiento.SOLICITADO){
 						visualizarBtnRechazar = true;
@@ -521,11 +521,11 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 		boolean ind=true;
 		mensajeValidacion = "";
 		
-		lstCreditoCanceladoRelacionado = oBOGarantia.listarCreditoCanceladoRelacionado(1);
+		lstCreditoCanceladoRelacionado = oBOGarantia.listarCreditoCanceladoRelacionado(oEGarantiaSolicitudLoad.getCodigoGarantia());
 		
 		if(lstCreditoCanceladoRelacionado !=null){
 			if(lstCreditoCanceladoRelacionado.size() > 0){
-				mensajeValidacion = UMensajeValidacion.MSJ_12;
+				mensajeValidacion = UMensajeValidacion.MSJ_11;
 				
 				for(int i=0;i<lstCreditoCanceladoRelacionado.size();i++){
 					mensajeValidacion = mensajeValidacion + "\n" +lstCreditoCanceladoRelacionado.get(i).getCodigoCliente()+"-"+lstCreditoCanceladoRelacionado.get(i).getCodigoServicio()+"-"+lstCreditoCanceladoRelacionado.get(i).getNumeroOperacion();
@@ -540,7 +540,7 @@ public class MBRegistroOperacionLevantamientoGarantia implements Serializable {
 		boolean ind=true;
 		mensajeValidacion = "";
 		
-		lstCreditoVigenteRelacionado = oBOGarantia.listarCreditoVigenteRelacionado(1);
+		lstCreditoVigenteRelacionado = oBOGarantia.listarCreditoVigenteRelacionado(oEGarantiaSolicitudLoad.getCodigoGarantia());
 		
 		if(lstCreditoVigenteRelacionado !=null){
 			if(lstCreditoVigenteRelacionado.size() > 0){
